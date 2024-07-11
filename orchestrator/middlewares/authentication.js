@@ -1,5 +1,5 @@
 const { GraphQLError } = require("graphql");
-const { verifyToken } = require("../utils/jwt");
+const { verifyTokenClient, signTokenServer } = require("../utils/jwt");
 const axios = require("axios");
 
 module.exports = {
@@ -30,6 +30,7 @@ module.exports = {
 
     const payload = verifyToken(token);
     const user = await axios.get(`/users/${payload.email}`);
+
     if (!user.data) {
       throw new GraphQLError("Unauthorized", {
         extensions: {

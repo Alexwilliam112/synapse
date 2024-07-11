@@ -1,12 +1,18 @@
 'use strict'
 const jwt = require('jsonwebtoken')
-const secretKey = process.env.CLIENT_KEY
+const CLIENT_KEY = process.env.CLIENT_KEY
+const SERVER_KEY = process.env.SERVER_KEY
+
 module.exports = {
-    verifyToken: (token) => {
-        return jwt.verify(token, secretKey)
+    signTokenServer: (payload) => {
+        return jwt.sign(payload, SERVER_KEY)
     },
 
-    signToken: (payload) => {
-        return jwt.sign(payload, secretKey)
+    verifyTokenClient: (token) => {
+        return jwt.verify(token, CLIENT_KEY)
+    },
+
+    signTokenClient: (payload) => {
+        return jwt.sign(payload, CLIENT_KEY)
     }
 }
