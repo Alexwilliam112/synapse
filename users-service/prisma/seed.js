@@ -38,14 +38,14 @@ async function main() {
         password: await hash('password1', 10), // Hash password asynchronously
         createdAt: new Date(),
         updatedAt: new Date(),
-        companyId: companies[0].id, // Assign user to the first company
+        CompanyId: companies[0].id, // Assign user to the first company
       },
       {
         email: 'user4@softwaresolution.com',
         password: await hash('password2', 10), // Hash password asynchronously
         createdAt: new Date(),
         updatedAt: new Date(),
-        companyId: companies[1].id, // Assign user to the second company
+        CompanyId: companies[1].id, // Assign user to the second company
       },
       // Add more users as needed
     ];
