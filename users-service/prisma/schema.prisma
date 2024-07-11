@@ -90,6 +90,7 @@ model DataLink {
   canRelinkFrom Boolean
   from          String
   to            String
+  text          String
   ProcessId     Int
   process       Process @relation(fields: [ProcessId], references: [id])
 }
