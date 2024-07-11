@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ProcessMining;
+
+service AlphaMiner {
+  rpc GetProcessModel (xesData) returns (jsonSchema) {}
+}
+
+message xesData {
+  string eventlog = 1;
+}
+
+message jsonSchema {
+  string petrinet = 1;
+}
