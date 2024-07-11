@@ -3,11 +3,11 @@ const writeXesFile = require('../converter/xesFormat');
 const eventLog = require('../data/json/PO_eventLog.json');
 const { writeFileSync } = require('fs');
 
-const xesFilePath = './data/xes/eventlog.xes';
+const xesFilePath = '../data/xes/eventlog.xes';
 writeXesFile(eventLog, xesFilePath);
 
 function execute_AlphaMiner(filePath) {
-  exec(`py ./core/alpha_miner.py ${filePath}`, (error, stdout, stderr) => {
+  exec(`py ../core/alpha_miner.py ${filePath}`, (error, stdout, stderr) => {
       if (error) {
           console.error(`Error executing Python script: ${error.message}`);
           return;
