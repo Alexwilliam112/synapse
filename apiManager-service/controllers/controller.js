@@ -1,15 +1,18 @@
-
-
-// const prisma = new
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 class Api {
     static async getAll(req, res, next) {
         try {
+            const api = await prisma.Endpoint.findMany()
+            console.log(api);
             res.status(200).json({
                 msg: "ok"
             })
         } catch (error) {
-            console.log(error);
+            res.status(500).json({
+                msg: error
+            })
         }
     }
 
