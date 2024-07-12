@@ -5,10 +5,12 @@ if (process.env.NODE_ENV !== "production") {
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { authentication } = require("./middlewares/authentication");
+const { userResolvers, userTypeDefs } = require("./schemas/user");
+const { endpointResolvers, endpointTypeDefs} = require('./schemas/endpoint')
 
 const server = new ApolloServer({
-  typeDefs: [],
-  resolvers: [],
+  typeDefs: [userTypeDefs, endpointTypeDefs],
+  resolvers: [userResolvers, endpointResolvers],
   introspection: true,
   formatError: (err) => {
     console.error(err);
@@ -17,11 +19,8 @@ const server = new ApolloServer({
 });
 
 (async () => {
-  await connect();
-  const db = await getDB();
-
   const { url } = await startStandaloneServer(server, {
-    listen: process.env.PORT || 4000,
+    listen: process.env.PORT || 3000,
     context: async ({ req, res }) => {
       return {
         auth: async () => {
