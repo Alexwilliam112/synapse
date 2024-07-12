@@ -2,9 +2,9 @@
 // import Navbar from "../components/Navbar"
 // import Graph from "../components/Graph"
 // import RadialGraph from "../components/RadialGraph"
-// import LineGraph from "../components/LineGraph"
-// import AreaChart from "../components/AreaChart"
-// import DonutGraph from "../components/DonutGraph"
+import LineGraph from "../../components/temppresent/LineGraph"
+import AreaChart from "../../components/temppresent/AreaChart"
+import DonutGraph from "../../components/temppresent/DonutGraph"
 
 import { Clock2, TriangleAlert, LayoutList } from 'lucide-react'
 
@@ -35,7 +35,7 @@ const Dashboard = () => {
                   </div>
                   <div className="w-auto flex items-center h-auto space-x-8">
                     <div className="w-48 sm:w-32 h-auto">
-                      {/* <DonutGraph /> */}
+                      <DonutGraph />
                     </div>
                     <div className="space-y-4">
                       <div>
@@ -57,7 +57,7 @@ const Dashboard = () => {
                     <p className="text-sm text-gray-600">Average Conformance Rate</p>
                     {/* <h2 className="text-4xl">$1,329</h2> */}
                   </div>
-                  {/* <AreaChart /> */}
+                  <AreaChart />
                 </div>
               </div>
               <div>
@@ -78,7 +78,7 @@ const Dashboard = () => {
                   </div>
                   <div className="w-full flex h-72">
                     <div className="h-auto w-full">
-                      {/* <LineGraph /> */}
+                      <LineGraph />
                     </div>
                   </div>
                 </div>
