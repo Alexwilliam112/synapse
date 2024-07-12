@@ -10,6 +10,8 @@ class Api {
                     CompanyId
                 }
             })
+            console.log(allEndpoint);
+
             res.status(200).json({
                 statusCode: 200,
                 data: allEndpoint

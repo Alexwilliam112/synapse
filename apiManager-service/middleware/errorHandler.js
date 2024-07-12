@@ -1,5 +1,6 @@
 
 const errorHandler = (error, req, res, next) => {
+    console.log('hi')
     if (!error) {
         error = {
             status: 500,
