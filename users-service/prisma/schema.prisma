@@ -46,6 +46,7 @@ enum Status {
 model Endpoint {
   id          Int     @id @default(autoincrement())
   endpointUrl String
+  description String
   status      Status
   apiKey      String
   CompanyId   Int
