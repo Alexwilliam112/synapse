@@ -1,18 +1,23 @@
 const errorHandler = (error, req, res, next) => {
-    let status = 500
+    let statusCode = 500
     let message = 'Internal Server Error'
-
-    if (error.name === 'UserNotFound'){
-        status = 404
-        message = 'User Not Found'
-    }
-
+    
     if (error.name === 'BadRequest'){
-        status = 404
+        statusCode = 400
         message = 'Bad Request'
     }
 
-    res.status(status).json({
+    if (error.name === 'Invalid'){
+        statusCode = 401
+        message = 'Invalid'
+    }
+
+    if (error.name === "Unauthorized"){
+        statusCode = 401
+        message = "Invalid Access Token"
+    }
+
+    res.status(statusCode).json({
         message
     })
 }

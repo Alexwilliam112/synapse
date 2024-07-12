@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { hash } = require('../helpers/bcrypt');
+const { hash } = require('../utils/bcrypt');
 const { addYears } = require('date-fns');
 
 const prisma = new PrismaClient();
