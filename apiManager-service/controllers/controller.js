@@ -25,7 +25,6 @@ class Api {
 
     static async getById(req, res, next) {
         try {
-            console.log(`ok`);
             const { id } = req.params
             const endpoint = await prisma.endpoint.findUnique({
                 where: {
@@ -90,6 +89,26 @@ class Api {
                 statusCode: 200,
                 message: "Success Create Api"
             });
+        } catch (error) {
+            next({
+                statusCode: 400
+            });
+        }
+    }
+
+    static async delete(req, res, next) {
+        try {
+            const { id } = req.params
+            await prisma.endpoint.delete({
+                where: {
+                    id: Number(id)
+                }
+            })
+            res.status(200).json({
+                statusCode: 200,
+                data: "Success Delete Api"
+            })
+
         } catch (error) {
             next({
                 statusCode: 400
