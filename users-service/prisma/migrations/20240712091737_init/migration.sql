@@ -28,8 +28,9 @@ CREATE TABLE "Company" (
 CREATE TABLE "Endpoint" (
     "id" SERIAL NOT NULL,
     "endpointUrl" TEXT NOT NULL,
-    "statusName" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "status" "Status" NOT NULL,
+    "apiKey" TEXT NOT NULL,
     "CompanyId" INTEGER NOT NULL,
 
     CONSTRAINT "Endpoint_pkey" PRIMARY KEY ("id")
@@ -39,7 +40,9 @@ CREATE TABLE "Endpoint" (
 CREATE TABLE "Process" (
     "id" SERIAL NOT NULL,
     "processName" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "lastUpdate" TIMESTAMP(3) NOT NULL,
+    "fitness" INTEGER NOT NULL,
     "CompanyId" INTEGER NOT NULL,
 
     CONSTRAINT "Process_pkey" PRIMARY KEY ("id")
@@ -52,7 +55,7 @@ CREATE TABLE "State" (
     "eventName" TEXT NOT NULL,
     "isTextEditable" BOOLEAN NOT NULL,
     "color" TEXT NOT NULL,
-    "shape" TEXT NOT NULL,
+    "shape" TEXT NOT NULL DEFAULT 'Ellipse',
     "ProcessId" INTEGER NOT NULL,
 
     CONSTRAINT "State_pkey" PRIMARY KEY ("id")
@@ -66,7 +69,7 @@ CREATE TABLE "Event" (
     "benchmarkTime" INTEGER NOT NULL,
     "isTextEditable" BOOLEAN NOT NULL,
     "color" TEXT NOT NULL,
-    "shape" TEXT NOT NULL,
+    "shape" TEXT NOT NULL DEFAULT 'Rounded Rectangle',
     "ProcessId" INTEGER NOT NULL,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
@@ -78,37 +81,22 @@ CREATE TABLE "DataLink" (
     "canRelinkFrom" BOOLEAN NOT NULL,
     "from" TEXT NOT NULL,
     "to" TEXT NOT NULL,
+    "text" TEXT NOT NULL,
     "ProcessId" INTEGER NOT NULL,
 
     CONSTRAINT "DataLink_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Department" (
-    "id" SERIAL NOT NULL,
-    "department" TEXT NOT NULL,
-    "CompanyId" INTEGER NOT NULL,
-
-    CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Employee" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "DepartmentId" INTEGER NOT NULL,
-
-    CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Task" (
     "id" SERIAL NOT NULL,
     "processName" TEXT NOT NULL,
+    "department" TEXT NOT NULL,
     "caseId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "eventName" TEXT NOT NULL,
-    "timestamp" TIMESTAMP(3) NOT NULL,
-    "EmployeeId" INTEGER NOT NULL,
+    "time" INTEGER NOT NULL,
+    "CompanyId" INTEGER NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
@@ -138,10 +126,4 @@ ALTER TABLE "Event" ADD CONSTRAINT "Event_ProcessId_fkey" FOREIGN KEY ("ProcessI
 ALTER TABLE "DataLink" ADD CONSTRAINT "DataLink_ProcessId_fkey" FOREIGN KEY ("ProcessId") REFERENCES "Process"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Department" ADD CONSTRAINT "Department_CompanyId_fkey" FOREIGN KEY ("CompanyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Employee" ADD CONSTRAINT "Employee_DepartmentId_fkey" FOREIGN KEY ("DepartmentId") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Task" ADD CONSTRAINT "Task_EmployeeId_fkey" FOREIGN KEY ("EmployeeId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Task" ADD CONSTRAINT "Task_CompanyId_fkey" FOREIGN KEY ("CompanyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
