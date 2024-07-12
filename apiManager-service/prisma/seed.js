@@ -1,5 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
-const { hash } = require('../helpers/bcrypt');
+const { hash } = require('../utils/bcrypt');
 const { addYears } = require('date-fns');
 
 const prisma = new PrismaClient();
@@ -15,12 +15,11 @@ async function main() {
       },
     ];
 
-    // Create companies in the database
     const companies = await Promise.all(companiesData.map(async (company) => {
       return await prisma.company.create({
         data: {
           ...company,
-          expiration: addYears(new Date(), 1), // Set expiration 1 year from now
+          expiration: addYears(new Date(), 1),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -31,26 +30,23 @@ async function main() {
       throw new Error('No companies created or companies array is empty.');
     }
 
-    // Define users data to be seeded
     const usersData = [
       {
         email: 'user3@techcorp.com',
-        password: await hash('password1', 10), // Hash password asynchronously
+        password: await hash('12345', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
-        CompanyId: companies[0].id, // Assign user to the first company
+        CompanyId: companies[0].id,
       },
       {
         email: 'user4@softwaresolution.com',
-        password: await hash('password2', 10), // Hash password asynchronously
+        password: await hash('12345', 10),
         createdAt: new Date(),
         updatedAt: new Date(),
-        CompanyId: companies[1].id, // Assign user to the second company
+        CompanyId: companies[1].id,
       },
-      // Add more users as needed
     ];
 
-    // Create users in the database
     await prisma.user.createMany({
       data: usersData,
     });
@@ -58,14 +54,14 @@ async function main() {
     console.log('Seeding finished.');
   } catch (error) {
     console.error('Error seeding database:', error);
-    process.exit(1); // Exit process with error code
+    process.exit(1);
   } finally {
-    await prisma.$disconnect(); // Disconnect Prisma Client
+    await prisma.$disconnect();
   }
 }
 
 main()
   .catch((e) => {
     console.error('Error in main function:', e);
-    process.exit(1); // Exit process with error code
+    process.exit(1);
   });
