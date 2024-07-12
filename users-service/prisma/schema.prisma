@@ -68,7 +68,6 @@ model Process {
 
 model State {
   id             Int     @id @default(autoincrement())
-  key            String
   eventName      String
   isTextEditable Boolean
   color          String
@@ -79,8 +78,8 @@ model State {
 
 model Event {
   id             Int     @id @default(autoincrement())
-  key            String
-  frequency      Int
+  eventName      String
+  frequency      Float
   benchmarkTime  Int
   isTextEditable Boolean
   color          String
@@ -100,7 +99,7 @@ model DataLink {
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   processName String
   department  String
   caseId      String
@@ -109,5 +108,5 @@ model Task {
   time        Int
   timestamp   DateTime
   CompanyId   Int
-  company     Company @relation(fields: [CompanyId], references: [id])
+  company     Company  @relation(fields: [CompanyId], references: [id])
 }

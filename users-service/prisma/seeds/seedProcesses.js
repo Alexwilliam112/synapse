@@ -15,9 +15,7 @@ async function main() {
         description: process.description,
         lastUpdate: new Date(process.lastUpdate),
         fitness: process.fitness,
-        CompanyId: {
-            connect: { id: process.CompanyId }
-          }
+        CompanyId: process.CompanyId
       },
     });
   }
