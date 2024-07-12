@@ -46,10 +46,11 @@ module.exports = {
         Authorization: `Bearer ${userPayload}`,
       },
     });
+    console.log(response)
     errorHandler(response)
 
     const { data } = response;
-    const serverToken = signTokenServer(data);
+    const serverToken = signTokenServer(data.data);
 
     return serverToken;
   },
