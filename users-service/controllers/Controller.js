@@ -1,23 +1,34 @@
 const { PrismaClient } = require("@prisma/client");
+const { compareSync } = require("../utils/bcrypt");
+
 const prisma = new PrismaClient();
 
 class Controller {
-  static async getUserByEmail(req, res, next) {
+  static async login(req, res, next) {
     try {
-      const userEmail = req.params.email;
-
+      const { email, password } = req.body;
+      if (!email) throw { name: "Invalid" };
+      if (!password) throw { name: "Invalid" };
+  
       const user = await prisma.user.findUnique({
-        where: { email: userEmail },
+        where: { email },
         include: { company: true },
       });
 
-      if (!user) throw { name: "UserNotFound" };
+      if (!user) throw { name: "Invalid" };
+
+      const isPasswordValid = compareSync(password, user.password);
+      if (!isPasswordValid) throw { name: "Invalid" };
 
       res.status(200).json({
-        message: "Success read users",
-        user,
+        statusCode: 200,
+        data: {
+          email: user.email,
+          companyName: user.company.companyName,
+        },
       });
     } catch (error) {
+      console.log(error)
       next(error);
     }
   }
