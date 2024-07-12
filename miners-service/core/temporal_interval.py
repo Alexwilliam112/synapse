@@ -16,7 +16,8 @@ for trace in log:
             "timestamp": event["time:timestamp"],
             "eventName": event["concept:name"],
             "name": event["org:resource"] if "org:resource" in event else None,
-            "department": event["org:role"] if "org:role" in event else None
+            "department": event["org:role"] if "org:role" in event else None,
+            "CompanyId": 1
         })
 
 df = pd.DataFrame(data)
@@ -24,10 +25,11 @@ df = pd.DataFrame(data)
 df['timestamp'] = pd.to_datetime(df['timestamp'])
 df = df.sort_values(by=['caseId', 'timestamp'])
 
+# Calculate the time difference in days and format it to 2 decimal places
 df['time'] = df.groupby('caseId')['timestamp'].diff().dt.total_seconds().fillna(0) / (24 * 60 * 60)
-df['time'] = df['time'].map(lambda x: f"{x:.2f}")
+df['time'] = df['time'].map(lambda x: float(f"{x:.3f}"))
 
-df = df.drop(columns=['timestamp'])
+df['timestamp'] = df['timestamp'].dt.strftime('%Y-%m-%d %H:%M:%S')
 result = df.to_dict(orient='records')
 
 with open(output_file_path, 'w') as f:

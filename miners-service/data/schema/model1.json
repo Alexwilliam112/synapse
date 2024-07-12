@@ -1,0 +1,62 @@
+{
+  "nodeDataArray": [
+    {
+      "id": 6,
+      "eventName": "Freq: 0.982181 \nAvg.Time: 2.13",
+      "color": "orange",
+      "shape": "Rounded Rectangle"
+    },
+    {
+      "id": 7,
+      "eventName": "Freq: 0.982181 \nAvg.Time: 2.13",
+      "color": "orange",
+      "shape": "Rounded Rectangle"
+    },
+    {
+      "id": 8,
+      "eventName": "Freq: 0.982181 \nAvg.Time: 2.13",
+      "color": "orange",
+      "shape": "Rounded Rectangle"
+    },
+    {
+      "id": 9,
+      "eventName": "Freq: 0.982181 \nAvg.Time: 2.13",
+      "color": "orange",
+      "shape": "Rounded Rectangle"
+    },
+    {
+      "id": 10,
+      "eventName": "Freq: 0.982181 \nAvg.Time: 2.13",
+      "color": "orange",
+      "shape": "Rounded Rectangle"
+    },
+    {
+      "id": 14,
+      "eventName": "Freq: 0.982181 \nAvg.Time: 2.13",
+      "color": "orange",
+      "shape": "Rounded Rectangle"
+    }
+  ],
+  "linkDataArray": [
+    {
+      "id": -1,
+      "from": 4,
+      "to": 14,
+      "text": "A to B",
+      "canRelinkFrom": false
+    },
+    { "id": -2, "from": 6, "to": 1, "text": "A to C", "canRelinkFrom": false },
+    { "id": -3, "from": 1, "to": 7, "text": "B to B", "canRelinkFrom": false },
+    { "id": -4, "from": 7, "to": 2, "text": "C to D", "canRelinkFrom": false },
+    { "id": -5, "from": 2, "to": 8, "text": "D to A", "canRelinkFrom": false },
+    { "id": "s", "from": 0, "to": 6 },
+    { "id": -6, "from": 8, "to": 3 },
+    { "id": -9, "from": 9, "to": 4 },
+    { "id": -10, "from": 4, "to": 10 },
+    { "id": -11, "from": 10, "to": 5 },
+    { "from": 2, "to": 9, "id": -7 },
+    { "from": 1, "to": 9, "id": -8 },
+    { "from": 14, "to": 1, "id": -12 }
+  ],
+  "modelData": { "canRelink": true }
+}
