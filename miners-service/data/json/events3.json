@@ -1,0 +1,29 @@
+[
+  {
+    "key": "PURCHASE ORDER CREATE",
+    "frequency": 0.91812,
+    "benchmarkTime": 0,
+    "isTextEditable": false,
+    "color": "orange",
+    "shape": "Rounded rectangle",
+    "ProcessId": 1
+  },
+  {
+    "key": "PURCHASE ORDER PROPOSE",
+    "frequency": 0.91812,
+    "benchmarkTime": 1,
+    "isTextEditable": false,
+    "color": "orange",
+    "shape": "Rounded rectangle",
+    "ProcessId": 1
+  },
+  {
+    "key": "PURCHASE ORDER APPROVE",
+    "frequency": 0.91812,
+    "benchmarkTime": 2,
+    "isTextEditable": false,
+    "color": "orange",
+    "shape": "Rounded rectangle",
+    "ProcessId": 1
+  }
+]
