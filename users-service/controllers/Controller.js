@@ -32,6 +32,32 @@ class Controller {
       next(error);
     }
   }
+
+  static async findUser(req, res, next) {
+    try {
+      const { email } = req.body;
+      if (!email) throw { name: "Invalid" };
+  
+      const user = await prisma.user.findUnique({
+        where: { email },
+        include: { company: true },
+      });
+
+      if (!user) throw { name: "Invalid" };
+
+      res.status(200).json({
+        statusCode: 200,
+        data: {
+          email: user.email,
+          CompanyId: user.CompanyId,
+          companyName: user.company.companyName,
+        },
+      });
+    } catch (error) {
+      console.log(error)
+      next(error);
+    }
+  }
 }
 
 module.exports = Controller;
