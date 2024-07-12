@@ -11,7 +11,7 @@ async function main() {
   for (const event of events) {
     await prisma.event.create({
       data: {
-        key: event.key,
+        eventName: event.eventName,
         frequency: event.frequency,
         benchmarkTime: event.benchmarkTime,
         isTextEditable: event.isTextEditable,

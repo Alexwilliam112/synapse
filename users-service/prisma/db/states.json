@@ -1,0 +1,44 @@
+[
+  {
+    "eventName": "INVOICING CREATE",
+    "color": "lightblue",
+    "shape": "Ellipse",
+    "isTextEditable": false,
+    "ProcessId": 2
+  },
+  {
+    "eventName": "INVOICING PROPOSE",
+    "color": "lightblue",
+    "shape": "Ellipse",
+    "isTextEditable": false,
+    "ProcessId": 2
+  },
+  {
+    "eventName": "INVOICING APPROVE",
+    "color": "lightblue",
+    "shape": "Ellipse",
+    "isTextEditable": false,
+    "ProcessId": 2
+  },
+  {
+    "eventName": "INVOICING POST",
+    "color": "lightblue",
+    "shape": "Ellipse",
+    "isTextEditable": false,
+    "ProcessId": 2
+  },
+  {
+    "eventName": "INVOICING ABORT",
+    "color": "lightblue",
+    "shape": "Ellipse",
+    "isTextEditable": false,
+    "ProcessId": 2
+  },
+  {
+    "eventName": "DELETE",
+    "color": "lightblue",
+    "shape": "Ellipse",
+    "isTextEditable": false,
+    "ProcessId": 2
+  }
+]
