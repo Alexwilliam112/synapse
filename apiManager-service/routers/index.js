@@ -7,6 +7,7 @@ router.use(verify)
 
 router.get("/api", Api.getAll)
 router.get("/api/:id", Api.getById)
-router.post("/api", Api.create)
+router.post("/api/:id", Api.create)
+router.put("/api/:id", Api.update)
 
 module.exports = router
