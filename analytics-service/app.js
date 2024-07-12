@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production"){
 
 const express = require("express");
 const router = require("./routers");
-const authentication = require('./middlewares/authentication');
+// const authentication = require('./middlewares/authentication');
 const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
