@@ -4,22 +4,47 @@ const prisma = new PrismaClient();
 class Api {
     static async getAll(req, res, next) {
         try {
-            const allEndpoint = await prisma.Endpoint.findMany()
+            const { CompanyId } = req.data
+            const allEndpoint = await prisma.Endpoint.findMany({
+                where: {
+                    CompanyId
+                }
+            })
             res.status(200).json({
                 statusCode: 200,
                 data: allEndpoint
             })
         } catch (error) {
-            res.status(400).json({
-                statusCode: 400,
-                message: "bad request"
+            next({
+                statusCode: 400
+            });
+        }
+    }
+
+    static async getById(req, res, next) {
+        try {
+            const { id } = req.params
+            const endpoint = await prisma.Endpoint.findUnique({
+                where: {
+                    id: Number(id)
+                }
             })
+            res.status(200).json({
+                statusCode: 200,
+                data: endpoint
+            })
+
+        } catch (error) {
+            next({
+                statusCode: 400
+            });
         }
     }
 
     static async create(req, res, next) {
         try {
-            let { endpointUrl, status, apiKey, CompanyId, description } = req.body;
+            let { CompanyId } = req.data
+            const { endpointUrl, status, apiKey, description } = req.body;
             if (!endpointUrl || !status || !apiKey || !CompanyId || !description) {
                 throw new Error("All data must be filled");
             }

@@ -1,12 +1,13 @@
 const jwt = require(`jsonwebtoken`)
-const secretKey = process.env.SECRET_KEY
+const secretKey = process.env.SERVER_KEY
 
 const signToken = () => {
     const payload = {
-        email: "user1@gmail.com",
-        Companyid: 1,
+        email: "user3@techcorp.com",
+        CompanyId: 1,
         companyName: "Company Name"
     }
+    // console.log(`ok`);
     return jwt.sign(payload, secretKey)
 }
 
