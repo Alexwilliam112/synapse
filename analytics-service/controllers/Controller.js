@@ -4,9 +4,11 @@ const prisma = new PrismaClient();
 class Controller {
     static async postAnalytics(req, res, next){
         try {
-            const { processName, caseId, timestamp, eventName, name, department, time, CompanyId } = req.body;
+            let { processName, caseId, timestamp, eventName, name, department, time, CompanyId } = req.body;
+            time = parseFloat(time)
+            CompanyId = parseFloat(CompanyId)
 
-            const taskRecord = await prisma.task.create({
+            const taskRecord = await prisma.task.createMany({
                 data: {
                     processName,
                     caseId,
