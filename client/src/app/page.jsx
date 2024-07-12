@@ -14,18 +14,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodeDataArray: [
-        { id: 0, eventName: "Alpha", color: "lightblue" },
-        { id: 1, eventName: "Beta", color: "orange" },
-        { id: 2, eventName: "Gamma", color: "lightgreen" },
-        { id: 3, eventName: "Delta", color: "pink" },
-      ],
-      linkDataArray: [
-        { id: -1, from: 0, to: 1, text: "A to B" },
-        { id: -2, from: 0, to: 2, text: "A to C" },
-        { id: -4, from: 2, to: 3, text: "C to D" },
-        { id: -5, from: 3, to: 0, text: "D to A" },
-      ],
+      nodeDataArray: [],
+      linkDataArray: [],
       modelData: {
         canRelink: true,
       },
@@ -351,22 +341,13 @@ class App extends React.Component {
     }
   }
 
-  StatusUpdates = () => {
-    const [updates, setUpdates] = useState([]);
-
-    useEffect(() => {
-      const eventSource = new EventSource("/events_status");
-
-      eventSource.onmessage = (event) => {
-        const newUpdate = JSON.parse(event.data);
-        setUpdates((prevUpdates) => [...prevUpdates, newUpdate]);
-      };
-
-      return () => {
-        eventSource.close();
-      };
-    }, []);
-  };
+  // handleReshape() {
+  //   // Implementing the reshaping functionality
+  //   const diagram = this.diagramRef.current.getDiagram();
+  //   if (diagram instanceof go.Diagram) {
+  //     diagram.layoutDiagram(true); // This will reshape the diagram according to the specified layout
+  //   }
+  // }
 
   render() {
     const selectedData = this.state.selectedData;
@@ -429,7 +410,10 @@ class App extends React.Component {
                 <option value="Triangle">Triangle</option>
               </select>
             </label>
-            <button onClick={this.handleAddNode} className="btn btn-success">
+            <button
+              onClick={this.handleAddNode}
+              className="btn btn-success w-full max-w-xs mx-2 my-2"
+            >
               Add Node
             </button>
           </div>
@@ -475,16 +459,26 @@ class App extends React.Component {
             </label>
             <button onClick={this.handleAddLink}>Add Link</button>
           </div> */}
-          <button onClick={this.handleExport} className="btn btn-success">
-            Export Diagram
-          </button>
-          {/* <button onClick={this.handleSave}>Save Diagram</button> */}
-          <div>
-            <input
-              type="file"
-              accept=".json"
-              onChange={this.handleFileChange}
-            />
+          <div className="flex flex-wrap">
+            <button
+              onClick={this.handleExport}
+              className="btn btn-success mx-2 my-2"
+            >
+              Export Diagram
+            </button>
+            {/* <button onClick={this.handleSave}>Save Diagram</button> */}
+            <label className="btn btn-success mx-2 my-2">
+              Choose File
+              <input
+                type="file"
+                accept=".json"
+                onChange={this.handleFileChange}
+                style={{ display: "none" }} // Hide the default file input
+              />
+            </label>
+            <button onClick={this.handleReshape} className="btn btn-warning">
+              Reshape Diagram
+            </button>
           </div>
           <label>
             Allow Relinking?
