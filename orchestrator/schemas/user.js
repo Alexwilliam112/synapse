@@ -1,6 +1,8 @@
 const { signTokenUser, signTokenClient } = require("../utils/jwt");
 const { GraphQLError } = require("graphql");
 const { EmailAddressResolver, JSONResolver } = require("graphql-scalars");
+const errorHandler = require('../middlewares/errorHandler')
+const axios = require('axios')
 
 module.exports = {
   userTypeDefs: `#graphql
@@ -57,16 +59,7 @@ module.exports = {
             Authorization: `Bearer ${userHeader}`,
           },
         });
-
-        if (response.statusCode !== 200) {
-          throw new GraphQLError("Unauthorized", {
-            extensions: {
-              http: {
-                status: 401,
-              },
-            },
-          });
-        }
+        errorHandler(response)
 
         const access_token = signTokenClient({
           email: response.data.email,

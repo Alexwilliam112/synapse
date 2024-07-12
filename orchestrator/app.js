@@ -6,7 +6,7 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { authentication } = require("./middlewares/authentication");
 const { userResolvers, userTypeDefs } = require("./schemas/user");
-const { endpointResolvers, endpointTypeDefs} = require('./schemas/endpoint')
+const { endpointResolvers, endpointTypeDefs} = require('./schemas/endpointMiners')
 
 const server = new ApolloServer({
   typeDefs: [userTypeDefs, endpointTypeDefs],
