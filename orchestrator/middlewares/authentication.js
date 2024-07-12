@@ -32,21 +32,21 @@ module.exports = {
         },
       });
     }
-
     const clientPayload = verifyTokenClient(token);
     const userPayload = signTokenUser({
       origin: process.env.USER_ORIGIN,
     });
 
+    const userEmail = signTokenUser(clientPayload.email)
+    
     const response = await axios.post("http://localhost:3001/findUser", {
       body: {
-        email: clientPayload.email
+        email: userEmail
       },
       headers: {
         Authorization: `Bearer ${userPayload}`,
       },
     });
-    console.log(response)
     errorHandler(response)
 
     const { data } = response;

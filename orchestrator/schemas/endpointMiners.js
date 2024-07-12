@@ -33,7 +33,7 @@ module.exports = {
       GetEndpoints: async (_, __, context) => {
         const token = await context.auth()
 
-        const res = await axios.get('/localhost:3002/api', {
+        const res = await axios.get('http://localhost:3002/api', {
           headers: {
             'Authorization': `Bearer ${token}`
             }
@@ -42,7 +42,7 @@ module.exports = {
 
         return {
           statusCode: 200,
-          data: res.data
+          data: res.data.data
         }
       }
     },

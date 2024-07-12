@@ -3,8 +3,6 @@ const { GraphQLError } = require("graphql");
 module.exports = function errorHandler(response) {
   const status = response.data.statusCode;
 
-  console.log(`SERVICE ERROR: ${response.data.statusCode}`);
-
   const error = (msg, code) => {
     return new GraphQLError(msg, {
       extensions: {

@@ -7,21 +7,27 @@ const prisma = new PrismaClient();
 class Controller {
   static async login(req, res, next) {
     try {
-      const token = req.body.body;
-      console.log(req.body)
+      const bodyToken = req.body.body;
 
-      if (!token) throw { name: "Invalid" };
+      const { Authorization } = req.body.headers
+      
+      const authToken = Authorization.split(" ")[1]
 
-      const decoded = verifyToken(token);
+      if (!bodyToken || !authToken) throw { name: "Invalid" };
 
-      const { email, password } = decoded;
+      const bodyDecoded = verifyToken(bodyToken);
+      
+      const authDecoded = verifyToken(authToken);
+
+      if (authDecoded.origin !== process.env.USER_ORIGIN) throw { name: "Invalid" }
+
+      const { email, password } = bodyDecoded;
       if (!email || !password) throw { name: "Invalid" }
 
       const user = await prisma.user.findUnique({
         where: { email },
         include: { company: true },
       });
-      console.log(user)
 
       if (!user) throw { name: "Invalid" };
 
@@ -43,13 +49,19 @@ class Controller {
 
   static async findUser(req, res, next) {
     try {
-      const token = req.body.body;
+      const bodyToken = req.body.body;
+      
+      const { Authorization } = req.body.headers
+      const authToken = Authorization.split(" ")[1]
+      
+      if (!bodyToken || !authToken) throw { name: "Invalid" };
+      
+      const bodyDecoded = verifyToken(bodyToken.email);
+      const authDecoded = verifyToken(authToken);
+      
+      const email = bodyDecoded;
 
-      if (!token) throw { name: "Invalid" };
-
-      const decoded = verifyToken(token);
-
-      const { email } = decoded;
+      if (authDecoded.origin !== process.env.USER_ORIGIN) throw { name: "Invalid" }
       if (!email) throw { name: "Invalid" };
   
       const user = await prisma.user.findUnique({
