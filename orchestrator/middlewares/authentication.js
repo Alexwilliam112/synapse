@@ -1,5 +1,9 @@
 const { GraphQLError } = require("graphql");
-const { verifyTokenClient, signTokenUser } = require("../utils/jwt");
+const {
+  verifyTokenClient,
+  signTokenUser,
+  signTokenServer,
+} = require("../utils/jwt");
 const axios = require("axios");
 
 module.exports = {
@@ -33,10 +37,9 @@ module.exports = {
       origin: process.env.USER_ORIGIN,
     });
 
-    const response = await axios.post("/users", {
+    const response = await axios.post("/findUser", {
       body: {
-        email: clientPayload.email,
-        password: clientPayload.password,
+        email: clientPayload.email
       },
       headers: {
         Authorization: `Bearer ${userPayload}`,
@@ -53,6 +56,9 @@ module.exports = {
       });
     }
 
-    return response.data;
+    const { data } = response;
+    const loginInfo = signTokenServer(data);
+
+    return loginInfo;
   },
 };
