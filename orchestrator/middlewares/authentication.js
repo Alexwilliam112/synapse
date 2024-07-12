@@ -5,6 +5,7 @@ const {
   signTokenServer,
 } = require("../utils/jwt");
 const axios = require("axios");
+const errorHandler = require("./errorHandler");
 
 module.exports = {
   authentication: async (req) => {
@@ -45,20 +46,11 @@ module.exports = {
         Authorization: `Bearer ${userPayload}`,
       },
     });
-
-    if (response.statusCode !== 200) {
-      throw new GraphQLError("Unauthorized", {
-        extensions: {
-          http: {
-            status: 401,
-          },
-        },
-      });
-    }
+    errorHandler(response)
 
     const { data } = response;
-    const loginInfo = signTokenServer(data);
+    const serverToken = signTokenServer(data);
 
-    return loginInfo;
+    return serverToken;
   },
 };
