@@ -53,12 +53,13 @@ module.exports = {
           password,
         });
 
-        const response = await axios.post("/localhost:3001/users", {
+        const response = await axios.post("http://localhost:3001/login", {
           body: userPayload,
           headers: {
             Authorization: `Bearer ${userHeader}`,
           },
         });
+
         errorHandler(response)
 
         const access_token = signTokenClient({

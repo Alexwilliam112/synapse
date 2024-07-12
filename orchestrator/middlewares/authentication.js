@@ -38,7 +38,7 @@ module.exports = {
       origin: process.env.USER_ORIGIN,
     });
 
-    const response = await axios.post("/findUser", {
+    const response = await axios.post("http://localhost:3001/findUser", {
       body: {
         email: clientPayload.email
       },
