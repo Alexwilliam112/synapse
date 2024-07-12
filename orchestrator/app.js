@@ -25,8 +25,7 @@ const server = new ApolloServer({
       return {
         auth: async () => {
           return await authentication(req);
-        },
-        db,
+        }
       };
     },
   });
