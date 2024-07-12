@@ -53,23 +53,24 @@ module.exports = {
           password,
         });
 
-        const response = await axios.post("/localhost:3001/users", {
+        const response = await axios.post("http://localhost:3001/login", {
           body: userPayload,
           headers: {
             Authorization: `Bearer ${userHeader}`,
           },
         });
+
         errorHandler(response)
 
         const access_token = signTokenClient({
-          email: response.data.email,
+          email: response.data.data.email,
         });
 
         return {
           statusCode: 200,
           access_token,
-          email: response.data.email,
-          companyName: response.data.companyName,
+          email: response.data.data.email,
+          companyName: response.data.data.companyName,
         };
       },
     },
