@@ -1,6 +1,13 @@
 "use client";
 
+import { FetchApi } from "@/queries";
+import { useQuery } from "@apollo/client";
+
 const ApiManager = () => {
+
+  const { loading, error, data } = useQuery(FetchApi);
+  // console.log(data?.GetEndpoints?.data);
+  const fixData = data?.GetEndpoints?.data
   return (
     <>
       <div className="overflow-x-auto">
@@ -18,18 +25,20 @@ const ApiManager = () => {
           </thead>
           <tbody>
             {/* row 1 */}
-            <tr>
-              <th>1</th>
+            {fixData?.map((data, idx) => {
+              return (
+                <tr key={idx}>
+              <th>{idx+1}</th>
               <td>
                 <div className="mockup-code">
                   <pre data-prefix="$">
-                    <code>http://localhost:3000/</code>
+                    <code>{data.endpointUrl}</code>
                   </pre>
                 </div>
               </td>
-              <td>Quality Control Specialist</td>
-              <td>**********</td>
-              <td>Serving</td>
+              <td>{data.description}</td>
+              <td>{data.apiKey}</td>
+              <td>{data.status}</td>
               <td className="space-x-2">
                 <button className="btn btn-primary">Start</button>
                 <button
@@ -57,6 +66,8 @@ const ApiManager = () => {
                 <button className="btn btn-error">Delete</button>
               </td>
             </tr>
+              )
+            })}
             {/*  */}
           </tbody>
         </table>
