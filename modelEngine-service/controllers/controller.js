@@ -24,11 +24,23 @@ class ModelEngine {
 
     static async getById(req, res, next) {
         try {
+            const { id } = req.params
+            const process = await prisma.process.findUnique({
+                where: {
+                    id: Number(id)
+                },
+                include: {
+                    dataLinks: true,
+                    events: true,
+                    states: true
+                }
+            });
             res.status(200).json({
                 statusCode: 200,
-                data: "Success Get Data By Id"
+                data: process
             })
         } catch (error) {
+            console.log(error);
             next({
                 statusCode: 400
             });
