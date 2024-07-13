@@ -1,1 +1,4 @@
-Results saved to ../data/json/tasks.json
+Petri Net:
+Events: [{'key': 'T:PURCHASE ORDER CREATE', 'frequency': 2318, 'time': 0}, {'key': 'T:PURCHASE ORDER APPROVE', 'frequency': 2318, 'time': 17.34}, {'key': 'T:PURCHASE ORDER PROPOSE', 'frequency': 2318, 'time': 0.33}]
+States: [{'key': 'PURCHASE ORDER APPROVE'}, {'key': 'PURCHASE ORDER POST'}, {'key': 'PURCHASE ORDER CREATE'}, {'key': 'PURCHASE ORDER PROPOSE'}]
+Arcs: [{'from': 'T:PURCHASE ORDER CREATE', 'to': 'T:PURCHASE ORDER PROPOSE'}, {'from': 'T:PURCHASE ORDER PROPOSE', 'to': 'T:PURCHASE ORDER APPROVE'}, {'from': 'T:PURCHASE ORDER APPROVE', 'to': 'T:PURCHASE ORDER POST'}, {'from': 'T:PURCHASE ORDER CREATE', 'to': 'T:PURCHASE ORDER CREATE'}, {'from': 'T:PURCHASE ORDER PROPOSE', 'to': 'T:PURCHASE ORDER PROPOSE'}, {'from': 'T:PURCHASE ORDER APPROVE', 'to': 'T:PURCHASE ORDER APPROVE'}]
