@@ -1,10 +1,19 @@
-
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 class ModelEngine {
     static async getAll(req, res, next) {
         try {
+            // const { CompanyId } = req.data
+            const CompanyId = 1
+            const process = await prisma.process.findMany({
+                where: {
+                    CompanyId
+                }
+            })
+            console.log(process);
             res.status(200).json({
                 statusCode: 200,
-                data: "Success Get All Data"
+                data: process
             })
         } catch (error) {
             next({
