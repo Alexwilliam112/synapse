@@ -1,4 +1,4 @@
-const grpcClient = require("../config/grpcClient-pyMiners");
+const grpcClient = require("../config/proto/pyMiner/grpcClient-pyMiners");
 
 class Controller {
   static async startMining(req, res, next) {
