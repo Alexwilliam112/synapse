@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ScrollText, LogIn } from 'lucide-react'
+import { ScrollText, LogIn, Unplug, Power, LightbulbOff } from 'lucide-react'
 // import BallGreen from "../../public/ballgreen.json"
 // import { Player } from '@lottiefiles/react-lottie-player';
 import Footer from '../components/Footer'
@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 const Landing = () => {
   return (
     <>
-      <div data-theme="dark" className="navbar bg-base-100">
+      <div data-theme="dark" className="navbar bg-base-100 fixed z-10">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">
             <img src="/logo.png" alt="" srcset="" className="w-6 h-6 object-cover" />
@@ -24,18 +24,18 @@ const Landing = () => {
           </ul>
         </div>
       </div>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#161616]">
+      <div className="min-h-screen flex pt-4 flex-col items-center justify-center bg-[#161616]">
         <div className="container px-6 py-16 mx-auto">
           <div className="items-center lg:flex">
             <div className="w-full lg:w-1/2">
               <div className="lg:max-w-lg">
                 <h1 className="text-6xl font-light text-white lg:text-7xl">Monitor Your<br /> Company <span className="text-[#6E8672]">Differently</span></h1>
                 <p className="mt-6 text-xl text-gray-400 dark:text-gray-400">No strings are left loose. Synapse guarantees comprehensive monitoring of every process within your company, ensuring seamless operations and optimal performance</p>
-                <button className="w-full px-5 py-2 mt-6 text-sm tracking-wider text-white uppercase transition-colors duration-300 transform border-2 border-[#6E8672] rounded-lg lg:w-1/3 hover:bg-[#8DB093] hover:border-[#8DB093] focus:outline-none focus:bg-[#C2E4C8]">Start Now</button>
+                <Link href={"/login"} ><button className=" items-center text-center w-full px-5 py-2 mt-6 text-lg tracking-wider text-white transition-colors duration-300 transform border-2 border-[#6E8672] rounded-lg lg:w-1/3 hover:bg-[#8DB093] hover:border-[#8DB093] focus:outline-none focus:bg-[#C2E4C8] space-x-1"><p>Start Now</p></button></Link>
               </div>
             </div>
 
-            <div className="flex items-center justify-center w-full mt-6 lg:mt-0 lg:w-1/2">
+            <div className="flex items-center justify-center w-full mt-6 lg:mt-0 lg:w-2/3">
               <video
                 className="video"
                 src="/globe-black.mp4"
@@ -54,13 +54,16 @@ const Landing = () => {
           <div className="items-center lg:flex">
             <div className="flex items-center justify-center w-full mt-6 lg:mt-0 lg:w-1/2">
               <div className="rounded-full bg-[#6E8672] border-8 border-[#6E8672] shadow-2xl shadow-[#47594A]">
-                <img src="/hero.png" alt="" className="w-96 h-96 object-cover" />
+                <img src="/hero.png" alt="" className="w-96 h-96 rounded-full object-cover" />
               </div>
             </div>
             <div className="w-full mt-4 lg:w-1/2">
               <div className="lg:max-w-lg">
-                <h1 className="text-6xl font-light lg:text-7xl">Not Like Other Service</h1>
-                <p className="mt-6 text-xl text-gray-600 dark:text-gray-400">We believe productivity must be monitored to keep business processes intact. We believe you as a business owner has rights to keep control of every movement of you company</p>
+                {/* <div className="lg:flex"> */}
+                <LightbulbOff className="w-12 h-12 object-cover text-[#6E8672]" />
+                <h1 className="text-6xl font-light lg:text-7xl"> Unlike Other Service</h1>
+                {/* </div> */}
+                <p className="mt-6 text-xl text-gray-600 dark:text-gray-400">We believe productivity must be monitored to keep business processes intact. We believe you as a business owner has rights to keep control of every movement of your company</p>
               </div>
             </div>
           </div>

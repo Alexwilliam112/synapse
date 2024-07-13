@@ -7,6 +7,7 @@ import {
   CircleArrowOutUpRight,
   UserPen,
   Cog,
+  FolderKey,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -87,7 +88,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link href={"/apimanager"}>
-              <FilePieChart className="h-4 w-4" /> API Manager
+              <FolderKey className="h-4 w-4" /> API Manager
             </Link>
           </li>
         </ul>
