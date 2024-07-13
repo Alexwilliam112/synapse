@@ -1,8 +1,31 @@
-import sys
-from collections import Counter, defaultdict
 from pm4py.objects.log.importer.xes import importer as xes_importer
 from pm4py.algo.discovery.alpha import algorithm as alpha_miner
+from collections import Counter, defaultdict
+import xml.etree.ElementTree as ET
 from datetime import datetime
+import tempfile
+import os
+
+def json_to_xes(eventlog):
+    log = ET.Element("log", {"xes.version": "1.0", "xes.features": "nested-attributes", "openxes.version": "1.0RC7", "xmlns": "http://www.xes-standard.org/"})
+    
+    traces = {}
+    
+    for event in eventlog:
+        case_id = event["caseId"]
+        if case_id not in traces:
+            traces[case_id] = ET.SubElement(log, "trace")
+            ET.SubElement(traces[case_id], "string", {"key": "concept:name", "value": case_id})
+        
+        event_el = ET.SubElement(traces[case_id], "event")
+        ET.SubElement(event_el, "string", {"key": "concept:name", "value": event["eventName"]})
+        ET.SubElement(event_el, "string", {"key": "org:resource", "value": event["name"]})
+        ET.SubElement(event_el, "string", {"key": "org:group", "value": event["department"]})
+        timestamp = datetime.strptime(event["timestamp"], "%Y-%m-%d")
+        ET.SubElement(event_el, "date", {"key": "time:timestamp", "value": timestamp.isoformat() + ".000+00:00"})
+    
+    xes_data = ET.tostring(log, encoding='utf-8', method='xml')
+    return xes_data.decode('utf-8')
 
 def get_place_frequencies_and_times(log):
     place_counter = Counter()
@@ -57,23 +80,23 @@ def format_petri_net(net, place_frequencies, place_average_times):
     }
     return formatted_output
 
-def main(file_path):
-    log = xes_importer.apply(file_path)
-    place_frequencies, place_times = get_place_frequencies_and_times(log)
-    place_average_times = calculate_average_times(place_frequencies, place_times)
-    net, initial_marking, final_marking = alpha_miner.apply(log)
-    
-    formatted_net = format_petri_net(net, place_frequencies, place_average_times)
-    
-    print("Petri Net:")
-    print(f"Events: {formatted_net['places']}")
-    print(f"States: {formatted_net['transitions']}")
-    print(f"Arcs: {formatted_net['arcs']}")
+def main(eventlog):
+    try:
+        xes_data = json_to_xes(eventlog)
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.xes') as tmpfile:
+            tmpfile.write(xes_data.encode('utf-8'))
+            tmpfile_path = tmpfile.name
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python process_miner.py <path_to_xes_file>")
-        sys.exit(1)
-    
-    xes_file_path = sys.argv[1]
-    main(xes_file_path)
+        log = xes_importer.apply(tmpfile_path)
+        os.remove(tmpfile_path)
+        # print(f"Parsed log: {log}")
+        place_frequencies, place_times = get_place_frequencies_and_times(log)
+        place_average_times = calculate_average_times(place_frequencies, place_times)
+        net, initial_marking, final_marking = alpha_miner.apply(log)
+        
+        formatted_net = format_petri_net(net, place_frequencies, place_average_times)
+        print(formatted_net)
+        return formatted_net
+    except Exception as e:
+        print(f"Error in main function: {e}")
+        return {}

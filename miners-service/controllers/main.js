@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const writeXesFile = require('../converter/xesFormat');
+const writeXesFile = require('../utils/xesFormat');
 const eventLog = require('../data/json/PO_eventLog.json');
 const { writeFileSync } = require('fs');
 
@@ -38,5 +38,5 @@ function execute_TemporalInterval(filePath, outputPath) {
     });
   }
 
-// execute_AlphaMiner(xesFilePath);
-execute_TemporalInterval(xesFilePath, '../data/json/tasks.json')
+execute_AlphaMiner(xesFilePath);
+// execute_TemporalInterval(xesFilePath, '../data/json/tasks.json')

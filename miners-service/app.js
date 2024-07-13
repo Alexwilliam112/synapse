@@ -1,29 +1,20 @@
-import express from "express";
-import cors from "cors";
-
-async function loadEnv() {
-  if (process.env.NODE_ENV !== "production") {
-    const dotenv = await import("dotenv");
-    dotenv.config();
-  }
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const router = require("./routers/index");
 
-async function startServer() {
-  await loadEnv();
-  
-  const app = express();
-  const router = await import("./routers/index.js");
+const PORT = process.env.PORT || 3005
 
-  app.use(cors());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
+//config
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-  app.use(router.default);
-
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-}
-
-startServer();
+//routing
+app.use(router);
+app.listen(PORT, () => {
+  console.log("LOCALSERVER STARTED AT http://localhost:" + PORT);
+});
