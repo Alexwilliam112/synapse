@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production"){
 
 const express = require("express");
 const router = require("./routers");
+// const authentication = require('./middlewares/authentication');
 const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
@@ -13,6 +14,8 @@ const cors = require("cors");
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// app.use(authentication)
 
 app.use(router)
 

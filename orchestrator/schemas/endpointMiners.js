@@ -24,6 +24,9 @@ module.exports = {
     type Query {
       GetEndpoints: GetEndpointsResponse
     }
+
+    type Mutation{
+      CreateEndpoint(endpointUrl: String!, description: String!, status: String!, apiKey: String!): Endpoints}
   `,
 
   endpointResolvers: {
@@ -46,6 +49,24 @@ module.exports = {
         }
       }
     },
+
+    Mutation: {
+      CreateEndpoint: async (_, __, context) => {
+        const token = await context.auth()
+
+        const res = await axios.get('http://localhost:3002/api', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+            }
+        })
+        errorHandler(res)
+
+        return {
+          statusCode: 200,
+          data: res.data.data
+        }
+      }
+    }
 
   },
 };

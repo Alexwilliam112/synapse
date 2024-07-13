@@ -1,0 +1,21 @@
+[
+  {
+    "id": -1,
+    "from": 4,
+    "to": 14,
+    "text": "A to B",
+    "canRelinkFrom": false
+  },
+  { "id": -2, "from": "E-INVOICING CREATE", "to": "S-INVOICING PROPOSE", "text": "A to C", "canRelinkFrom": false },
+  { "id": -3, "from": "S-INVOICING PROPOSE", "to": "E-INVOICING PROPOSE", "text": "B to B", "canRelinkFrom": false },
+  { "id": -4, "from": "E-INVOICING PROPOSE", "to": "S-INVOICING APPROVE", "text": "C to D", "canRelinkFrom": false },
+  { "id": -5, "from": "S-INVOICING APPROVE", "to": "E-INVOICING APPROVE", "text": "D to A", "canRelinkFrom": false },
+  { "id": "s", "from": 0, "to": 6 },
+  { "id": -6, "from": 8, "to": 3 },
+  { "id": -9, "from": 9, "to": 4 },
+  { "id": -10, "from": 4, "to": 10 },
+  { "id": -11, "from": 10, "to": 5 },
+  { "from": 2, "to": 9, "id": -7 },
+  { "from": 1, "to": 9, "id": -8 },
+  { "from": 14, "to": 1, "id": -12 }
+]
