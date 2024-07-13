@@ -5,9 +5,9 @@ import (
 )
 
 func Tracer(clusteredData []map[string]interface{}) []map[string]interface{} {
-	caseIdMap := make(map[string]string)      // Map to track caseId to the actual merged caseId
-	processNameMap := make(map[string]string) // Map to track caseId to processName
-	clusterMap := make(map[string][]Event)    // Map to track the merged clusters
+	caseIdMap := make(map[string]string)        // Map to track caseId to the actual merged caseId
+	processNameMap := make(map[string]string)   // Map to track caseId to processName
+	processClusters := make(map[string][]Event) // Map to store clusters by processName
 
 	// Initialize caseIdMap and processNameMap
 	for _, cluster := range clusteredData {
@@ -34,23 +34,25 @@ func Tracer(clusteredData []map[string]interface{}) []map[string]interface{} {
 		}
 	}
 
-	// Rebuild clusters based on merged caseIds
+	// Rebuild clusters based on merged caseIds and processNames
 	for _, cluster := range clusteredData {
 		eventlog := cluster["eventlog"].([]Event)
 		for _, ev := range eventlog {
 			caseId := ev.CaseId
 			rootCaseId := findRootCaseId(caseIdMap, caseId)
 			ev.CaseId = rootCaseId
-			clusterMap[rootCaseId] = append(clusterMap[rootCaseId], ev)
+			combinedProcessName := processNameMap[rootCaseId]
+			processClusters[combinedProcessName] = append(processClusters[combinedProcessName], ev)
 		}
 	}
 
 	// Convert the map back to the required format
 	var result []map[string]interface{}
-	for rootCaseId, events := range clusterMap {
+	for processName, events := range processClusters {
 		cluster := map[string]interface{}{
-			"processName": processNameMap[rootCaseId],
+			"processName": processName,
 			"eventlog":    events,
+			"processes":   getUniqueProcesses(events),
 		}
 		result = append(result, cluster)
 	}
@@ -85,4 +87,18 @@ func contains(slice []string, item string) bool {
 		}
 	}
 	return false
+}
+
+func getUniqueProcesses(events []Event) []string {
+	processMap := make(map[string]struct{})
+	for _, ev := range events {
+		processMap[ev.ProcessName] = struct{}{}
+	}
+
+	var processes []string
+	for processName := range processMap {
+		processes = append(processes, processName)
+	}
+
+	return processes
 }

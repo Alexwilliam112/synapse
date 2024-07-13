@@ -16,14 +16,13 @@ type Event struct {
 	EventName   string `json:"eventName"`
 	Timestamp   string `json:"timestamp"`
 	Department  string `json:"department"`
-	User        string `json:"user"`
+	User        string `json:"name"`
 	CaseReff    string `json:"caseReff"`
 }
 
 func handleRPC(w http.ResponseWriter, r *http.Request) {
 	var events []Event
 	body, err := io.ReadAll(r.Body)
-	fmt.Println(body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -37,10 +36,10 @@ func handleRPC(w http.ResponseWriter, r *http.Request) {
 	// Call algorithms from clusterMiner.go and tracer.go
 	clusterResults := ClusterMiner(events)
 	traceResults := Tracer(clusterResults)
+	preprocessedResults := Preprocessor(traceResults)
 
 	response := map[string]interface{}{
-		"clusterResults": clusterResults,
-		"traceResults":   traceResults,
+		"preprocessedData": preprocessedResults,
 	}
 
 	jsonResponse, err := json.Marshal(response)
