@@ -17,7 +17,7 @@ type Event struct {
 	Timestamp   string `json:"timestamp"`
 	Department  string `json:"department"`
 	User        string `json:"user"`
-	CaseReff    string `json:"caseReff"` // New property
+	CaseReff    string `json:"caseReff"`
 }
 
 func handleRPC(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +36,7 @@ func handleRPC(w http.ResponseWriter, r *http.Request) {
 
 	// Call algorithms from clusterMiner.go and tracer.go
 	clusterResults := ClusterMiner(events)
-	traceResults := Tracer(events)
+	traceResults := Tracer(clusterResults)
 
 	response := map[string]interface{}{
 		"clusterResults": clusterResults,
