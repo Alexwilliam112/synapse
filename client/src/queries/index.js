@@ -10,3 +10,17 @@ export const UserLogin = gql`
     }
   }
 `;
+
+export const FetchApi = gql`
+query Query {
+    GetEndpoints {
+      data {
+        id
+        endpointUrl
+        description
+        status
+        apiKey
+        CompanyId
+      }
+    }
+}`
