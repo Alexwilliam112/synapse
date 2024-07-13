@@ -1,34 +1,26 @@
-import grpc from '@grpc/grpc-js';
-import protoLoader from '@grpc/proto-loader';
-import fs from 'fs/promises';
+const grpcClient = require("../config/grpcClient-pyMiners");
 
-const packageDefinition = protoLoader.loadSync('processMining.proto', {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true
-});
+class Controller {
+  static async startMining(req, res, next) {
+    try {
+      const jsonData = require('../data/json/PO_eventLog.json')
+      const requestPayload = { data: jsonData };
 
-const processMiningProto = grpc.loadPackageDefinition(packageDefinition).ProcessMining;
-
-const client = new processMiningProto.AlphaMiner('localhost:50051', grpc.credentials.createInsecure());
-
-// Read XES data from a file (or you can construct it directly in the code)
-async function sendXESData() {
-  try {
-    const xesData = await fs.readFile('../data/xes/eventlog.xes', 'utf8');
-
-    client.SendXES({ xes_data: xesData }, (error, response) => {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('Response from server:', response.message);
-      }
-    });
-  } catch (err) {
-    console.error('Error reading XES file:', err);
+      grpcClient.GetProcessModel(requestPayload, (error, response) => {
+        if (error) {
+          console.error(error);
+          throw error;
+        } else {
+          console.log(response);
+          //result
+          res.send(`Server response: ${response.message}`);
+        }
+      });
+    } catch (err) {
+      console.error("Error in startMining:", err);
+      next(err);
+    }
   }
 }
 
-sendXESData();
+module.exports = Controller;
