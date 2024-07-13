@@ -8,11 +8,9 @@ class Controller {
 
       grpcClient.GetProcessModel(requestPayload, (error, response) => {
         if (error) {
-          console.error(error);
-          throw error;
+          next( {name: 503, source: 'pyMiner'})
         } else {
           console.log(response);
-          //result
           res.send(`Server response: ${response.message}`);
         }
       });

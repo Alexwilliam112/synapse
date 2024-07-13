@@ -33,6 +33,22 @@ module.exports = {
       message = "A Server is down";
     }
 
+    if (err.name === 503) {
+      switch (err.source) {
+        case "pyMiner": {
+          status = 503;
+          message = "pyMiner Service Failed. Server Down.";
+          break;
+        }
+
+        default: {
+          status = 504;
+          message = "Timeout from destination server";
+          break;
+        }
+      }
+    }
+
     // console.log(err);
     res.status(status).json({
       message,
