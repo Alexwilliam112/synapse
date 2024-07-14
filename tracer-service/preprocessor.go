@@ -1,59 +1,45 @@
 package main
 
-// Preprocessor merges process clusters that contain fewer processes into clusters with more processes
-// only if the smaller cluster contains at least one process in common with the larger cluster.
+import (
+	"strings"
+)
+
+// Preprocessor merges process clusters that contain at least one process in common with the current cluster.
 func Preprocessor(traceResults []map[string]interface{}) []map[string]interface{} {
-	for {
-		overallMergeHappened := false
+	for i := 0; i < len(traceResults); i++ {
+		currentCluster := traceResults[i]
+		currentProcesses := convertToStringSlice(currentCluster["processes"])
 
-		for {
-			mergeHappened := false
-			processed := make([]bool, len(traceResults))
-			mergedClusters := make([]map[string]interface{}, 0)
-
-			for i := 0; i < len(traceResults); i++ {
-				if processed[i] {
-					continue
-				}
-
-				mainCluster := traceResults[i]
-				mainProcesses := convertToStringSlice(mainCluster["processes"])
-
-				for j := 0; j < len(traceResults); j++ {
-					if i == j || processed[j] {
-						continue
-					}
-
-					subCluster := traceResults[j]
-					subProcesses := convertToStringSlice(subCluster["processes"])
-
-					if len(subProcesses) < len(mainProcesses) && hasCommonProcess(mainProcesses, subProcesses) {
-						// Merge subCluster into mainCluster
-						mainCluster["eventlog"] = append(mainCluster["eventlog"].([]Event), subCluster["eventlog"].([]Event)...)
-						mainCluster["processes"] = unique(append(mainProcesses, subProcesses...))
-
-						processed[j] = true
-						mergeHappened = true
-					}
-				}
-
-				if !processed[i] {
-					mergedClusters = append(mergedClusters, mainCluster)
-					processed[i] = true
-				}
+		for j := 0; j < len(traceResults); j++ {
+			if i == j {
+				continue
 			}
 
-			if !mergeHappened {
-				if !overallMergeHappened {
-					return mergedClusters
-				}
-				break
-			}
+			otherCluster := traceResults[j]
+			otherProcesses := convertToStringSlice(otherCluster["processes"])
 
-			overallMergeHappened = true
-			traceResults = mergedClusters
+			if hasCommonProcess(currentProcesses, otherProcesses) {
+				// Merge otherCluster into currentCluster
+				currentCluster["eventlog"] = append(currentCluster["eventlog"].([]Event), otherCluster["eventlog"].([]Event)...)
+				currentCluster["processes"] = unique(append(currentProcesses, otherProcesses...))
+
+				// Merge process names
+				currentProcessNames := convertToStringSlice(currentCluster["processName"])
+				otherProcessNames := convertToStringSlice(otherCluster["processName"])
+				mergedProcessNames := unique(append(currentProcessNames, otherProcessNames...))
+				currentCluster["processName"] = strings.Join(mergedProcessNames, ", ")
+
+				// Remove the merged cluster
+				traceResults = append(traceResults[:j], traceResults[j+1:]...)
+				j-- // Adjust index after removal
+
+				// Update currentProcesses for the next iteration
+				currentProcesses = convertToStringSlice(currentCluster["processes"])
+			}
 		}
 	}
+
+	return traceResults
 }
 
 // hasCommonProcess checks if there is at least one common process between two slices of processes
