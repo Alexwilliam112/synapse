@@ -1,5 +1,6 @@
 // import useSWR from 'swr'
-import Navbar from '../../components/Navbar'
+import ServerProtectedComponents from "@/components/ServerProtectedComponent";
+import Navbar from "../../components/Navbar";
 // import Footer from './footer'
 
 export default function Layout({ children }) {
@@ -10,9 +11,11 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <Navbar />
-      <>{children}</>
-      {/* <Footer /> */}
+      <ServerProtectedComponents>
+        <Navbar />
+        <>{children}</>
+        {/* <Footer /> */}
+      </ServerProtectedComponents>
     </>
-  )
+  );
 }

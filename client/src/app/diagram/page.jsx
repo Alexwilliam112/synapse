@@ -24,31 +24,12 @@ const ApiManager = () => {
               <td>Initial data processing</td>
               <td>
                 <Link href="/detail">
-                  <button className="btn btn-primary">View</button>
-                </Link>
-              </td>
-            </tr>
-            {/* row 2 */}
-            <tr>
-              <th>2</th>
-              <td>Process B</td>
-              <td>2023-07-12</td>
-              <td>Data cleaning</td>
-              <td>
-                <Link href="/detail">
-                  <button className="btn btn-primary">View</button>
-                </Link>
-              </td>
-            </tr>
-            {/* row 3 */}
-            <tr>
-              <th>3</th>
-              <td>Process C</td>
-              <td>2023-07-13</td>
-              <td>Data transformation</td>
-              <td>
-                <Link href="/detail">
-                  <button className="btn btn-primary">View</button>
+                  <button
+                    className="bg-white border border-[#6E8672] transition-all duration-300 hover:bg-[#6E8672] hover:text-white h-8 px-4 py-1 rounded-md text-[#6E8672] font-bold"
+                    style={{ height: "2rem" }}
+                  >
+                    View
+                  </button>
                 </Link>
               </td>
             </tr>

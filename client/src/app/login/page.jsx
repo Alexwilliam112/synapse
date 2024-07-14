@@ -1,14 +1,23 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { UserLogin } from "../../queries/index";
+import TypewriterEffect from "../../components/Typewriter";
+import Cookies from "js-cookie";
+
+// import TypeIt from 'typeit';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const token = Cookies.get("token");
+  if (token) {
+    router.push("/dashboard");
+  }
 
   const [login, { loading, error }] = useMutation(UserLogin);
 
@@ -25,47 +34,58 @@ const Login = () => {
         },
       });
 
-      // Show the data to the user
-      // console.log(data.Login.access_token);
       const access_token = data.Login.access_token;
-      localStorage.setItem("token", access_token);
+      Cookies.set("token", access_token, { expires: 7 }); // Set cookie with expiration of 7 days
 
       router.push("/dashboard");
     } catch (error) {
       console.log(JSON.stringify(error));
-      // alert(error.networkError?.result?.errors[0]?.message || error.message);
     }
   };
-
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="flex justify-center h-screen">
+        <div className="bg-[#323232]">
+          {/* <p className="font-mono text-lg text-white">Synapse</p> */}
+        </div>
         <div
-          className="hidden bg-cover lg:block lg:w-2/3"
-          style={{
-            backgroundImage: 'url("/image.png")',
-          }}
+          className="hidden lg:p-8 lg:flex lg:h-auto lg:space-x-12 lg:justify-center lg:items-center lg:w-2/3 bg-[#323232] "
+          // style={{
+          //   backgroundImage: 'url("/image.png")',
+          // }}
         >
-          <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+          {/* <p>Synapse</p> */}
+          <div className="w-1/3 h-1/3">
+            <video
+              className="video"
+              src="/globe-white.webm"
+              autoPlay
+              loop
+              muted
+              playsInline
+            ></video>
+            {/* <p id="typewriter" className="text-xl font-semibold text-blue-500"></p> */}
+          </div>
+          <div className="min-w-96">
+            <TypewriterEffect />
+          </div>
+          {/* <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+            
             <div>
-              {/* <h2 className="text-2xl font-bold text-white sm:text-3xl">Synapse</h2> */}
-              {/* <p className="max-w-xl mt-3 text-gray-300">
+              <h2 className="text-2xl font-bold text-white sm:text-3xl">Synapse</h2>
+              <p className="max-w-xl mt-3 text-gray-300">
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. In autem ipsa, nulla laboriosam dolores,
                 repellendus perferendis libero suscipit nam temporibus molestiae
-              </p> */}
+              </p>
             </div>
-          </div>
+          </div> */}
         </div>
 
-        <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+        <div className="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6 ">
           <div className="flex-1">
             <div className="text-center">
               <div className="flex justify-center mx-auto">
-                <img
-                  className="w-2/12"
-                  src="/logo.png"
-                  alt="Logo"
-                />
+                <img className="w-2/12" src="/logo.png" alt="Logo" />
               </div>
               <h2 className="text-2xl font-light text-gray-500 dark:text-gray-300 sm:text-3xl">
                 Synapse
