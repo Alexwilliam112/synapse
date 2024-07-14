@@ -7,7 +7,7 @@ router.use(verify)
 
 router.get("/api", Api.getAll)
 router.get("/api/:id", Api.getById)
-router.post("/api/:id", Api.create)
+router.post("/api", Api.create)
 router.put("/api/:id", Api.update)
 router.delete("/api/:id", Api.delete)
 
