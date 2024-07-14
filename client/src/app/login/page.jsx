@@ -53,7 +53,7 @@ const Login = () => {
         // }}
         >
           {/* <p>Synapse</p> */}
-          <div className="w-1/3 h-1/3">
+          <div className="w-2/3 h-auto ">
             <video
               className="video"
               src="/globe-white.webm"
@@ -64,9 +64,9 @@ const Login = () => {
             ></video>
             {/* <p id="typewriter" className="text-xl font-semibold text-blue-500"></p> */}
           </div>
-          <div className="min-w-96">
+          <div className="min-w-96 border-2 border-white p-5">
+            <img src="logobw.png" alt="" className="w-auto h-16 mb-4 object-cover" />
             <TypewriterEffect />
-
           </div>
           {/* <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
             
@@ -90,12 +90,10 @@ const Login = () => {
                   alt="Logo"
                 />
               </div>
-              <h2 className="text-2xl font-light text-gray-500 dark:text-gray-300 sm:text-3xl">
+              <h2 className="text-2xl mt-4 font-light text-gray-500 dark:text-gray-300 sm:text-3xl">
                 Synapse
               </h2>
-              <p className="mt-3 text-gray-500 dark:text-gray-300">
-                Sign in to access your account
-              </p>
+
             </div>
 
             <div className="mt-8">
@@ -126,12 +124,12 @@ const Login = () => {
                     >
                       Password
                     </label>
-                    <a
+                    {/* <a
                       href="#"
                       className="text-sm text-gray-400 focus:text-emerald-500 hover:text-[#6E8672] hover:underline"
                     >
                       Forgot password?
-                    </a>
+                    </a> */}
                   </div>
 
                   <input
@@ -154,8 +152,11 @@ const Login = () => {
                   </button>
                 </div>
               </form>
-
               <p className="mt-6 text-sm text-center text-gray-400">
+                Sign in to access your account
+              </p>
+
+              {/* <p className="mt-6 text-sm text-center text-gray-400">
                 Don't have an account yet?{" "}
                 <Link
                   href={"/register"}
@@ -164,7 +165,7 @@ const Login = () => {
                   Sign up
                 </Link>
                 .
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

@@ -31,7 +31,13 @@ const Landing = () => {
               <div className="lg:max-w-lg">
                 <h1 className="text-6xl font-light text-white lg:text-7xl">Monitor Your<br /> Company <span className="text-[#6E8672]">Differently</span></h1>
                 <p className="mt-6 text-xl text-gray-400 dark:text-gray-400">No strings are left loose. Synapse guarantees comprehensive monitoring of every process within your company, ensuring seamless operations and optimal performance</p>
-                <Link href={"/login"} ><button className=" items-center text-center w-full px-5 py-2 mt-6 text-lg tracking-wider text-white transition-colors duration-300 transform border-2 border-[#6E8672] rounded-lg lg:w-1/3 hover:bg-[#8DB093] hover:border-[#8DB093] focus:outline-none focus:bg-[#C2E4C8] space-x-1"><p>Start Now</p></button></Link>
+
+                <div className="mt-6  w-full">
+                  <Link href={"/login"}><button className=" items-center text-center w-full px-5 py-2 text-lg tracking-wider text-white transition-colors duration-300 transform border-2 border-[#6E8672] rounded-lg lg:w-1/3 hover:bg-[#8DB093] hover:border-[#8DB093] focus:outline-none focus:bg-[#C2E4C8] space-x-1"><p>Start Now</p></button></Link>
+                  {/* <div className="w-auto text-center">
+                    <Link href={"/about"}><button className="text-white underline px-5 py-2 text-center text-lg hover:text-[#8DB093]">About Us</button></Link>
+                  </div> */}
+                </div>
               </div>
             </div>
 
@@ -61,20 +67,20 @@ const Landing = () => {
               <div className="lg:max-w-lg">
                 {/* <div className="lg:flex"> */}
                 <LightbulbOff className="w-12 h-12 object-cover text-[#6E8672]" />
-                <h1 className="text-6xl font-light lg:text-7xl"> Unlike Other Service</h1>
+                <h1 className="text-4xl font-light lg:text-6xl"> <span className="text-[#6E8672]">Unlike</span> Any Other Service</h1>
                 {/* </div> */}
-                <p className="mt-6 text-xl text-gray-600 dark:text-gray-400">We believe productivity must be monitored to keep business processes intact. We believe you as a business owner has rights to keep control of every movement of your company</p>
+                <p className="mt-6 text-xl text-gray-600 dark:text-gray-400">We believe productivity must be monitored to keep business processes intact. We believe that you, as a business owner, has rights to keep control of every movement of your company</p>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="min-h-screen flex flex-col py-8 pb-0 mb-0 items-center justify-center bg-[#F4F3F7]">
-        <div className="container mb-0 pb-0 bg-[#FFFFFF] md:flex xl:flex w-auto xl:w-4/5 lg:w-96 rounded-t-lg">
+        <div className="container mb-0 pb-0 bg-[#FFFFFF] md:flex xl:flex w-auto xl:w-4/5 lg:w-96 rounded-t-lg shadow-xl">
           <div className="px-8 py-8 mt-4 lg:mt-0 lg:py-32">
             <h1 className="text-4xl font-light lg:text-5xl mb-16">Get Through Our <span className="text-[#6E8672]">Processess</span></h1>
           </div>
-          <div className="border-l-8 lg:border-l-2 border-emerald-700 p-14 lg:w-1/3">
+          <div className="border-l-8 lg:border-l-2 lg:border-opacity-50 border-emerald-700 p-14 lg:w-1/3">
             <div>
               <video
                 className="video"
@@ -93,7 +99,7 @@ const Landing = () => {
               </div>
             </div>
           </div>
-          <div className="border-l-8 lg:border-l-2 border-emerald-700 p-14 lg:w-1/3">
+          <div className="border-l-8 lg:border-l-2 lg:border-opacity-50 border-emerald-700 p-14 lg:w-1/3">
             <div>
               <video
                 className="video"
@@ -112,7 +118,7 @@ const Landing = () => {
               </div>
             </div>
           </div>
-          <div className="border-l-8 lg:border-l-2 border-emerald-700 p-14 lg:w-1/3">
+          <div className="border-l-8 lg:border-l-2 lg:border-opacity-50 border-emerald-700 p-14 lg:w-1/3">
             <div>
               <video
                 className="video"
