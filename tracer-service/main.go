@@ -33,10 +33,14 @@ func handleRPC(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Call algorithms from clusterMiner.go and tracer.go
 	clusterResults := ClusterMiner(events)
 	traceResults := Tracer(clusterResults)
-	preprocessedResults := Preprocessor(traceResults)
+
+	//failsafe for clustering
+	preprocessedResults := traceResults
+	for i := 0; i < 20; i++ {
+		preprocessedResults = Preprocessor(preprocessedResults)
+	}
 
 	response := map[string]interface{}{
 		"preprocessedData": preprocessedResults,

@@ -57,9 +57,6 @@ func Tracer(clusteredData []map[string]interface{}) []map[string]interface{} {
 		result = append(result, cluster)
 	}
 
-	// Log the merged clusters
-	logClusterResults(result)
-
 	return result
 }
 

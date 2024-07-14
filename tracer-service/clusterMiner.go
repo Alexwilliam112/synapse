@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"sync"
 )
 
@@ -52,19 +50,5 @@ func ClusterMiner(events []Event) []map[string]interface{} {
 		result = append(result, cluster)
 	}
 
-	// Log the clustered results
-	logClusterResults(result)
-
 	return result
-}
-
-func logClusterResults(results []map[string]interface{}) {
-	for _, cluster := range results {
-		jsonCluster, err := json.MarshalIndent(cluster, "", "  ")
-		if err != nil {
-			fmt.Println("Error marshalling cluster results:", err)
-			continue
-		}
-		fmt.Println(string(jsonCluster))
-	}
 }
