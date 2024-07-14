@@ -77,21 +77,18 @@ class Api {
         try {
             const { id } = req.params
             const { endpointUrl, apiKey, description } = req.body;
+            console.log(req.params);
             const updatedData = await prisma.endpoint.update({
-                where: {
-                    id
-                },
-                data: {
-                    endpointUrl,
-                    apiKey,
-                    description
-                }
+                where: { id: Number(id) },
+                data: { endpointUrl, apiKey, description }
             });
+
             res.status(201).json({
                 statusCode: 200,
                 message: "Success Create Api"
             });
         } catch (error) {
+            console.log(error);
             next({
                 statusCode: 400
             });
