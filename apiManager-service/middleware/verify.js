@@ -2,7 +2,6 @@ const { verifyToken } = require("../utils/jwt")
 
 const verify = async (req, res, next) => {
     try {
-        console.log(req.headers);
         let { authorization } = req.headers
         if (!authorization) throw { name: "Unauthorized" }
         const access_token = authorization.split(' ')[1]
