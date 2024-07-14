@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import processMining_pb2 as processMining__pb2
+import temporalAnalysis_pb2 as temporalAnalysis__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__
@@ -20,7 +20,7 @@ except ImportError:
 if _version_not_supported:
     warnings.warn(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in processMining_pb2_grpc.py depends on'
+        + f' but the generated code in temporalAnalysis_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -30,7 +30,7 @@ if _version_not_supported:
     )
 
 
-class AlphaMinerStub(object):
+class TemporalMinerStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -39,43 +39,43 @@ class AlphaMinerStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetProcessModel = channel.unary_unary(
-                '/ProcessMining.AlphaMiner/GetProcessModel',
-                request_serializer=processMining__pb2.JsonData.SerializeToString,
-                response_deserializer=processMining__pb2.JsonModel.FromString,
+        self.GetTaskHistory = channel.unary_unary(
+                '/TemporalAnalysis.TemporalMiner/GetTaskHistory',
+                request_serializer=temporalAnalysis__pb2.JsonEventlog.SerializeToString,
+                response_deserializer=temporalAnalysis__pb2.TaskHistory.FromString,
                 _registered_method=True)
 
 
-class AlphaMinerServicer(object):
+class TemporalMinerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetProcessModel(self, request, context):
+    def GetTaskHistory(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_AlphaMinerServicer_to_server(servicer, server):
+def add_TemporalMinerServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetProcessModel': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetProcessModel,
-                    request_deserializer=processMining__pb2.JsonData.FromString,
-                    response_serializer=processMining__pb2.JsonModel.SerializeToString,
+            'GetTaskHistory': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTaskHistory,
+                    request_deserializer=temporalAnalysis__pb2.JsonEventlog.FromString,
+                    response_serializer=temporalAnalysis__pb2.TaskHistory.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'ProcessMining.AlphaMiner', rpc_method_handlers)
+            'TemporalAnalysis.TemporalMiner', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('ProcessMining.AlphaMiner', rpc_method_handlers)
+    server.add_registered_method_handlers('TemporalAnalysis.TemporalMiner', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class AlphaMiner(object):
+class TemporalMiner(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetProcessModel(request,
+    def GetTaskHistory(request,
             target,
             options=(),
             channel_credentials=None,
@@ -88,9 +88,9 @@ class AlphaMiner(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/ProcessMining.AlphaMiner/GetProcessModel',
-            processMining__pb2.JsonData.SerializeToString,
-            processMining__pb2.JsonModel.FromString,
+            '/TemporalAnalysis.TemporalMiner/GetTaskHistory',
+            temporalAnalysis__pb2.JsonEventlog.SerializeToString,
+            temporalAnalysis__pb2.TaskHistory.FromString,
             options,
             channel_credentials,
             insecure,

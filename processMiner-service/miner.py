@@ -95,7 +95,6 @@ def main(eventlog):
         net, initial_marking, final_marking = alpha_miner.apply(log)
         
         formatted_net = format_petri_net(net, place_frequencies, place_average_times)
-        print(formatted_net)
         return formatted_net
     except Exception as e:
         print(f"Error in main function: {e}")

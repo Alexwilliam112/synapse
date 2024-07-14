@@ -1,4 +1,4 @@
-// source: processMining.proto
+// source: temporalAnalysis.proto
 /**
  * @fileoverview
  * @enhanceable
@@ -11,7 +11,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-goog.provide('proto.ProcessMining.JsonEventLog');
+goog.provide('proto.TemporalAnalysis.EventLog');
 
 goog.require('jspb.BinaryReader');
 goog.require('jspb.BinaryWriter');
@@ -27,16 +27,16 @@ goog.require('jspb.Message');
  * @extends {jspb.Message}
  * @constructor
  */
-proto.ProcessMining.JsonEventLog = function(opt_data) {
+proto.TemporalAnalysis.EventLog = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.ProcessMining.JsonEventLog, jspb.Message);
+goog.inherits(proto.TemporalAnalysis.EventLog, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
   /**
    * @public
    * @override
    */
-  proto.ProcessMining.JsonEventLog.displayName = 'proto.ProcessMining.JsonEventLog';
+  proto.TemporalAnalysis.EventLog.displayName = 'proto.TemporalAnalysis.EventLog';
 }
 
 
@@ -54,8 +54,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.ProcessMining.JsonEventLog.prototype.toObject = function(opt_includeInstance) {
-  return proto.ProcessMining.JsonEventLog.toObject(opt_includeInstance, this);
+proto.TemporalAnalysis.EventLog.prototype.toObject = function(opt_includeInstance) {
+  return proto.TemporalAnalysis.EventLog.toObject(opt_includeInstance, this);
 };
 
 
@@ -64,18 +64,19 @@ proto.ProcessMining.JsonEventLog.prototype.toObject = function(opt_includeInstan
  * @param {boolean|undefined} includeInstance Deprecated. Whether to include
  *     the JSPB instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.ProcessMining.JsonEventLog} msg The msg instance to transform.
+ * @param {!proto.TemporalAnalysis.EventLog} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.ProcessMining.JsonEventLog.toObject = function(includeInstance, msg) {
+proto.TemporalAnalysis.EventLog.toObject = function(includeInstance, msg) {
   var f, obj = {
     processname: jspb.Message.getFieldWithDefault(msg, 1, ""),
     caseid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     timestamp: jspb.Message.getFieldWithDefault(msg, 3, ""),
     eventname: jspb.Message.getFieldWithDefault(msg, 4, ""),
     name: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    department: jspb.Message.getFieldWithDefault(msg, 6, "")
+    department: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    casereff: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -89,23 +90,23 @@ proto.ProcessMining.JsonEventLog.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.ProcessMining.JsonEventLog}
+ * @return {!proto.TemporalAnalysis.EventLog}
  */
-proto.ProcessMining.JsonEventLog.deserializeBinary = function(bytes) {
+proto.TemporalAnalysis.EventLog.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.ProcessMining.JsonEventLog;
-  return proto.ProcessMining.JsonEventLog.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.TemporalAnalysis.EventLog;
+  return proto.TemporalAnalysis.EventLog.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.ProcessMining.JsonEventLog} msg The message object to deserialize into.
+ * @param {!proto.TemporalAnalysis.EventLog} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.ProcessMining.JsonEventLog}
+ * @return {!proto.TemporalAnalysis.EventLog}
  */
-proto.ProcessMining.JsonEventLog.deserializeBinaryFromReader = function(msg, reader) {
+proto.TemporalAnalysis.EventLog.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -136,6 +137,10 @@ proto.ProcessMining.JsonEventLog.deserializeBinaryFromReader = function(msg, rea
       var value = /** @type {string} */ (reader.readString());
       msg.setDepartment(value);
       break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCasereff(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -149,9 +154,9 @@ proto.ProcessMining.JsonEventLog.deserializeBinaryFromReader = function(msg, rea
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.ProcessMining.JsonEventLog.prototype.serializeBinary = function() {
+proto.TemporalAnalysis.EventLog.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.ProcessMining.JsonEventLog.serializeBinaryToWriter(this, writer);
+  proto.TemporalAnalysis.EventLog.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -159,11 +164,11 @@ proto.ProcessMining.JsonEventLog.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.ProcessMining.JsonEventLog} message
+ * @param {!proto.TemporalAnalysis.EventLog} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.ProcessMining.JsonEventLog.serializeBinaryToWriter = function(message, writer) {
+proto.TemporalAnalysis.EventLog.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getProcessname();
   if (f.length > 0) {
@@ -207,6 +212,13 @@ proto.ProcessMining.JsonEventLog.serializeBinaryToWriter = function(message, wri
       f
     );
   }
+  f = message.getCasereff();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
 };
 
 
@@ -214,16 +226,16 @@ proto.ProcessMining.JsonEventLog.serializeBinaryToWriter = function(message, wri
  * optional string processName = 1;
  * @return {string}
  */
-proto.ProcessMining.JsonEventLog.prototype.getProcessname = function() {
+proto.TemporalAnalysis.EventLog.prototype.getProcessname = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.ProcessMining.JsonEventLog} returns this
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
  */
-proto.ProcessMining.JsonEventLog.prototype.setProcessname = function(value) {
+proto.TemporalAnalysis.EventLog.prototype.setProcessname = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -232,16 +244,16 @@ proto.ProcessMining.JsonEventLog.prototype.setProcessname = function(value) {
  * optional string caseId = 2;
  * @return {string}
  */
-proto.ProcessMining.JsonEventLog.prototype.getCaseid = function() {
+proto.TemporalAnalysis.EventLog.prototype.getCaseid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.ProcessMining.JsonEventLog} returns this
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
  */
-proto.ProcessMining.JsonEventLog.prototype.setCaseid = function(value) {
+proto.TemporalAnalysis.EventLog.prototype.setCaseid = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
 };
 
@@ -250,16 +262,16 @@ proto.ProcessMining.JsonEventLog.prototype.setCaseid = function(value) {
  * optional string timestamp = 3;
  * @return {string}
  */
-proto.ProcessMining.JsonEventLog.prototype.getTimestamp = function() {
+proto.TemporalAnalysis.EventLog.prototype.getTimestamp = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.ProcessMining.JsonEventLog} returns this
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
  */
-proto.ProcessMining.JsonEventLog.prototype.setTimestamp = function(value) {
+proto.TemporalAnalysis.EventLog.prototype.setTimestamp = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
 };
 
@@ -268,16 +280,16 @@ proto.ProcessMining.JsonEventLog.prototype.setTimestamp = function(value) {
  * optional string eventName = 4;
  * @return {string}
  */
-proto.ProcessMining.JsonEventLog.prototype.getEventname = function() {
+proto.TemporalAnalysis.EventLog.prototype.getEventname = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.ProcessMining.JsonEventLog} returns this
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
  */
-proto.ProcessMining.JsonEventLog.prototype.setEventname = function(value) {
+proto.TemporalAnalysis.EventLog.prototype.setEventname = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
 };
 
@@ -286,16 +298,16 @@ proto.ProcessMining.JsonEventLog.prototype.setEventname = function(value) {
  * optional string name = 5;
  * @return {string}
  */
-proto.ProcessMining.JsonEventLog.prototype.getName = function() {
+proto.TemporalAnalysis.EventLog.prototype.getName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.ProcessMining.JsonEventLog} returns this
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
  */
-proto.ProcessMining.JsonEventLog.prototype.setName = function(value) {
+proto.TemporalAnalysis.EventLog.prototype.setName = function(value) {
   return jspb.Message.setProto3StringField(this, 5, value);
 };
 
@@ -304,17 +316,35 @@ proto.ProcessMining.JsonEventLog.prototype.setName = function(value) {
  * optional string department = 6;
  * @return {string}
  */
-proto.ProcessMining.JsonEventLog.prototype.getDepartment = function() {
+proto.TemporalAnalysis.EventLog.prototype.getDepartment = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
 /**
  * @param {string} value
- * @return {!proto.ProcessMining.JsonEventLog} returns this
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
  */
-proto.ProcessMining.JsonEventLog.prototype.setDepartment = function(value) {
+proto.TemporalAnalysis.EventLog.prototype.setDepartment = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string caseReff = 7;
+ * @return {string}
+ */
+proto.TemporalAnalysis.EventLog.prototype.getCasereff = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.TemporalAnalysis.EventLog} returns this
+ */
+proto.TemporalAnalysis.EventLog.prototype.setCasereff = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
