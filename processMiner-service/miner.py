@@ -61,7 +61,7 @@ def format_petri_net(net, place_frequencies, place_average_times):
     arcs = list(net.arcs)
 
     # Extract event names from places and add 'T:' prefix, remove 'start' and 'end'
-    formatted_places = [{"key": f"T:{place.name.split("'")[1] if "'" in place.name else place.name}", 
+    formatted_places = [{"key": f"{place.name.split("'")[1] if "'" in place.name else place.name}", 
                          "frequency": place_frequencies.get(place.name.split("'")[1] if "'" in place.name else place.name, 0),
                          "time": round(place_average_times.get(place.name.split("'")[1] if "'" in place.name else place.name, 0), 2)} 
                         for place in places if place.name not in ['start', 'end']]
@@ -80,6 +80,27 @@ def format_petri_net(net, place_frequencies, place_average_times):
     }
     return formatted_output
 
+def extract_final_transitions(net, final_marking):
+    final_transitions = set()
+    for arc in net.arcs:
+        if arc.target in final_marking:
+            if arc.source.label:
+                final_transitions.add(arc.source.label)
+    return final_transitions
+
+def calculate_fitness(log, final_transitions):
+    total_cases = len(log)
+    completed_cases = 0
+
+    for trace in log:
+        if len(trace) > 0:
+            last_event = trace[-1]["concept:name"]
+            if last_event in final_transitions:
+                completed_cases += 1
+                
+    fitness = (completed_cases / total_cases) * 100 if total_cases > 0 else 0
+    return fitness
+
 def main(eventlog):
     try:
         xes_data = json_to_xes(eventlog)
@@ -89,12 +110,16 @@ def main(eventlog):
 
         log = xes_importer.apply(tmpfile_path)
         os.remove(tmpfile_path)
-        # print(f"Parsed log: {log}")
         place_frequencies, place_times = get_place_frequencies_and_times(log)
         place_average_times = calculate_average_times(place_frequencies, place_times)
         net, initial_marking, final_marking = alpha_miner.apply(log)
         
+        final_transitions = extract_final_transitions(net, final_marking)
+        
+        fitness = calculate_fitness(log, final_transitions)
         formatted_net = format_petri_net(net, place_frequencies, place_average_times)
+        formatted_net["fitness"] = fitness
+
         return formatted_net
     except Exception as e:
         print(f"Error in main function: {e}")

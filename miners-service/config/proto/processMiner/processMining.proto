@@ -24,6 +24,7 @@ message JsonModel {
   repeated Transition transitions = 2;
   repeated Arc arcs = 3;
   string processName = 4;
+  float fitness = 5;
 }
 
 message Place {

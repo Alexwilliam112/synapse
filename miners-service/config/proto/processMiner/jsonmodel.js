@@ -86,7 +86,8 @@ proto.ProcessMining.JsonModel.toObject = function(includeInstance, msg) {
     proto.ProcessMining.Transition.toObject, includeInstance),
     arcsList: jspb.Message.toObjectList(msg.getArcsList(),
     proto.ProcessMining.Arc.toObject, includeInstance),
-    processname: jspb.Message.getFieldWithDefault(msg, 4, "")
+    processname: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    fitness: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0)
   };
 
   if (includeInstance) {
@@ -141,6 +142,10 @@ proto.ProcessMining.JsonModel.deserializeBinaryFromReader = function(msg, reader
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setProcessname(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readFloat());
+      msg.setFitness(value);
       break;
     default:
       reader.skipField();
@@ -199,6 +204,13 @@ proto.ProcessMining.JsonModel.serializeBinaryToWriter = function(message, writer
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getFitness();
+  if (f !== 0.0) {
+    writer.writeFloat(
+      5,
       f
     );
   }
@@ -334,6 +346,24 @@ proto.ProcessMining.JsonModel.prototype.getProcessname = function() {
  */
 proto.ProcessMining.JsonModel.prototype.setProcessname = function(value) {
   return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional float fitness = 5;
+ * @return {number}
+ */
+proto.ProcessMining.JsonModel.prototype.getFitness = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 5, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.ProcessMining.JsonModel} returns this
+ */
+proto.ProcessMining.JsonModel.prototype.setFitness = function(value) {
+  return jspb.Message.setProto3FloatField(this, 5, value);
 };
 
 

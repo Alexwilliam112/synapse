@@ -17,14 +17,6 @@
    },
    {
     "processName": "PURCHASE_ORDER",
-    "caseId": "POSMG12400047",
-    "timestamp": "2024-04-01",
-    "eventName": "PURCHASE ORDER APPROVE",
-    "name": "John Doe",
-    "department": "System & Procedure"
-   },
-   {
-    "processName": "PURCHASE_ORDER",
     "caseId": "POSMG12400048",
     "timestamp": "2024-03-26",
     "eventName": "PURCHASE ORDER CREATE",
@@ -441,14 +433,6 @@
    },
    {
     "processName": "EMPLOYEE_REQUISITIONS",
-    "caseId": "NR12191995",
-    "timestamp": "2024-01-26",
-    "eventName": "ER APPROVE",
-    "name": "Jane Doe",
-    "department": "Tax"
-   },
-   {
-    "processName": "EMPLOYEE_REQUISITIONS",
     "caseId": "NR12191996",
     "timestamp": "2024-01-26",
     "eventName": "ER CREATE",
@@ -469,14 +453,6 @@
     "timestamp": "2024-01-26",
     "eventName": "ER CREATE",
     "name": "Jane Doe",
-    "department": "Marketing Emporio Armani 7"
-   },
-   {
-    "processName": "EMPLOYEE_REQUISITIONS",
-    "caseId": "NR12191997",
-    "timestamp": "2024-01-26",
-    "eventName": "ER APPROVE",
-    "name": " Lily Ross",
     "department": "Marketing Emporio Armani 7"
    },
    {
