@@ -2,11 +2,11 @@ const { verifyToken } = require('../utils/jwt');
 
 const authentication = async (req, res, next) => {
   try {
-    const bodyToken = req.body.body;
+    const bodyToken = req.body.userPayload;
 
-    const { Authorization } = req.body.headers
+    const { authorization } = req.headers
     
-    const authToken = Authorization.split(" ")[1]
+    const authToken = authorization.split(" ")[1]
 
     if (!bodyToken || !authToken) throw { name: "Invalid" };
 

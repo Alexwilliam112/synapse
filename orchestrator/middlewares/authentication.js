@@ -43,10 +43,10 @@ module.exports = {
       email: userEmail
     }, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userPayload}`,
       },
     });
-    console.log("response", `>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<`);
 
     errorHandler(response)
 
