@@ -35,9 +35,21 @@ module.exports = {
 
     if (err.name === 503) {
       switch (err.source) {
-        case "pyMiner": {
+        case "processMiner": {
           status = 503;
-          message = "pyMiner Service Failed. Server Down.";
+          message = "processMiner-Service Failed. Server Down.";
+          break;
+        }
+        
+        case "temporalMiner-service": {
+          status = 503;
+          message = "temporalAnalysis-Service Failed. Server Down.";
+          break;
+        }
+
+        case "tracer-service": {
+          status = 503;
+          message = "GO Tracer-Service Failed. Server Down.";
           break;
         }
 
@@ -49,7 +61,7 @@ module.exports = {
       }
     }
 
-    // console.log(err);
+    console.log(err);
     res.status(status).json({
       message,
       // err

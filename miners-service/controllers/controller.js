@@ -1,4 +1,5 @@
-const grpcClient = require("../config/proto/pyMiner/grpcClient-pyMiners");
+const processMinerClient = require("../config/proto/processMiner/grpcClient-processMiner");
+const temporalAnalysisClient = require("../config/proto/temporalAnalysis/grpcClient-temporalAnalysis");
 const axios = require("axios");
 const Eventlog = require("../models/eventlog");
 
@@ -6,20 +7,42 @@ async function requestProcessMining(eventlogData) {
   return new Promise((resolve, reject) => {
     const requestPayload = { eventlog: eventlogData };
 
-    grpcClient.GetProcessModel(requestPayload, (error, response) => {
+    processMinerClient.GetProcessModel(requestPayload, (error, response) => {
       if (error) {
-        reject({ name: 503, source: "pyMiner" });
+        reject({ name: 503, source: "processMiner-service" });
       } else {
-        console.log('Successful Response from pyMiner');
+        console.log("Successful Response from processMiner-service");
         resolve(response);
       }
     });
   });
 }
 
+async function requestTemporalAnalysis(eventlogData) {
+  return new Promise((resolve, reject) => {
+    const requestPayload = {
+      eventlogs: eventlogData,
+      CompanyId: 1,
+    };
+
+    temporalAnalysisClient.GetTaskHistory(requestPayload, (error, response) => {
+      if (error) {
+        reject({ name: 503, source: "temporalMiner-service" });
+      } else {
+        console.log("Successful Response from temporalMiner-service");
+        resolve(response.history);
+      }
+    });
+  });
+}
+
 async function requestCaseTracing(data) {
-  const response = await axios.post("http://localhost:50052/rpc", data);
-  return response;
+  try {
+    const response = await axios.post("http://localhost:50052/rpc", data);
+    return response;
+  } catch (error) {
+    throw { name: 503, source: "tracer-service" };
+  }
 }
 
 class Controller {
@@ -33,11 +56,14 @@ class Controller {
         return new Eventlog(el.eventlog, el.processes);
       });
 
+      const tasks = await requestTemporalAnalysis(jsonData);
       const models = await requestProcessMining(eventlogs);
 
-      res.json(models);
+      res.status(200).json({
+        tasks,
+        models
+      })
     } catch (err) {
-      console.error("Error in startMining:", err);
       next(err);
     }
   }
