@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package TemporalAnalysis;
+
+service TemporalMiner {
+  rpc GetTaskHistory (JsonEventlog) returns (TaskHistory);
+}
+
+message JsonEventlog {
+  int32 CompanyId = 1;
+  repeated EventLog eventlogs = 2;
+}
+
+message EventLog {
+  string processName = 1;
+  string caseId = 2;
+  string timestamp = 3;
+  string eventName = 4;
+  string name = 5;
+  string department = 6;
+  string caseReff = 7;
+}
+
+message TaskHistory {
+  repeated JsonTaskHistory history = 1;
+}
+
+message JsonTaskHistory {
+  string processName = 1;
+  string caseId = 2;
+  string timestamp = 3;
+  string eventName = 4;
+  string name = 5;
+  string department = 6;
+  int32 CompanyId = 7;
+  float time = 8;
+}

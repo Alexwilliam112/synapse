@@ -39,7 +39,6 @@ func handleRPC(w http.ResponseWriter, r *http.Request) {
 	//failsafe for clustering
 	preprocessedResults := traceResults
 	for i := 0; i < 20; i++ {
-		fmt.Print("PREPROCESSING--", i)
 		preprocessedResults = Preprocessor(preprocessedResults)
 	}
 

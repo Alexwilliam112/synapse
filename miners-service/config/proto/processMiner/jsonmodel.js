@@ -85,7 +85,8 @@ proto.ProcessMining.JsonModel.toObject = function(includeInstance, msg) {
     transitionsList: jspb.Message.toObjectList(msg.getTransitionsList(),
     proto.ProcessMining.Transition.toObject, includeInstance),
     arcsList: jspb.Message.toObjectList(msg.getArcsList(),
-    proto.ProcessMining.Arc.toObject, includeInstance)
+    proto.ProcessMining.Arc.toObject, includeInstance),
+    processname: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -136,6 +137,10 @@ proto.ProcessMining.JsonModel.deserializeBinaryFromReader = function(msg, reader
       var value = new proto.ProcessMining.Arc;
       reader.readMessage(value,proto.ProcessMining.Arc.deserializeBinaryFromReader);
       msg.addArcs(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setProcessname(value);
       break;
     default:
       reader.skipField();
@@ -188,6 +193,13 @@ proto.ProcessMining.JsonModel.serializeBinaryToWriter = function(message, writer
       3,
       f,
       proto.ProcessMining.Arc.serializeBinaryToWriter
+    );
+  }
+  f = message.getProcessname();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
     );
   }
 };
@@ -304,6 +316,24 @@ proto.ProcessMining.JsonModel.prototype.addArcs = function(opt_value, opt_index)
  */
 proto.ProcessMining.JsonModel.prototype.clearArcsList = function() {
   return this.setArcsList([]);
+};
+
+
+/**
+ * optional string processName = 4;
+ * @return {string}
+ */
+proto.ProcessMining.JsonModel.prototype.getProcessname = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.ProcessMining.JsonModel} returns this
+ */
+proto.ProcessMining.JsonModel.prototype.setProcessname = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 

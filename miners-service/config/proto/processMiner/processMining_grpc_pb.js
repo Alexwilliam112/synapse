@@ -15,15 +15,15 @@ function deserialize_ProcessMining_JsonData(buffer_arg) {
   return processMining_pb.JsonData.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_ProcessMining_JsonModel(arg) {
-  if (!(arg instanceof processMining_pb.JsonModel)) {
-    throw new Error('Expected argument of type ProcessMining.JsonModel');
+function serialize_ProcessMining_JsonModelList(arg) {
+  if (!(arg instanceof processMining_pb.JsonModelList)) {
+    throw new Error('Expected argument of type ProcessMining.JsonModelList');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_ProcessMining_JsonModel(buffer_arg) {
-  return processMining_pb.JsonModel.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_ProcessMining_JsonModelList(buffer_arg) {
+  return processMining_pb.JsonModelList.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 
@@ -33,11 +33,11 @@ var AlphaMinerService = exports.AlphaMinerService = {
     requestStream: false,
     responseStream: false,
     requestType: processMining_pb.JsonData,
-    responseType: processMining_pb.JsonModel,
+    responseType: processMining_pb.JsonModelList,
     requestSerialize: serialize_ProcessMining_JsonData,
     requestDeserialize: deserialize_ProcessMining_JsonData,
-    responseSerialize: serialize_ProcessMining_JsonModel,
-    responseDeserialize: deserialize_ProcessMining_JsonModel,
+    responseSerialize: serialize_ProcessMining_JsonModelList,
+    responseDeserialize: deserialize_ProcessMining_JsonModelList,
   },
 };
 
