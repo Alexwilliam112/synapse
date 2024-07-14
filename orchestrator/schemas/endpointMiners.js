@@ -42,9 +42,14 @@ module.exports = {
       apiKey: String!
     }
 
+    input DeleteEndpointInput {
+      id: Int!
+    }
+
     type Mutation{
       CreateEndpoint(input: CreateEndpointInput): CreateRes
       UpdateEndpoint(input: UpdateEndpointInput): CreateRes
+      DeleteEndpoint(input: DeleteEndpointInput): CreateRes
       }
   `,
 
@@ -107,6 +112,22 @@ module.exports = {
               'Authorization': `Bearer ${token}`
             }
           })
+        errorHandler(res)
+
+        return {
+          statusCode: 200,
+        }
+      },
+
+      DeleteEndpoint: async (_, args, context) => {
+        const token = await context.auth()
+        const { id } = args.input
+        const res = await axios.delete(`http://localhost:3002/api/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
         errorHandler(res)
 
         return {
