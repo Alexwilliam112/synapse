@@ -12,7 +12,7 @@ const Landing = () => {
       <div data-theme="dark" className="navbar bg-base-100 fixed z-10">
         <div className="flex-1">
           <a className="btn btn-ghost text-xl">
-            <img src="/logo.png" alt="" srcSet="" className="w-6 h-6 object-cover" />
+            <img src="/logo.png" alt="" className="w-6 h-6 object-cover" />
             <p className="font-light text-2xl">Synapse</p>
 
           </a>

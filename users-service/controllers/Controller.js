@@ -7,21 +7,7 @@ const prisma = new PrismaClient();
 class Controller {
   static async login(req, res, next) {
     try {
-      const bodyToken = req.body.body;
-
-      const { Authorization } = req.body.headers
-      
-      const authToken = Authorization.split(" ")[1]
-
-      if (!bodyToken || !authToken) throw { name: "Invalid" };
-
-      const bodyDecoded = verifyToken(bodyToken);
-      
-      const authDecoded = verifyToken(authToken);
-
-      if (authDecoded.origin !== process.env.USER_ORIGIN) throw { name: "Invalid" }
-
-      const { email, password } = bodyDecoded;
+      const { email, password } = req.bodyDecoded;
       if (!email || !password) throw { name: "Invalid" }
 
       const user = await prisma.user.findUnique({
@@ -49,19 +35,8 @@ class Controller {
 
   static async findUser(req, res, next) {
     try {
-      const bodyToken = req.body.body;
-      
-      const { Authorization } = req.body.headers
-      const authToken = Authorization.split(" ")[1]
-      
-      if (!bodyToken || !authToken) throw { name: "Invalid" };
-      
-      const bodyDecoded = verifyToken(bodyToken.email);
-      const authDecoded = verifyToken(authToken);
-      
-      const email = bodyDecoded;
+      const email = req.bodyDecoded;
 
-      if (authDecoded.origin !== process.env.USER_ORIGIN) throw { name: "Invalid" }
       if (!email) throw { name: "Invalid" };
   
       const user = await prisma.user.findUnique({
