@@ -40,13 +40,13 @@ module.exports = {
     const userEmail = signTokenUser(clientPayload.email)
 
     const response = await axios.post("http://localhost:3001/findUser", {
-      email: userEmail
+      userPayload: userEmail
     }, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userPayload}`,
       },
     });
-    console.log("response", `>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<`);
 
     errorHandler(response)
 

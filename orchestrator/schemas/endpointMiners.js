@@ -29,8 +29,23 @@ module.exports = {
       GetEndpoints: GetEndpointsResponse
     }
 
+    input CreateEndpointInput {
+      endpointUrl: String!
+      description: String!
+      apiKey: String!
+    }
+
+    input UpdateEndpointInput {
+      id: Int!
+      endpointUrl: String!
+      description: String!
+      apiKey: String!
+    }
+
     type Mutation{
-      CreateEndpoint(endpointUrl: String!, description: String!, apiKey: String!): CreateRes}
+      CreateEndpoint(input: CreateEndpointInput): CreateRes
+      UpdateEndpoint(input: UpdateEndpointInput): CreateRes
+      }
   `,
 
   endpointResolvers: {
@@ -54,17 +69,44 @@ module.exports = {
     },
 
     Mutation: {
-      CreateEndpoint: async (_, __, context) => {
+      CreateEndpoint: async (_, args, context) => {
         const token = await context.auth()
-        // console.log("token", `ini token <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<`);
-        const res = await axios.post('http://localhost:3002/api', {
-          test: 'A'
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
+        const payload = {
+          "endpointUrl": args.input.endpointUrl,
+          "description": args.input.description,
+          "apiKey": args.input.apiKey
+        }
+        const res = await axios.post('http://localhost:3002/api',
+          payload
+          , {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          })
+        errorHandler(res)
+
+        return {
+          statusCode: 200,
+        }
+      },
+
+      UpdateEndpoint: async (_, args, context) => {
+        const token = await context.auth()
+        const { id } = args.input
+        const payload = {
+          "endpointUrl": args.input.endpointUrl,
+          "description": args.input.description,
+          "apiKey": args.input.apiKey
+        }
+        const res = await axios.put(`http://localhost:3002/api/${id}`,
+          payload
+          , {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          })
         errorHandler(res)
 
         return {
@@ -72,6 +114,7 @@ module.exports = {
         }
       }
     }
+
 
   },
 };

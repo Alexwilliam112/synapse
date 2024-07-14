@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
 const { compareSync } = require("../utils/bcrypt");
-const { verifyToken } = require("../utils/jwt");
 
 const prisma = new PrismaClient();
 
@@ -38,7 +37,7 @@ class Controller {
       const email = req.bodyDecoded;
 
       if (!email) throw { name: "Invalid" };
-  
+
       const user = await prisma.user.findUnique({
         where: { email },
         include: { company: true },

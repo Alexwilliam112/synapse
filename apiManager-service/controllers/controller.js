@@ -45,9 +45,10 @@ class Api {
 
     static async create(req, res, next) {
         try {
-            console.log(`nyasar?`);
             let { CompanyId } = req.data
+            // console.log(req.body);
             const { endpointUrl, status = "Completed", apiKey, description } = req.body;
+            // console.log({ endpointUrl, status, apiKey, description });
             if (!endpointUrl || !status || !apiKey || !CompanyId || !description) {
                 throw new Error("All data must be filled");
             }
@@ -76,16 +77,12 @@ class Api {
         try {
             const { id } = req.params
             const { endpointUrl, apiKey, description } = req.body;
+            console.log(req.params);
             const updatedData = await prisma.endpoint.update({
-                where: {
-                    id
-                },
-                data: {
-                    endpointUrl,
-                    apiKey,
-                    description
-                }
+                where: { id: Number(id) },
+                data: { endpointUrl, apiKey, description }
             });
+
             res.status(201).json({
                 statusCode: 200,
                 message: "Success Create Api"
