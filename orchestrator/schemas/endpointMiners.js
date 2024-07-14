@@ -30,7 +30,9 @@ module.exports = {
     }
 
     type Mutation{
-      CreateEndpoint(endpointUrl: String!, description: String!, apiKey: String!): CreateRes}
+      CreateEndpoint(endpointUrl: String!, description: String!, apiKey: String!): CreateRes
+      UpdateEndpoint(id: Int!, endpointUrl: String!, description: String!, apiKey: String!): CreateRes
+      }
   `,
 
   endpointResolvers: {
@@ -74,8 +76,32 @@ module.exports = {
         return {
           statusCode: 200,
         }
+      },
+
+      UpdateEndpoint: async (_, args, context) => {
+        const token = await context.auth()
+        const { id } = args
+        const payload = {
+          "endpointUrl": args.endpointUrl,
+          "description": args.description,
+          "apiKey": args.apiKey
+        }
+        const res = await axios.put(`http://localhost:3002/api/${id}`,
+          payload
+          , {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          })
+        errorHandler(res)
+
+        return {
+          statusCode: 200,
+        }
       }
     }
+
 
   },
 };
