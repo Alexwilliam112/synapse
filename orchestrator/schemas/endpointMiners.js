@@ -52,6 +52,7 @@ module.exports = {
       DeleteEndpoint(input: DeleteEndpointInput): CreateRes
       }
   `,
+  //add delete api
 
   endpointResolvers: {
     DateTime: DateTimeResolver,

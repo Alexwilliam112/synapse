@@ -97,7 +97,6 @@ class Api {
     static async delete(req, res, next) {
         try {
             const { id } = req.params
-            console.log(id);
             await prisma.endpoint.delete({
                 where: {
                     id: Number(id)
