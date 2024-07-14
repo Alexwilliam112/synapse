@@ -88,7 +88,6 @@ class Api {
                 message: "Success Create Api"
             });
         } catch (error) {
-            console.log(error);
             next({
                 statusCode: 400
             });
