@@ -21,12 +21,16 @@ module.exports = {
       data: [Endpoints]
     }
 
+    type CreateRes{
+      statusCode: Int
+    }
+
     type Query {
       GetEndpoints: GetEndpointsResponse
     }
 
     type Mutation{
-      CreateEndpoint(endpointUrl: String!, description: String!, status: String!, apiKey: String!): Endpoints}
+      CreateEndpoint(endpointUrl: String!, description: String!, apiKey: String!): CreateRes}
   `,
 
   endpointResolvers: {
@@ -39,10 +43,9 @@ module.exports = {
         const res = await axios.get('http://localhost:3002/api', {
           headers: {
             'Authorization': `Bearer ${token}`
-            }
+          }
         })
         errorHandler(res)
-
         return {
           statusCode: 200,
           data: res.data.data
@@ -51,19 +54,25 @@ module.exports = {
     },
 
     Mutation: {
-      CreateEndpoint: async (_, __, context) => {
+      CreateEndpoint: async (_, args, context) => {
         const token = await context.auth()
-
-        const res = await axios.get('http://localhost:3002/api', {
-          headers: {
-            'Authorization': `Bearer ${token}`
+        const payload = {
+          "endpointUrl": args.endpointUrl,
+          "description": args.description,
+          "apiKey": args.apiKey
+        }
+        const res = await axios.post('http://localhost:3002/api',
+          payload
+          , {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             }
-        })
+          })
         errorHandler(res)
 
         return {
           statusCode: 200,
-          data: res.data.data
         }
       }
     }

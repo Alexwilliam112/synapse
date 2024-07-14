@@ -10,7 +10,7 @@ class Api {
                     CompanyId
                 }
             })
-            console.log(allEndpoint);
+            console.log(`nyasar?`);
 
             res.status(200).json({
                 statusCode: 200,
@@ -46,7 +46,9 @@ class Api {
     static async create(req, res, next) {
         try {
             let { CompanyId } = req.data
+            // console.log(req.body);
             const { endpointUrl, status = "Completed", apiKey, description } = req.body;
+            // console.log({ endpointUrl, status, apiKey, description });
             if (!endpointUrl || !status || !apiKey || !CompanyId || !description) {
                 throw new Error("All data must be filled");
             }
