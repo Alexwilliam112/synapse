@@ -4,14 +4,20 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { UserLogin } from "../../queries/index";
-import TypewriterEffect from '../../components/Typewriter';
-// import TypeIt from 'typeit';
+import TypewriterEffect from "../../components/Typewriter";
+import Cookies from "js-cookie";
 
+// import TypeIt from 'typeit';
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  const token = Cookies.get("token");
+  if (token) {
+    router.push("/dashboard");
+  }
 
   const [login, { loading, error }] = useMutation(UserLogin);
 
@@ -28,18 +34,14 @@ const Login = () => {
         },
       });
 
-      // Show the data to the user
-      // console.log(data.Login.access_token);
       const access_token = data.Login.access_token;
-      localStorage.setItem("token", access_token);
+      Cookies.set("token", access_token, { expires: 7 }); // Set cookie with expiration of 7 days
 
       router.push("/dashboard");
     } catch (error) {
       console.log(JSON.stringify(error));
-      // alert(error.networkError?.result?.errors[0]?.message || error.message);
     }
   };
-
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="flex justify-center h-screen">
@@ -48,9 +50,9 @@ const Login = () => {
         </div>
         <div
           className="hidden lg:p-8 lg:flex lg:h-auto lg:space-x-12 lg:justify-center lg:items-center lg:w-2/3 bg-[#323232] "
-        // style={{
-        //   backgroundImage: 'url("/image.png")',
-        // }}
+          // style={{
+          //   backgroundImage: 'url("/image.png")',
+          // }}
         >
           {/* <p>Synapse</p> */}
           <div className="w-1/3 h-1/3">
@@ -66,7 +68,6 @@ const Login = () => {
           </div>
           <div className="min-w-96">
             <TypewriterEffect />
-
           </div>
           {/* <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
             
@@ -84,11 +85,7 @@ const Login = () => {
           <div className="flex-1">
             <div className="text-center">
               <div className="flex justify-center mx-auto">
-                <img
-                  className="w-2/12"
-                  src="/logo.png"
-                  alt="Logo"
-                />
+                <img className="w-2/12" src="/logo.png" alt="Logo" />
               </div>
               <h2 className="text-2xl font-light text-gray-500 dark:text-gray-300 sm:text-3xl">
                 Synapse

@@ -11,13 +11,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   // const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   function handleLogout() {
-    localStorage.clear();
+    Cookies.remove("token");
     router.push("/");
   }
 
