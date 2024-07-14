@@ -10,7 +10,7 @@ class Api {
                     CompanyId
                 }
             })
-            console.log(allEndpoint);
+            console.log(`nyasar?`);
 
             res.status(200).json({
                 statusCode: 200,
@@ -45,6 +45,7 @@ class Api {
 
     static async create(req, res, next) {
         try {
+            console.log(`nyasar?`);
             let { CompanyId } = req.data
             const { endpointUrl, status = "Completed", apiKey, description } = req.body;
             if (!endpointUrl || !status || !apiKey || !CompanyId || !description) {
