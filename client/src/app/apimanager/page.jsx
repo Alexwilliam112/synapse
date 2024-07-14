@@ -34,16 +34,24 @@ const ApiManager = () => {
     try {
       const { data } = await createEndpoint({
         variables: {
-          endpointUrl,
-          description,
-          apiKey,
+          input: {
+            endpointUrl,
+            description,
+            apiKey,
+          },
         },
       });
-      // console.log(data, "<<<<<<");
+
+      console.log(data, "<<<<<<");
 
       if (data.CreateEndpoint.statusCode === 200) {
-        router.push("/apimanager");
+        // Refetch the endpoints data to get the latest data
         refetch();
+
+        // Close the modal after successful submission
+        document.getElementById("my_modal_2").close();
+
+        router.push("/apimanager");
       } else {
         console.error("Error creating endpoint");
       }
@@ -81,7 +89,7 @@ const ApiManager = () => {
             </div>
 
             <form onSubmit={handleCreateAPI}>
-              <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 my-1">
                 Endpoint:
                 <input
                   type="text"
@@ -93,7 +101,7 @@ const ApiManager = () => {
                   required
                 />
               </label>
-              <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 my-1">
                 Description:
                 <input
                   type="text"
@@ -105,7 +113,7 @@ const ApiManager = () => {
                   required
                 />
               </label>
-              <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 my-1">
                 Secret Key:
                 <input
                   type="password"

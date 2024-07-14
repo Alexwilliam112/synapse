@@ -27,16 +27,8 @@ export const FetchApi = gql`
 `;
 
 export const CreateAPI = gql`
-  mutation CreateEndpoint(
-    $endpointUrl: String!
-    $description: String!
-    $apiKey: String!
-  ) {
-    CreateEndpoint(
-      endpointUrl: $endpointUrl
-      description: $description
-      apiKey: $apiKey
-    ) {
+  mutation CreateEndpoint($input: CreateEndpointInput) {
+    CreateEndpoint(input: $input) {
       statusCode
     }
   }
