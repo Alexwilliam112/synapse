@@ -2,32 +2,32 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 class Controller {
-    static async postAnalytics(req, res, next){
+    static async postAnalytics(req, res, next) {
         try {
-            let { processName, caseId, timestamp, eventName, name, department, time, CompanyId } = req.body;
-            time = parseFloat(time)
-            CompanyId = parseFloat(CompanyId)
+            let tasks = req.body.tasks;
 
-            const taskRecord = await prisma.task.createMany({
-                data: {
-                    processName,
-                    caseId,
-                    timestamp,
-                    eventName,
-                    name,
-                    department,
-                    time,
-                    CompanyId
-                }
+            console.log(tasks)
+
+            if (!Array.isArray(tasks) || tasks.length === 0) throw { name: 'Invalid' }
+
+            tasks = tasks.map(task => ({
+                ...task,
+                timestamp: new Date(task.timestamp).toISOString(),
+                time: parseFloat(task.time),
+                CompanyId: parseFloat(task.CompanyId)
+            }));
+
+            const taskRecords = await prisma.task.createMany({
+                data: tasks
             });
 
             res.status(201).json({ 
                 statusCode: 201,
-                message: 'Task created successfully', 
-                data: taskRecord 
+                message: 'Tasks created successfully', 
+                data: taskRecords 
             });
         } catch (error) {
-            console.log(error)
+            console.error(error);
             next(error);
         }
     }
