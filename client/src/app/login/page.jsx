@@ -17,10 +17,12 @@ const Login = () => {
   const searchParams = useSearchParams();
   const errorMessage = searchParams.get("error");
 
-  const token = Cookies.get("token");
-  if (token) {
-    router.push("/dashboard");
-  }
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   const [login, { loading, error }] = useMutation(UserLogin);
   // console.log(error);
@@ -46,15 +48,17 @@ const Login = () => {
         },
       });
 
-      const access_token = data.Login.access_token; 
+      const access_token = data.Login.access_token;
       Cookies.set("token", access_token, { expires: 7 }); // Set cookie with expiration of 7 days
 
       router.push("/dashboard");
     } catch (error) {
-      if (error.graphQLErrors[0].message === `Request failed with status code 401`) {
-        return router.push("/login?error=Invalid  email or password"); 
+      if (
+        error.graphQLErrors[0].message === `Request failed with status code 401`
+      ) {
+        return router.push("/login?error=Invalid  email or password");
       } else {
-        return router.push("/login?error=Something went wrong"); 
+        return router.push("/login?error=Something went wrong");
       }
       // console.log(JSON.stringify(error.graphQLErrors[0].message));
       // console.log(error.graphQLErrors[0].message);
@@ -85,7 +89,11 @@ const Login = () => {
             {/* <p id="typewriter" className="text-xl font-semibold text-blue-500"></p> */}
           </div>
           <div className="min-w-96 border-2 border-white p-5">
-            <img src="logobw.png" alt="" className="w-auto h-16 mb-4 object-cover" />
+            <img
+              src="logobw.png"
+              alt=""
+              className="w-auto h-16 mb-4 object-cover"
+            />
             <TypewriterEffect />
           </div>
           {/* <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
@@ -110,13 +118,9 @@ const Login = () => {
                 Synapse
               </h2>
             </div>
-            <br/>
-            {errorMessage === 'Invalid  email or password' && (
-                  <ErrComp/>
-                )}
-            {errorMessage === 'Something went wrong' && (
-                  <ErrComp/>
-                )}
+            <br />
+            {errorMessage === "Invalid  email or password" && <ErrComp />}
+            {errorMessage === "Something went wrong" && <ErrComp />}
 
             <div className="mt-8">
               <form onSubmit={handleLogin}>
@@ -137,10 +141,8 @@ const Login = () => {
                     className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-400 focus:ring-gray-400 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
                 </div>
-                <br/>
-                {errorMessage === 'Email is required' && (
-                  <ErrComp/>
-                )}
+                <br />
+                {errorMessage === "Email is required" && <ErrComp />}
 
                 <div className="mt-6">
                   <div className="flex justify-between mb-2">
@@ -168,10 +170,8 @@ const Login = () => {
                     className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-gray-400 dark:focus:border-gray-400 focus:ring-gray-400 focus:outline-none focus:ring focus:ring-opacity-40"
                   />
                 </div>
-                <br/>
-                {errorMessage === 'Password is required' && (
-                  <ErrComp/>
-                )}
+                <br />
+                {errorMessage === "Password is required" && <ErrComp />}
 
                 <div className="mt-6">
                   <button

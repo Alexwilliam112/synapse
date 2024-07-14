@@ -12,7 +12,7 @@ export const UserLogin = gql`
 `;
 
 export const FetchApi = gql`
-query Query {
+  query Query {
     GetEndpoints {
       data {
         id
@@ -23,4 +23,21 @@ query Query {
         CompanyId
       }
     }
-}`
+  }
+`;
+
+export const CreateAPI = gql`
+  mutation CreateEndpoint(
+    $endpointUrl: String!
+    $description: String!
+    $apiKey: String!
+  ) {
+    CreateEndpoint(
+      endpointUrl: $endpointUrl
+      description: $description
+      apiKey: $apiKey
+    ) {
+      statusCode
+    }
+  }
+`;
