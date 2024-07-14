@@ -4,7 +4,6 @@ class ModelEngine {
     static async getAll(req, res, next) {
         try {
             const { CompanyId } = req.data
-            // const CompanyId = 1
             const process = await prisma.process.findMany({
                 where: {
                     CompanyId

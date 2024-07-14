@@ -53,6 +53,12 @@ module.exports = {
           break;
         }
 
+        case "analytics-service": {
+          status = 503;
+          message = "Analytics-Service unreachable. Server Down.";
+          break;
+        }
+
         default: {
           status = 504;
           message = "Timeout from destination server";
