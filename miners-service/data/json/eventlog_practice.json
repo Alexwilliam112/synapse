@@ -1,0 +1,539 @@
+[
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400047",
+    "timestamp": "2024-03-25",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Wyatt Davis",
+    "department": "System & Procedure"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400047",
+    "timestamp": "2024-03-25",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Jordan Howard",
+    "department": "System & Procedure"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400047",
+    "timestamp": "2024-04-01",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "John Doe",
+    "department": "System & Procedure"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400048",
+    "timestamp": "2024-03-26",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Blake Nelson",
+    "department": "Project Management"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400048",
+    "timestamp": "2024-03-26",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Logan Scott",
+    "department": "Project Management"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400048",
+    "timestamp": "2024-05-02",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "Alicent Hightower",
+    "department": "Project Management"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400049",
+    "timestamp": "2024-03-26",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Benjamin Lewis",
+    "department": "Tax"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400049",
+    "timestamp": "2024-03-26",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Leah Rogers",
+    "department": "Tax"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "POSMG12400049",
+    "timestamp": "2024-04-01",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "John Doe",
+    "department": "Tax"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "001-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "001-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "001-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PROPOSAL APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "101-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "001-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "101-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "001-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "101-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "001-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "111-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "101-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "111-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "101-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "111-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "INVOICING APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "101-TRACER"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "002-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "002-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "002-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PROPOSAL APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "202-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "002-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "202-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "002-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "202-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "002-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "222-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "202-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "222-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "202-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "222-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "INVOICING APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "202-TRACER"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "003-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "003-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "003-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PROPOSAL APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "303-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "003-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "303-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "003-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "303-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "003-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "333-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "303-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "333-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "303-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "333-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "INVOICING APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "303-TRACER"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "004-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "004-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PROPOSAL PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PROPOSAL",
+    "caseId": "004-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PROPOSAL APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "404-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "004-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "404-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "PURCHASE ORDER PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "004-TRACER"
+   },
+   {
+    "processName": "PURCHASE_ORDER",
+    "caseId": "404-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "PURCHASE ORDER APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "004-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "444-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "404-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "444-TRACER",
+    "timestamp": "2024-01-26",
+    "eventName": "INVOICING PROPOSE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "404-TRACER"
+   },
+   {
+    "processName": "INVOICING",
+    "caseId": "444-TRACER",
+    "timestamp": "2024-02-01",
+    "eventName": "INVOICING APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7",
+    "caseReff": "404-TRACER"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191991",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": " Peyton Allen",
+    "department": "System & Procedure"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191991",
+    "timestamp": "2024-02-01",
+    "eventName": "ER APPROVE",
+    "name": "Jane Doe",
+    "department": "System & Procedure"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191992",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": " Lily Ross",
+    "department": "Project Management"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191992",
+    "timestamp": "2024-02-01",
+    "eventName": "ER APPROVE",
+    "name": " Peyton Allen",
+    "department": "Project Management"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191993",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": "Jane Doe",
+    "department": "Project Management"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191994",
+    "timestamp": "2024-01-26",
+    "eventName": "ER APPROVE",
+    "name": " Lily Ross",
+    "department": "Tax"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191995",
+    "timestamp": "2024-02-01",
+    "eventName": "ER CREATE",
+    "name": " Peyton Allen",
+    "department": "Tax"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191995",
+    "timestamp": "2024-01-26",
+    "eventName": "ER APPROVE",
+    "name": "Jane Doe",
+    "department": "Tax"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191996",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191996",
+    "timestamp": "2024-02-01",
+    "eventName": "ER APPROVE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191997",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191997",
+    "timestamp": "2024-01-26",
+    "eventName": "ER APPROVE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191998",
+    "timestamp": "2024-02-01",
+    "eventName": "ER CREATE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191998",
+    "timestamp": "2024-01-26",
+    "eventName": "ER APPROVE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191999",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": " Lily Ross",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191999",
+    "timestamp": "2024-02-01",
+    "eventName": "ER APPROVE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191910",
+    "timestamp": "2024-01-26",
+    "eventName": "ER CREATE",
+    "name": "Jane Doe",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "EMPLOYEE_REQUISITIONS",
+    "caseId": "NR12191910",
+    "timestamp": "2024-01-26",
+    "eventName": "ER APPROVE",
+    "name": " Peyton Allen",
+    "department": "Marketing Emporio Armani 7"
+   },
+   {
+    "processName": "PAYROLL",
+    "caseId": "LR10000001",
+    "timestamp": "2024-01-26",
+    "eventName": "PAYROLL PAID",
+    "name": " Peyton Allen",
+    "department": "Tax",
+    "caseReff": "444-TRACER"
+   }
+  ]
