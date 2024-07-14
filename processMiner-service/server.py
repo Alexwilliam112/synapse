@@ -40,6 +40,8 @@ class AlphaMinerServicer(processMining_pb2_grpc.AlphaMinerServicer):
 
                 for arc in formatted_net['arcs']:
                     json_model.arcs.add(from_=arc['from'], to=arc['to'])
+                
+                json_model.fitness = formatted_net.get('fitness', 0)
 
                 response.models.append(json_model)
 
