@@ -10,6 +10,19 @@ import { saveAs } from "file-saver";
 import { DiagramWrapper } from "../../components/diagram/DiagramWrapper";
 import { SelectionInspector } from "../../components/diagram/SelectionInspector";
 
+const colorMapping = {
+  lightblue: "#50B8E7",
+  orange: "#FFA500",
+  lightgreen: "#90EE90",
+  pink: "#FFC0CB",
+  yellow: "#FFFF00",
+  purple: "#800080",
+  red: "#FF0000",
+  blue: "#0000FF",
+  green: "#008000",
+  gray: "#808080",
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -366,48 +379,43 @@ class App extends React.Component {
     }
 
     return (
-      <div className="h-screen w-screen flex flex-1 flex-row">
-        <div className=" p-4">
+      <div className="h-screen w-screen flex">
+        <div className="w-1/4 bg-gray-100 p-6 shadow-lg">
           <div>
-            <h3>Add Node</h3>
-            <label>
+            <h3 className="text-xl font-semibold mb-4">Add Node</h3>
+            <label className="block mb-3">
               Event Name:
               <input
                 type="text"
                 value={this.state.newNodeText}
                 onChange={(e) => this.setState({ newNodeText: e.target.value })}
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full mt-1"
               />
             </label>
-            <label>
+            <label className="block mb-3">
               Color:
               <select
                 value={this.state.newNodeColor}
                 onChange={(e) =>
                   this.setState({ newNodeColor: e.target.value })
                 }
-                className="select select-bordered w-full max-w-xs"
+                className="select select-bordered w-full mt-1"
               >
-                <option value="lightblue">Light Blue</option>
-                <option value="orange">Orange</option>
-                <option value="lightgreen">Light Green</option>
-                <option value="pink">Pink</option>
-                <option value="yellow">Yellow</option>
-                <option value="purple">Purple</option>
-                <option value="red">Red</option>
-                <option value="blue">Blue</option>
-                <option value="green">Green</option>
-                <option value="gray">Gray</option>
+                {Object.keys(colorMapping).map((color) => (
+                  <option key={color} value={color}>
+                    {color.charAt(0).toUpperCase() + color.slice(1)}
+                  </option>
+                ))}
               </select>
             </label>
-            <label>
+            <label className="block mb-3">
               Shape:
               <select
                 value={this.state.newNodeShape}
                 onChange={(e) =>
                   this.setState({ newNodeShape: e.target.value })
                 }
-                className="select select-bordered w-full max-w-xs"
+                className="select select-bordered w-full mt-1"
               >
                 <option value="RoundedRectangle">Rounded Rectangle</option>
                 <option value="Ellipse">Ellipse</option>
@@ -416,95 +424,100 @@ class App extends React.Component {
             </label>
             <button
               onClick={this.handleAddNode}
-              className="btn btn-success w-full max-w-xs mx-2 my-2"
+              className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full"
             >
               Add Node
             </button>
           </div>
           {/* <div>
-            <h3>Add Link</h3>
-            <label>
-              Text:
-              <input
-                type="text"
-                value={this.state.newLinkText}
-                onChange={(e) => this.setState({ newLinkText: e.target.value })}
-              />
-            </label>
-            <label>
-              From Node:
-              <select
-                value={this.state.newLinkFrom}
-                onChange={(e) =>
-                  this.setState({ newLinkFrom: parseInt(e.target.value) })
-                }
-              >
-                {this.state.nodeDataArray.map((node) => (
-                  <option key={node.id} value={node.id}>
-                    {node.eventName}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              To Node:
-              <select
-                value={this.state.newLinkTo}
-                onChange={(e) =>
-                  this.setState({ newLinkTo: parseInt(e.target.value) })
-                }
-              >
-                {this.state.nodeDataArray.map((node) => (
-                  <option key={node.id} value={node.id}>
-                    {node.eventName}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button onClick={this.handleAddLink}>Add Link</button>
-          </div> */}
-          <div className="flex flex-wrap">
+          <h3>Add Link</h3>
+          <label>
+            Text:
+            <input
+              type="text"
+              value={this.state.newLinkText}
+              onChange={(e) => this.setState({ newLinkText: e.target.value })}
+            />
+          </label>
+          <label>
+            From Node:
+            <select
+              value={this.state.newLinkFrom}
+              onChange={(e) =>
+                this.setState({ newLinkFrom: parseInt(e.target.value) })
+              }
+            >
+              {this.state.nodeDataArray.map((node) => (
+                <option key={node.id} value={node.id}>
+                  {node.eventName}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            To Node:
+            <select
+              value={this.state.newLinkTo}
+              onChange={(e) =>
+                this.setState({ newLinkTo: parseInt(e.target.value) })
+              }
+            >
+              {this.state.nodeDataArray.map((node) => (
+                <option key={node.id} value={node.id}>
+                  {node.eventName}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button onClick={this.handleAddLink}>Add Link</button>
+        </div> */}
+          <div className="flex flex-row mt-2 mb-4 justify-between">
             <button
               onClick={this.handleExport}
-              className="btn btn-success mx-2 my-2"
+              className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm"
             >
               Export Diagram
             </button>
             {/* <button onClick={this.handleSave}>Save Diagram</button> */}
-            <label className="btn btn-success mx-2 my-2">
+            <label className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm cursor-pointer">
               Choose File
               <input
                 type="file"
                 accept=".json"
                 onChange={this.handleFileChange}
-                style={{ display: "none" }} // Hide the default file input
+                className="hidden"
               />
             </label>
-            <button onClick={this.handleReshape} className="btn btn-warning">
-              Reshape Diagram
-            </button>
           </div>
-          <label>
-            Allow Relinking?
-            <input
-              type="checkbox"
-              id="relink"
-              checked={this.state.modelData.canRelink}
-              onChange={this.handleRelinkChange}
-            />
-          </label>
+          <button
+            onClick={this.handleReshape}
+            className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full"
+          >
+            Reshape Diagram
+          </button>
+          {/* <label>
+          Allow Relinking?
+          <input
+            type="checkbox"
+            id="relink"
+            checked={this.state.modelData.canRelink}
+            onChange={this.handleRelinkChange}
+          />
+        </label> */}
           {inspector}
         </div>
-        <div className="p-4">
-          <DiagramWrapper
-            nodeDataArray={this.state.nodeDataArray}
-            linkDataArray={this.state.linkDataArray}
-            modelData={this.state.modelData}
-            skipsDiagramUpdate={this.state.skipsDiagramUpdate}
-            onDiagramEvent={this.handleDiagramEvent}
-            onModelChange={this.handleModelChange}
-            onShapeClick={this.handleShapeClick}
-          />
+        <div className="flex-1 p-4">
+          <div className="diagram-component ">
+            <DiagramWrapper
+              nodeDataArray={this.state.nodeDataArray}
+              linkDataArray={this.state.linkDataArray}
+              modelData={this.state.modelData}
+              skipsDiagramUpdate={this.state.skipsDiagramUpdate}
+              onDiagramEvent={this.handleDiagramEvent}
+              onModelChange={this.handleModelChange}
+              onShapeClick={this.handleShapeClick}
+            />
+          </div>
         </div>
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box">

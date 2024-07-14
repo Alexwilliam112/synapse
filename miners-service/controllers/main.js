@@ -38,5 +38,5 @@ function execute_TemporalInterval(filePath, outputPath) {
     });
   }
 
-execute_AlphaMiner(xesFilePath);
-// execute_TemporalInterval(xesFilePath, '../data/json/tasks.json')
+// execute_AlphaMiner(xesFilePath);
+execute_TemporalInterval(xesFilePath, '../data/json/tasks.json')
