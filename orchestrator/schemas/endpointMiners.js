@@ -29,9 +29,22 @@ module.exports = {
       GetEndpoints: GetEndpointsResponse
     }
 
+    input CreateEndpointInput {
+      endpointUrl: String!
+      description: String!
+      apiKey: String!
+    }
+
+    input UpdateEndpointInput {
+      id: Int!
+      endpointUrl: String!
+      description: String!
+      apiKey: String!
+    }
+
     type Mutation{
-      CreateEndpoint(endpointUrl: String!, description: String!, apiKey: String!): CreateRes
-      UpdateEndpoint(id: Int!, endpointUrl: String!, description: String!, apiKey: String!): CreateRes
+      CreateEndpoint(input: CreateEndpointInput): CreateRes
+      UpdateEndpoint(input: UpdateEndpointInput): CreateRes
       }
   `,
 
@@ -59,9 +72,9 @@ module.exports = {
       CreateEndpoint: async (_, args, context) => {
         const token = await context.auth()
         const payload = {
-          "endpointUrl": args.endpointUrl,
-          "description": args.description,
-          "apiKey": args.apiKey
+          "endpointUrl": args.input.endpointUrl,
+          "description": args.input.description,
+          "apiKey": args.input.apiKey
         }
         const res = await axios.post('http://localhost:3002/api',
           payload
@@ -80,11 +93,11 @@ module.exports = {
 
       UpdateEndpoint: async (_, args, context) => {
         const token = await context.auth()
-        const { id } = args
+        const { id } = args.input
         const payload = {
-          "endpointUrl": args.endpointUrl,
-          "description": args.description,
-          "apiKey": args.apiKey
+          "endpointUrl": args.input.endpointUrl,
+          "description": args.input.description,
+          "apiKey": args.input.apiKey
         }
         const res = await axios.put(`http://localhost:3002/api/${id}`,
           payload
