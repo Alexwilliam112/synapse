@@ -75,7 +75,8 @@ proto.ProcessMining.JsonEventLog.toObject = function(includeInstance, msg) {
     timestamp: jspb.Message.getFieldWithDefault(msg, 3, ""),
     eventname: jspb.Message.getFieldWithDefault(msg, 4, ""),
     name: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    department: jspb.Message.getFieldWithDefault(msg, 6, "")
+    department: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    casereff: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -135,6 +136,10 @@ proto.ProcessMining.JsonEventLog.deserializeBinaryFromReader = function(msg, rea
     case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setDepartment(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCasereff(value);
       break;
     default:
       reader.skipField();
@@ -204,6 +209,13 @@ proto.ProcessMining.JsonEventLog.serializeBinaryToWriter = function(message, wri
   if (f.length > 0) {
     writer.writeString(
       6,
+      f
+    );
+  }
+  f = message.getCasereff();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -315,6 +327,24 @@ proto.ProcessMining.JsonEventLog.prototype.getDepartment = function() {
  */
 proto.ProcessMining.JsonEventLog.prototype.setDepartment = function(value) {
   return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string caseReff = 7;
+ * @return {string}
+ */
+proto.ProcessMining.JsonEventLog.prototype.getCasereff = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.ProcessMining.JsonEventLog} returns this
+ */
+proto.ProcessMining.JsonEventLog.prototype.setCasereff = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

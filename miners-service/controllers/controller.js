@@ -4,13 +4,13 @@ const Eventlog = require("../models/eventlog");
 
 async function requestProcessMining(eventlogData) {
   return new Promise((resolve, reject) => {
-    const requestPayload = { data: eventlogData };
+    const requestPayload = { eventlog: eventlogData };
 
     grpcClient.GetProcessModel(requestPayload, (error, response) => {
       if (error) {
         reject({ name: 503, source: "pyMiner" });
       } else {
-        console.log(response);
+        console.log('Successful Response from pyMiner');
         resolve(response);
       }
     });
@@ -33,8 +33,8 @@ class Controller {
         return new Eventlog(el.eventlog, el.processes);
       });
 
-      const models = await requestProcessMining(eventlogs[0].eventlog);
-      console.log(models);
+      const models = await requestProcessMining(eventlogs);
+
       res.json(models);
     } catch (err) {
       console.error("Error in startMining:", err);
