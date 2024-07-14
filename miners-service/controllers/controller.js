@@ -12,7 +12,7 @@ async function requestProcessMining(eventlogData) {
         reject({ name: 503, source: "processMiner-service" });
       } else {
         console.log("Successful Response from processMiner-service");
-        resolve(response);
+        resolve(response.models);
       }
     });
   });
