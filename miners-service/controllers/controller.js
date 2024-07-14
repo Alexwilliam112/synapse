@@ -1,32 +1,41 @@
 const grpcClient = require("../config/proto/pyMiner/grpcClient-pyMiners");
-const axios = require('axios')
+const axios = require("axios");
+const Eventlog = require("../models/eventlog");
 
-function requestProcessMining() {
-  const jsonData = require("../data/json/PO_eventLog.json");
-  const requestPayload = { data: jsonData };
+async function requestProcessMining(eventlogData) {
+  return new Promise((resolve, reject) => {
+    const requestPayload = { data: eventlogData };
 
-  grpcClient.GetProcessModel(requestPayload, (error, response) => {
-    if (error) {
-      next({ name: 503, source: "pyMiner" });
-    } else {
-      console.log(response);
-      res.send(`Server response: ${response.message}`);
-    }
+    grpcClient.GetProcessModel(requestPayload, (error, response) => {
+      if (error) {
+        reject({ name: 503, source: "pyMiner" });
+      } else {
+        console.log(response);
+        resolve(response);
+      }
+    });
   });
 }
 
 async function requestCaseTracing(data) {
-  const response = await axios.post('http://localhost:50052/rpc', data);
-  return response
+  const response = await axios.post("http://localhost:50052/rpc", data);
+  return response;
 }
 
 class Controller {
   static async startMining(req, res, next) {
     try {
       const jsonData = require("../data/json/eventlog_practice.json");
-      const goResponse = await requestCaseTracing(jsonData)
-      res.json(goResponse.data);
-      // requestProcessMining();
+      const goResponse = await requestCaseTracing(jsonData);
+      const resData = goResponse.data.preprocessedData;
+
+      const eventlogs = resData.map((el) => {
+        return new Eventlog(el.eventlog, el.processes);
+      });
+
+      const models = await requestProcessMining(eventlogs[0].eventlog);
+      console.log(models);
+      res.json(models);
     } catch (err) {
       console.error("Error in startMining:", err);
       next(err);
