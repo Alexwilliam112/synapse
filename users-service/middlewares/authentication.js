@@ -5,13 +5,13 @@ const authentication = async (req, res, next) => {
     const bodyToken = req.body.userPayload;
 
     const { authorization } = req.headers
-    
+
     const authToken = authorization.split(" ")[1]
 
     if (!bodyToken || !authToken) throw { name: "Invalid" };
 
     const bodyDecoded = verifyToken(bodyToken);
-    
+
     const authDecoded = verifyToken(authToken);
 
     if (authDecoded.origin !== process.env.USER_ORIGIN) throw { name: "Invalid" }
