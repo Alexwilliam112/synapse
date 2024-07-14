@@ -54,17 +54,21 @@ module.exports = {
     },
 
     Mutation: {
-      CreateEndpoint: async (_, __, context) => {
+      CreateEndpoint: async (_, args, context) => {
         const token = await context.auth()
-        // console.log("token", `ini token <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<`);
-        const res = await axios.post('http://localhost:3002/api', {
-          test: 'A'
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }
-        })
+        const payload = {
+          "endpointUrl": args.endpointUrl,
+          "description": args.description,
+          "apiKey": args.apiKey
+        }
+        const res = await axios.post('http://localhost:3002/api',
+          payload
+          , {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          })
         errorHandler(res)
 
         return {

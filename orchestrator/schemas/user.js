@@ -52,15 +52,14 @@ module.exports = {
           email,
           password,
         });
-        console.log(userPayload, 'YAHUUUUUUUUUUUUUUUUUUUUUUUUUUUUU')
 
-        const response = await axios.post("http://localhost:3001/login", 
-          { userPayload }, 
+        const response = await axios.post("http://localhost:3001/login",
+          { userPayload },
           {
-          headers: {
-            Authorization: `Bearer ${userHeader}`,
-          },
-        });
+            headers: {
+              Authorization: `Bearer ${userHeader}`,
+            },
+          });
 
         errorHandler(response)
 
