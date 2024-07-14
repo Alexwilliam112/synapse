@@ -50,7 +50,7 @@ const Footer = () => {
                 </div>
 
                 <div>
-                  <h3 class="text-gray-700 uppercase dark:text-white">Blog</h3>
+                  <h3 className="text-gray-700 uppercase dark:text-white">Blog</h3>
                   <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Tec</a>
                   <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Music</a>
                   <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Videos</a>
