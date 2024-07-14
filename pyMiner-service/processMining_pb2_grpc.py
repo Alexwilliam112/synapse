@@ -42,7 +42,7 @@ class AlphaMinerStub(object):
         self.GetProcessModel = channel.unary_unary(
                 '/ProcessMining.AlphaMiner/GetProcessModel',
                 request_serializer=processMining__pb2.JsonData.SerializeToString,
-                response_deserializer=processMining__pb2.JsonModel.FromString,
+                response_deserializer=processMining__pb2.JsonModelList.FromString,
                 _registered_method=True)
 
 
@@ -61,7 +61,7 @@ def add_AlphaMinerServicer_to_server(servicer, server):
             'GetProcessModel': grpc.unary_unary_rpc_method_handler(
                     servicer.GetProcessModel,
                     request_deserializer=processMining__pb2.JsonData.FromString,
-                    response_serializer=processMining__pb2.JsonModel.SerializeToString,
+                    response_serializer=processMining__pb2.JsonModelList.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -90,7 +90,7 @@ class AlphaMiner(object):
             target,
             '/ProcessMining.AlphaMiner/GetProcessModel',
             processMining__pb2.JsonData.SerializeToString,
-            processMining__pb2.JsonModel.FromString,
+            processMining__pb2.JsonModelList.FromString,
             options,
             channel_credentials,
             insecure,

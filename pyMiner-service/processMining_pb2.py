@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13processMining.proto\x12\rProcessMining\"5\n\x08JsonData\x12)\n\x04\x64\x61ta\x18\x01 \x03(\x0b\x32\x1b.ProcessMining.JsonEventLog\"\x83\x01\n\tJsonModel\x12$\n\x06places\x18\x01 \x03(\x0b\x32\x14.ProcessMining.Place\x12.\n\x0btransitions\x18\x02 \x03(\x0b\x32\x19.ProcessMining.Transition\x12 \n\x04\x61rcs\x18\x03 \x03(\x0b\x32\x12.ProcessMining.Arc\"5\n\x05Place\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x11\n\tfrequency\x18\x02 \x01(\x05\x12\x0c\n\x04time\x18\x03 \x01(\x02\"\x19\n\nTransition\x12\x0b\n\x03key\x18\x01 \x01(\t\" \n\x03\x41rc\x12\r\n\x05\x66rom_\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\t\"{\n\x0cJsonEventLog\x12\x13\n\x0bprocessName\x18\x01 \x01(\t\x12\x0e\n\x06\x63\x61seId\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\x11\n\teventName\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x12\n\ndepartment\x18\x06 \x01(\t2R\n\nAlphaMiner\x12\x44\n\x0fGetProcessModel\x12\x17.ProcessMining.JsonData\x1a\x18.ProcessMining.JsonModelb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13processMining.proto\x12\rProcessMining\"5\n\x08JsonData\x12)\n\x08\x65ventlog\x18\x01 \x03(\x0b\x32\x17.ProcessMining.EventLog\"N\n\x08\x45ventLog\x12\x13\n\x0bprocessName\x18\x01 \x01(\t\x12-\n\x08\x65ventlog\x18\x02 \x03(\x0b\x32\x1b.ProcessMining.JsonEventLog\"9\n\rJsonModelList\x12(\n\x06models\x18\x01 \x03(\x0b\x32\x18.ProcessMining.JsonModel\"\x98\x01\n\tJsonModel\x12$\n\x06places\x18\x01 \x03(\x0b\x32\x14.ProcessMining.Place\x12.\n\x0btransitions\x18\x02 \x03(\x0b\x32\x19.ProcessMining.Transition\x12 \n\x04\x61rcs\x18\x03 \x03(\x0b\x32\x12.ProcessMining.Arc\x12\x13\n\x0bprocessName\x18\x04 \x01(\t\"5\n\x05Place\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x11\n\tfrequency\x18\x02 \x01(\x05\x12\x0c\n\x04time\x18\x03 \x01(\x02\"\x19\n\nTransition\x12\x0b\n\x03key\x18\x01 \x01(\t\" \n\x03\x41rc\x12\r\n\x05\x66rom_\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\t\"\x8d\x01\n\x0cJsonEventLog\x12\x13\n\x0bprocessName\x18\x01 \x01(\t\x12\x0e\n\x06\x63\x61seId\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\x11\n\teventName\x18\x04 \x01(\t\x12\x0c\n\x04name\x18\x05 \x01(\t\x12\x12\n\ndepartment\x18\x06 \x01(\t\x12\x10\n\x08\x63\x61seReff\x18\x07 \x01(\t2V\n\nAlphaMiner\x12H\n\x0fGetProcessModel\x12\x17.ProcessMining.JsonData\x1a\x1c.ProcessMining.JsonModelListb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -23,16 +23,20 @@ if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_JSONDATA']._serialized_start=38
   _globals['_JSONDATA']._serialized_end=91
-  _globals['_JSONMODEL']._serialized_start=94
-  _globals['_JSONMODEL']._serialized_end=225
-  _globals['_PLACE']._serialized_start=227
-  _globals['_PLACE']._serialized_end=280
-  _globals['_TRANSITION']._serialized_start=282
-  _globals['_TRANSITION']._serialized_end=307
-  _globals['_ARC']._serialized_start=309
-  _globals['_ARC']._serialized_end=341
-  _globals['_JSONEVENTLOG']._serialized_start=343
-  _globals['_JSONEVENTLOG']._serialized_end=466
-  _globals['_ALPHAMINER']._serialized_start=468
-  _globals['_ALPHAMINER']._serialized_end=550
+  _globals['_EVENTLOG']._serialized_start=93
+  _globals['_EVENTLOG']._serialized_end=171
+  _globals['_JSONMODELLIST']._serialized_start=173
+  _globals['_JSONMODELLIST']._serialized_end=230
+  _globals['_JSONMODEL']._serialized_start=233
+  _globals['_JSONMODEL']._serialized_end=385
+  _globals['_PLACE']._serialized_start=387
+  _globals['_PLACE']._serialized_end=440
+  _globals['_TRANSITION']._serialized_start=442
+  _globals['_TRANSITION']._serialized_end=467
+  _globals['_ARC']._serialized_start=469
+  _globals['_ARC']._serialized_end=501
+  _globals['_JSONEVENTLOG']._serialized_start=504
+  _globals['_JSONEVENTLOG']._serialized_end=645
+  _globals['_ALPHAMINER']._serialized_start=647
+  _globals['_ALPHAMINER']._serialized_end=733
 # @@protoc_insertion_point(module_scope)
