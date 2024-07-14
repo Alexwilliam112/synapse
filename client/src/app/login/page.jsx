@@ -1,6 +1,6 @@
 "use client";
-import Link from "next/link";
-import React, { useState, useRef, useEffect } from "react";
+// import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { UserLogin } from "../../queries/index";
@@ -14,10 +14,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const token = Cookies.get("token");
-  if (token) {
-    router.push("/dashboard");
-  }
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   const [login, { loading, error }] = useMutation(UserLogin);
 
@@ -35,7 +37,7 @@ const Login = () => {
       });
 
       const access_token = data.Login.access_token;
-      Cookies.set("token", access_token, { expires: 7 }); // Set cookie with expiration of 7 days
+      Cookies.set("token", access_token);
 
       router.push("/dashboard");
     } catch (error) {
@@ -67,7 +69,11 @@ const Login = () => {
             {/* <p id="typewriter" className="text-xl font-semibold text-blue-500"></p> */}
           </div>
           <div className="min-w-96 border-2 border-white p-5">
-            <img src="logobw.png" alt="" className="w-auto h-16 mb-4 object-cover" />
+            <img
+              src="logobw.png"
+              alt=""
+              className="w-auto h-16 mb-4 object-cover"
+            />
             <TypewriterEffect />
           </div>
           {/* <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
@@ -91,7 +97,6 @@ const Login = () => {
               <h2 className="text-2xl mt-4 font-light text-gray-500 dark:text-gray-300 sm:text-3xl">
                 Synapse
               </h2>
-
             </div>
 
             <div className="mt-8">
