@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package ProcessMining;
+
+service AlphaMiner {
+  rpc GetProcessModel (JsonData) returns (JsonModelList);
+}
+
+message JsonData {
+  repeated EventLog eventlog = 1;
+}
+
+message EventLog {
+  string processName = 1;
+  repeated JsonEventLog eventlog = 2;
+}
+
+message JsonModelList {
+  repeated JsonModel models = 1;
+}
+
+message JsonModel {
+  repeated Place places = 1;
+  repeated Transition transitions = 2;
+  repeated Arc arcs = 3;
+  string processName = 4;
+  float fitness = 5;
+}
+
+message Place {
+  string key = 1;
+  int32 frequency = 2;
+  float time = 3;
+}
+
+message Transition {
+  string key = 1;
+}
+
+message Arc {
+  string from_ = 1;
+  string to = 2;
+}
+
+message JsonEventLog {
+  string processName = 1;
+  string caseId = 2;
+  string timestamp = 3;
+  string eventName = 4;
+  string name = 5;
+  string department = 6;
+  string caseReff = 7;
+}

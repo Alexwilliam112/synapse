@@ -1,34 +1,104 @@
-import grpc from '@grpc/grpc-js';
-import protoLoader from '@grpc/proto-loader';
-import fs from 'fs/promises';
+const processMinerClient = require("../config/proto/processMiner/grpcClient-processMiner");
+const temporalAnalysisClient = require("../config/proto/temporalAnalysis/grpcClient-temporalAnalysis");
+const axios = require("axios");
+const Eventlog = require("../models/eventlog");
+const { signTokenServer } = require("../utils/jwt");
 
-const packageDefinition = protoLoader.loadSync('processMining.proto', {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true
-});
+async function requestProcessMining(eventlogData) {
+  return new Promise((resolve, reject) => {
+    const requestPayload = { eventlog: eventlogData };
 
-const processMiningProto = grpc.loadPackageDefinition(packageDefinition).ProcessMining;
-
-const client = new processMiningProto.AlphaMiner('localhost:50051', grpc.credentials.createInsecure());
-
-// Read XES data from a file (or you can construct it directly in the code)
-async function sendXESData() {
-  try {
-    const xesData = await fs.readFile('../data/xes/eventlog.xes', 'utf8');
-
-    client.SendXES({ xes_data: xesData }, (error, response) => {
+    processMinerClient.GetProcessModel(requestPayload, (error, response) => {
       if (error) {
-        console.error(error);
+        reject({ name: 503, source: "processMiner-service" });
       } else {
-        console.log('Response from server:', response.message);
+        console.log("Successful Response from processMiner-service");
+        resolve(response.models);
       }
     });
-  } catch (err) {
-    console.error('Error reading XES file:', err);
+  });
+}
+
+async function requestTemporalAnalysis(eventlogData) {
+  return new Promise((resolve, reject) => {
+    const requestPayload = {
+      eventlogs: eventlogData,
+      CompanyId: 1,
+    };
+
+    temporalAnalysisClient.GetTaskHistory(requestPayload, (error, response) => {
+      if (error) {
+        reject({ name: 503, source: "temporalMiner-service" });
+      } else {
+        console.log("Successful Response from temporalMiner-service");
+        resolve(response.history);
+      }
+    });
+  });
+}
+
+async function requestCaseTracing(data) {
+  try {
+    const response = await axios.post("http://localhost:50052/rpc", data);
+    return response;
+  } catch (error) {
+    throw { name: 503, source: "tracer-service" };
   }
 }
 
-sendXESData();
+class Controller {
+  static async startMining(req, res, next) {
+    try {
+      const jsonData = require("../data/json/eventlog_practice.json");
+      const goResponse = await requestCaseTracing(jsonData);
+      const resData = goResponse.data.preprocessedData;
+
+      const eventlogs = resData.map((el) => {
+        return new Eventlog(el.eventlog, el.processes);
+      });
+
+      const tasks = await requestTemporalAnalysis(jsonData);
+      const models = await requestProcessMining(eventlogs);
+
+      const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN });
+      
+      try {
+        await axios.post(
+          "http://localhost:3003/upsert",
+          {
+            tasks
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serverToken}`,
+            },
+          }
+        );
+  
+      } catch (error) {
+        throw { name: 503, source: "analytics-service" };
+      }
+      // await axios.post(
+      //   "http://localhost:3004",
+      //   {
+      //     models
+      //   },
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${serverToken}`,
+      //     },
+      //   }
+      // );
+
+      res.status(200).json({
+        tasks,
+        models,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+}
+module.exports = Controller;

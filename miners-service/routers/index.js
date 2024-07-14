@@ -1,14 +1,15 @@
-import { Router } from 'express';
-import errorHandler from '../middlewares/errorHandler.js';
+const router = require("express").Router();
+const Controller = require("../controllers/controller");
+const { errorHandler } = require("../middlewares/errorHandler");
 
-const router = Router();
+router.get("/startminer", Controller.startMining);
 
 router.use((req, res, next) => {
   const err = new Error(`Request Not Found. ( ${req.originalUrl} )`);
   err.status = 404;
-  err.name = 'ReqNotFound';
+  err.name = "ReqNotFound";
   next(err);
 });
 
 router.use(errorHandler);
-export default router;
+module.exports = router;

@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const writeXesFile = require('../converter/xesFormat');
+const writeXesFile = require('../utils/xesFormat');
 const eventLog = require('../data/json/PO_eventLog.json');
 const { writeFileSync } = require('fs');
 
@@ -23,7 +23,7 @@ function execute_AlphaMiner(filePath) {
 }
 
 function execute_TemporalInterval(filePath, outputPath) {
-    exec(`py ./core/temporal_interval.py ${filePath} ${outputPath}`, (error, stdout, stderr) => {
+    exec(`py ../core/temporal_interval.py ${filePath} ${outputPath}`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error executing Python script: ${error.message}`);
             return;
@@ -38,5 +38,5 @@ function execute_TemporalInterval(filePath, outputPath) {
     });
   }
 
-execute_AlphaMiner(xesFilePath);
-// execute_TemporalInterval(xesFilePath, './data/json/output.json')
+// execute_AlphaMiner(xesFilePath);
+execute_TemporalInterval(xesFilePath, '../data/json/tasks.json')

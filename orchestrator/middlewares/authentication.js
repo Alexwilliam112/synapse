@@ -1,6 +1,11 @@
 const { GraphQLError } = require("graphql");
-const { verifyTokenClient, signTokenUser } = require("../utils/jwt");
+const {
+  verifyTokenClient,
+  signTokenUser,
+  signTokenServer,
+} = require("../utils/jwt");
 const axios = require("axios");
+const errorHandler = require("./errorHandler");
 
 module.exports = {
   authentication: async (req) => {
@@ -27,32 +32,27 @@ module.exports = {
         },
       });
     }
-
     const clientPayload = verifyTokenClient(token);
     const userPayload = signTokenUser({
       origin: process.env.USER_ORIGIN,
     });
 
-    const response = await axios.post("/users", {
-      body: {
-        email: clientPayload.email,
-        password: clientPayload.password,
-      },
+    const userEmail = signTokenUser(clientPayload.email)
+
+    const response = await axios.post("http://localhost:3001/findUser", {
+      userPayload: userEmail
+    }, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userPayload}`,
       },
     });
 
-    if (response.statusCode !== 200) {
-      throw new GraphQLError("Unauthorized", {
-        extensions: {
-          http: {
-            status: 401,
-          },
-        },
-      });
-    }
+    errorHandler(response)
 
-    return response.data;
+    const { data } = response;
+    const serverToken = signTokenServer(data.data);
+
+    return serverToken;
   },
 };
