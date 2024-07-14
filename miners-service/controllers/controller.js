@@ -61,19 +61,24 @@ class Controller {
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN });
-      await axios.post(
-        "http://localhost:3003",
-        {
-          tasks
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${serverToken}`,
+      
+      try {
+        await axios.post(
+          "http://localhost:3003/upsert",
+          {
+            tasks
           },
-        }
-      );
-
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serverToken}`,
+            },
+          }
+        );
+  
+      } catch (error) {
+        throw { name: 503, source: "analytics-service" };
+      }
       // await axios.post(
       //   "http://localhost:3004",
       //   {
