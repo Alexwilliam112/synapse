@@ -36,7 +36,7 @@ const ApiManager = () => {
     data: queryData,
     refetch,
   } = useQuery(FetchApi, {
-    fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache",
   });
 
   // console.log(queryData);
@@ -461,7 +461,6 @@ const ApiManager = () => {
                         </form>
                       </div>
                     </div>
-
                   </dialog>
                   {/* end modal edit */}
 

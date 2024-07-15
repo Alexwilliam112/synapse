@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Eventlogs', {
+    await queryInterface.createTable('Processes', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,24 +12,21 @@ module.exports = {
       processName: {
         type: Sequelize.STRING
       },
-      caseId: {
+      description: {
         type: Sequelize.STRING
       },
-      timestamp: {
+      lastUpdate: {
         type: Sequelize.DATE
       },
-      eventName: {
-        type: Sequelize.STRING
+      fitness: {
+        type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      department: {
-        type: Sequelize.STRING
+      CompanyId: {
+        type: Sequelize.INTEGER
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Eventlogs');
+    await queryInterface.dropTable('Processes');
   }
 };
