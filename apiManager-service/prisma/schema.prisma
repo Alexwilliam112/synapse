@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -68,7 +62,6 @@ model Process {
 
 model State {
   id             Int     @id @default(autoincrement())
-  key            String
   eventName      String
   isTextEditable Boolean
   color          String
@@ -79,9 +72,10 @@ model State {
 
 model Event {
   id             Int     @id @default(autoincrement())
-  key            String
-  frequency      Int
-  benchmarkTime  Int
+  eventName      String
+  frequency      Float
+  time           Float
+  benchmarkTime  Float
   isTextEditable Boolean
   color          String
   shape          String  @default("Rounded Rectangle")
@@ -100,13 +94,14 @@ model DataLink {
 }
 
 model Task {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   processName String
   department  String
   caseId      String
   name        String
   eventName   String
   time        Int
+  timestamp   DateTime
   CompanyId   Int
-  company     Company @relation(fields: [CompanyId], references: [id])
+  company     Company  @relation(fields: [CompanyId], references: [id])
 }

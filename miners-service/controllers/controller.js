@@ -62,11 +62,34 @@ class Controller {
 
       const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN });
 
+      res.status(200).json({
+        tasks,
+        models,
+      });
+
+      // try {
+      //   await axios.post(
+      //     "http://localhost:3003/upsert",
+      //     {
+      //       tasks
+      //     },
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${serverToken}`,
+      //       },
+      //     }
+      //   );
+
+      // } catch (error) {
+      //   throw { name: 503, source: "analytics-service" };
+      // }
+
       try {
         await axios.post(
-          "http://localhost:3003/upsert",
+          "http://localhost:3004/post",
           {
-            tasks
+            models
           },
           {
             headers: {
@@ -75,28 +98,9 @@ class Controller {
             },
           }
         );
-  
       } catch (error) {
-        throw { name: 503, source: "analytics-service" };
+        throw { name: 503, source: "modelEngine-service" };
       }
-
-      // await axios.post(
-      //   "http://localhost:3004",
-      //   {
-      //     models
-      //   },
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: `Bearer ${serverToken}`,
-      //     },
-      //   }
-      // );
-
-      res.status(200).json({
-        tasks,
-        models,
-      });
     } catch (err) {
       next(err);
     }

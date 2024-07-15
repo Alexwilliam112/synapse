@@ -3,6 +3,7 @@ const ModelEngine = require('../controllers/controller')
 const verify = require('../middleware/verify')
 const router = express.Router()
 
+router.post("/post", ModelEngine.create)
 router.use(verify)
 
 router.get("/", ModelEngine.getAll)

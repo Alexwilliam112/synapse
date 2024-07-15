@@ -16,5 +16,5 @@ app.use(express.json());
 //routing
 app.use(router);
 app.listen(PORT, () => {
-  console.log("LOCALSERVER STARTED AT http://localhost:" + PORT);
+  console.log("Server is running on port : ", `http://localhost:${PORT}/`)
 });
