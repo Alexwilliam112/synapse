@@ -3,8 +3,8 @@ const ModelEngine = require('../controllers/controller')
 const verify = require('../middleware/verify')
 const router = express.Router()
 
-router.post("/post", ModelEngine.create)
 router.use(verify)
+router.post("/post", ModelEngine.create)
 
 router.get("/", ModelEngine.getAll)
 router.get("/:id", ModelEngine.getById)
