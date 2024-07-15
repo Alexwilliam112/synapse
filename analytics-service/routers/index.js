@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const Controller = require('../controllers/Controller')
 
-router.post("/upsert", Controller.postAnalytics)
+router.get('/getTableData', Controller.getTableData)
+router.get('/getAnalytics', Controller.getAnalytics)
+router.post('/upsert', Controller.postAnalytics)
 
 module.exports = router

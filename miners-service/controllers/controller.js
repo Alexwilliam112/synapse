@@ -61,7 +61,7 @@ class Controller {
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN });
-      
+
       try {
         await axios.post(
           "http://localhost:3003/upsert",
@@ -79,6 +79,7 @@ class Controller {
       } catch (error) {
         throw { name: 503, source: "analytics-service" };
       }
+
       // await axios.post(
       //   "http://localhost:3004",
       //   {

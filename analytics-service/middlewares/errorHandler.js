@@ -17,6 +17,7 @@ const errorHandler = (error, req, res, next) => {
         message = "Invalid Access Token"
     }
 
+    console.log(error);
     res.status(statusCode).json({
         message
     })
