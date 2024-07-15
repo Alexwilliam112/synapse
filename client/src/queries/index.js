@@ -27,17 +27,25 @@ export const FetchApi = gql`
 `;
 
 export const CreateAPI = gql`
-  mutation CreateEndpoint(
-    $endpointUrl: String!
-    $description: String!
-    $apiKey: String!
-  ) {
-    CreateEndpoint(
-      endpointUrl: $endpointUrl
-      description: $description
-      apiKey: $apiKey
-    ) {
+  mutation CreateEndpoint($input: CreateEndpointInput) {
+    CreateEndpoint(input: $input) {
       statusCode
     }
   }
+`;
+
+export const UpdateAPI = gql`
+mutation Mutation($input: UpdateEndpointInput) {
+  UpdateEndpoint(input: $input) {
+    statusCode
+  }
+}
+`;
+
+export const DeleteApi = gql`
+mutation DeleteEndpoint($input: DeleteEndpointInput) {
+  DeleteEndpoint(input: $input) {
+    statusCode
+  }
+}
 `;
