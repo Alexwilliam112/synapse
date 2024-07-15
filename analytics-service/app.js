@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== "production"){
+if (process.env.NODE_ENV !== "production") {
   require('dotenv').config()
 }
 
@@ -22,5 +22,5 @@ app.use(router)
 app.use(errorHandler)
 
 app.listen(port, () => {
-  console.log("Server is running at PORT", port);
+  console.log("Server is running on port : ", `http://localhost:${port}/`)
 });
