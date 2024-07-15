@@ -33,3 +33,19 @@ export const CreateAPI = gql`
     }
   }
 `;
+
+export const UpdateAPI = gql`
+mutation Mutation($input: UpdateEndpointInput) {
+  UpdateEndpoint(input: $input) {
+    statusCode
+  }
+}
+`;
+
+export const DeleteApi = gql`
+mutation DeleteEndpoint($input: DeleteEndpointInput) {
+  DeleteEndpoint(input: $input) {
+    statusCode
+  }
+}
+`;
