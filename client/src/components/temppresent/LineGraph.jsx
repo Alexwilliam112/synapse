@@ -22,13 +22,23 @@ ChartJS.register(
   Legend
 );
 
-const LineGraph = ({ data }) => {
+const MultiLineChart = ({ data }) => {
   const chartData = {
-    labels:
-      data.length > 0
-        ? data[0].data.map((_, index) => `Point ${index + 1}`)
-        : [],
-    datasets: data.map((dataset, index) => ({
+    labels: [
+      "JAN",
+      "FEB",
+      "MAR",
+      "APR",
+      "MAY",
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP",
+      "OCT",
+      "NOV",
+      "DEC",
+    ],
+    datasets: data?.map((dataset, index) => ({
       label: dataset.label,
       data: dataset.data,
       borderColor: ["#6E8672", "#FFBB59", "#53A653", "#C2E4C8", "#FF7F50"][
@@ -69,4 +79,4 @@ const LineGraph = ({ data }) => {
   return <Line data={chartData} options={options} />;
 };
 
-export default LineGraph;
+export default MultiLineChart;

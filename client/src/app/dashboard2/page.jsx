@@ -2,15 +2,15 @@
 // import Navbar from "../components/Navbar"
 // import Graph from "../components/Graph"
 // import RadialGraph from "../components/RadialGraph"
-import LineGraph from "../../components/temppresent/LineGraph"
-import AreaChart from "../../components/temppresent/AreaChart"
-import DonutGraph from "../../components/temppresent/DonutGraph"
+import LineGraph from "../../components/temppresent/LineGraph";
+import AreaChart from "../../components/temppresent/AreaChart";
+import DonutGraph from "../../components/temppresent/DonutGraph";
 
-import { Clock2, TriangleAlert, LayoutList, Table2 } from 'lucide-react'
-import BarChart from "@/components/BarChart"
-import RadarChart from "@/components/RadarChart"
-import PolarChart from "@/components/PolarChart"
-import Footer from "@/components/Footer"
+import { Clock2, TriangleAlert, LayoutList, Table2 } from "lucide-react";
+import BarChart from "@/components/BarChart";
+import RadarChart from "@/components/RadarChart";
+import PolarChart from "@/components/PolarChart";
+import Footer from "@/components/Footer";
 
 const Dashboard = () => {
   return (
@@ -21,7 +21,10 @@ const Dashboard = () => {
         <div className="flex flex-col sm:gap-4 sm:py-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
             <div className="grid auto-rows-max items-start gap-4 mt-8 md:gap-8 lg:col-span-2">
-              <h1 className="flex items-center text-4xl font-extralight"><Table2 className="w-8 h-8 font-light mr-2" /> Performance Table Data</h1>
+              <h1 className="flex items-center text-4xl font-extralight">
+                <Table2 className="w-8 h-8 font-light mr-2" /> Performance Table
+                Data
+              </h1>
               <div>
                 {/* <div className="flex items-center">
                   <div className="ml-auto flex items-center gap-2">
@@ -50,130 +53,6 @@ const Dashboard = () => {
                         <tr className="hover">
                           <th>1</th>
                           <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>2</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr className="hover">
-                          <th>3</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>4</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>5</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>1</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>2</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr className="hover">
-                          <th>3</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>4</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>5</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>1</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>2</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr className="hover">
-                          <th>3</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>4</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>5</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr className="hover">
-                          <th>6</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>7</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>8</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>9</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>10</th>
-                          <td>Brice Swyre</td>
                           <td>6</td>
                           <td>0</td>
                         </tr>
@@ -216,7 +95,9 @@ const Dashboard = () => {
                         <span className="label-text">Person</span>
                       </div>
                       <select className="select select-bordered">
-                        <option disabled selected>Pick one</option>
+                        <option disabled selected>
+                          Pick one
+                        </option>
                         <option>Star Wars</option>
                         <option>Harry Potter</option>
                         <option>Lord of the Rings</option>
@@ -229,7 +110,9 @@ const Dashboard = () => {
                         <span className="label-text">Process</span>
                       </div>
                       <select className="select select-bordered">
-                        <option disabled selected>Pick one</option>
+                        <option disabled selected>
+                          Pick one
+                        </option>
                         <option>Star Wars</option>
                         <option>Harry Potter</option>
                         <option>Lord of the Rings</option>
@@ -242,7 +125,9 @@ const Dashboard = () => {
                         <span className="label-text">Departement</span>
                       </div>
                       <select className="select select-bordered">
-                        <option disabled selected>Pick one</option>
+                        <option disabled selected>
+                          Pick one
+                        </option>
                         <option>Star Wars</option>
                         <option>Harry Potter</option>
                         <option>Lord of the Rings</option>
@@ -254,17 +139,27 @@ const Dashboard = () => {
                       <div className="label">
                         <span className="label-text">Start Date</span>
                       </div>
-                      <input type="date" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                      <input
+                        type="date"
+                        placeholder="Type here"
+                        className="input input-bordered w-full max-w-xs"
+                      />
                     </label>
                     <label className="form-control w-full max-w-xs">
                       <div className="label">
                         <span className="label-text">End Date</span>
                       </div>
-                      <input type="date" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                      <input
+                        type="date"
+                        placeholder="Type here"
+                        className="input input-bordered w-full max-w-xs"
+                      />
                     </label>
                   </div>
                   <div className="flex w-full  mt-4">
-                    <p className="text-xs font-light text-gray-500">Filter on what you desire</p>
+                    <p className="text-xs font-light text-gray-500">
+                      Filter on what you desire
+                    </p>
                   </div>
                 </div>
               </div>
@@ -274,9 +169,7 @@ const Dashboard = () => {
       </div>
       <Footer />
     </>
-
   );
-}
+};
 
-
-export default Dashboard
+export default Dashboard;
