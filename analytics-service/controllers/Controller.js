@@ -9,6 +9,39 @@ const {
 } = require("../queries/index");
 
 class Controller {
+  static async getFilters(req, res, next) {
+    try {
+      const departments = await prisma.task.findMany({
+        select: {
+          department: true
+        },
+        distinct: ['department']
+      });
+
+      const persons = await prisma.task.findMany({
+        select: {
+          name: true
+        },
+        distinct: ['name']
+      });
+
+      const processes = await prisma.task.findMany({
+        select: {
+          processName: true
+        },
+        distinct: ['processName']
+      });
+
+      res.status(200).json({
+        departments: departments.map(d => d.department),
+        persons: persons.map(p => p.name),
+        processes: processes.map(p => p.processName)
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  
   static async postAnalytics(req, res, next) {
     try {
       let tasks = req.body.tasks;
