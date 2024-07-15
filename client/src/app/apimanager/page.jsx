@@ -35,7 +35,9 @@ const ApiManager = () => {
     error: queryError,
     data: queryData,
     refetch,
-  } = useQuery(FetchApi);
+  } = useQuery(FetchApi, {
+    fetchPolicy: "no-cache"
+  });
 
   // console.log(queryData);
   const endpointsData = queryData?.GetEndpoints?.data;
@@ -440,25 +442,26 @@ const ApiManager = () => {
                             />
                           </label>
                           <div className="modal-action">
-                          <button
-                            type="submit"
-                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                          >
-                            Save API
-                          </button>
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={() =>
-                              document.getElementById("my_modal_1").close()
-                            }
-                          >
-                            Cancel
-                          </button>
+                            <button
+                              type="submit"
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                            >
+                              Save API
+                            </button>
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() =>
+                                document.getElementById("my_modal_1").close()
+                              }
+                            >
+                              Cancel
+                            </button>
                           </div>
                         </form>
                       </div>
-                    
+                    </div>
+
                   </dialog>
                   {/* end modal edit */}
 

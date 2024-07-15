@@ -1,3 +1,4 @@
+"use client"
 // import React from "react";
 // import Navbar from "../components/Navbar"
 // import Graph from "../components/Graph"
@@ -7,16 +8,114 @@ import AreaChart from "../../components/temppresent/AreaChart"
 import DonutGraph from "../../components/temppresent/DonutGraph"
 
 import { Clock2, TriangleAlert, LayoutList } from 'lucide-react'
+import { useQuery } from "@apollo/client"
+import { getFilter } from "@/queries"
 
 const Dashboard = () => {
+
+  const {
+    loading,
+    error,
+    data,
+  } = useQuery(getFilter);
+
+  console.log(data);
+
+
   return (
     <>
       {/* Navbar */}
       {/* <Navbar /> */}
       <div className="flex min-h-screen w-full flex-col bg-[#F7F7F7]">
         <div className="flex flex-col sm:gap-4 sm:py-4">
+
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
             <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+              <form className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-6">Form</h2>
+
+                <div className="mb-4">
+                  <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+                    Department
+                  </label>
+                  <select
+                    id="department"
+                    name="department"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="" disabled selected>
+                      Select option
+                    </option>
+                    {/* Add options here */}
+                  </select>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="person" className="block text-sm font-medium text-gray-700">
+                    Person
+                  </label>
+                  <select
+                    id="person"
+                    name="person"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="" disabled selected>
+                      Select option
+                    </option>
+                    {/* Add options here */}
+                  </select>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="process" className="block text-sm font-medium text-gray-700">
+                    Process
+                  </label>
+                  <select
+                    id="process"
+                    name="process"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    <option value="" disabled selected>
+                      Select option
+                    </option>
+                    {/* Add options here */}
+                  </select>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+                    Start Date
+                  </label>
+                  <input
+                    type="date"
+                    id="startDate"
+                    name="startDate"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+                    End Date
+                  </label>
+                  <input
+                    type="date"
+                    id="endDate"
+                    name="endDate"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  />
+                </div>
+
+
+
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
                 <div className="sm:col-span-2 p-6 bg-[#F1F2F2] border-2 border-[#6E8672] rounded-lg shadow">
                   <div className="pb-6 flex justify-between">
