@@ -1,4 +1,4 @@
-module.exports = function TopTenNonConformTable(queryOptions) {
+module.exports = function TopTenNonConformTable(queryOptions, CompanyId) {
   const { startDate, endDate, process, department, person } = queryOptions;
 
   let whereConditions = `
@@ -19,6 +19,11 @@ module.exports = function TopTenNonConformTable(queryOptions) {
   if (process) {
     whereConditions += ` AND t."processName" = $${parameters.length + 1}`;
     parameters.push(process);
+  }
+
+  if (CompanyId) {
+    whereConditions += ` AND t."CompanyId" = $${parameters.length + 1}`;
+    parameters.push(CompanyId);
   }
 
   let query = `
