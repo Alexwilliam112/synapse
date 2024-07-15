@@ -117,9 +117,10 @@ class Controller {
       const averageConformance_areaChart = avgConformance_raw.map((el) => {
         return el.average_conformance_rate;
       });
+
       const overallConformance_pieChart = {
-        ontime: overallConformance_raw[0].percentage_ontime_process,
-        nonConform: overallConformance_raw[0].percentage_non_conformance,
+        ontime: Number(overallConformance_raw[0].percentage_ontime_process),
+        nonConform: Number(overallConformance_raw[0].percentage_non_conformance),
       };
       const averageConformanceByProcess_lineChart = groupProcess(
         avgConformanceByProcess_raw
