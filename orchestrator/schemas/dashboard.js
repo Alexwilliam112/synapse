@@ -5,8 +5,20 @@ module.exports = {
   dashboardTypes: `#graphql
     scalar DateTime
 
+    input DashboardFilter {
+      startDate: String
+      endDate: String
+      department: String
+      name: String
+      processName: String
+    }
+
+    type ChartData {
+    
+    }
+
     type Query {
-      
+      GetDashboardCharts(input: DashboardFilter): ChartData
     }
 
     type Mutation {
