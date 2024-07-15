@@ -5,14 +5,16 @@ import { Radar } from "react-chartjs-2";
 
 export default function RadarChart() {
   return (
-      <div className='w-[50%] h-[50%]'>
+      <div className=''>
         <Radar data={{
           labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
           datasets: [{
             label: "Data 1",
-            data: [12, 19, 3, 5, 2, 3, 15]
+            data: [52, 19, 14, 25, 32, 43, 25],
+            borderColor: "#6E8672",
+            backgroundColor: "#6E8672",
+            fill: true
           }]
-
         }}/>
       </div>
   );

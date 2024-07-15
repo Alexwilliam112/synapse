@@ -5,12 +5,14 @@ import { Bar } from "react-chartjs-2";
 
 export default function BarChart() {
   return (
-      <div className='w-[50%] h-[50%]'>
+      <div className=''>
         <Bar data={{
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          labels: ['Process A', 'Process B', 'Process C', 'Process D', 'Process E', 'Process G'],
           datasets: [{
             label: "Data 1",
-            data: [12, 19, 3, 5, 2, 3, 15]
+            data: [12, 19, 3, 5, 2, 3, 15],
+            backgroundColor: "#6e8672",
+            borderColor: "#6e8672"
           }]
 
         }}/>

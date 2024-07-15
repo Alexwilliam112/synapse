@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { revalidatePath } from "next/cache";
 
 const Navbar = () => {
   // const [isOpen, setIsOpen] = useState(false);

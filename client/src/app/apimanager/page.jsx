@@ -29,7 +29,7 @@ const ApiManager = () => {
   } = useQuery(FetchApi);
   // console.log(queryData);
   const endpointsData = queryData?.GetEndpoints?.data;
-
+  refetch()
   //ADD ENDPOINT
   const [
     createEndpoint,
@@ -262,24 +262,22 @@ const ApiManager = () => {
                   {/* modal edit */}
                   <dialog id="my_modal_1" className="modal">
                     <div className="modal-box">
-                      <h3 className="font-bold text-lg">Edit your api!</h3>
+                      <h3 className="font-light text-2xl">Edit your api!</h3>
                       <p className="py-4">
                         Press ESC key or click the button below to close
                       </p>
                     
-                      <div className="modal-action">
-                        
-                        <form onSubmit={handleUpdateAPI}>
+                        <form onSubmit={handleUpdateAPI} className="">
                         {/* <label className="input input-bordered items-center gap-2 my-1"> 
                             Id: 
                             <input
-                              type="number"
-                              name="id"
-                              className="grow"
-                              placeholder={selectedEndpoint?.id}
-                              onChange={(e) => setEditId(selectedEndpoint.id)}
-                              value={editId}
-                              required
+                            type="number"
+                            name="id"
+                            className="grow"
+                            placeholder={selectedEndpoint?.id}
+                            onChange={(e) => setEditId(selectedEndpoint.id)}
+                            value={editId}
+                            required
                             />
                           </label> */}
                           <label className="input input-bordered flex items-center gap-2 my-1">
@@ -318,6 +316,7 @@ const ApiManager = () => {
                               required
                             />
                           </label>
+                          <div className="modal-action">
                           <button
                             type="submit"
                             className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
@@ -333,9 +332,10 @@ const ApiManager = () => {
                           >
                             Cancel
                           </button>
+                          </div>
                         </form>
                       </div>
-                    </div>
+                    
                   </dialog>
                   {/* end modal edit */}
 
