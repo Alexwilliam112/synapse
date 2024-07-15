@@ -1,5 +1,6 @@
 module.exports = function OverallConformance_PieChart(
-  queryOptions
+  queryOptions,
+  CompanyId
 ) {
   const { startDate, endDate, process, department, person } = queryOptions;
 
@@ -21,6 +22,11 @@ module.exports = function OverallConformance_PieChart(
   if (process) {
     whereConditions += ` AND t."processName" = $${parameters.length + 1}`;
     parameters.push(process);
+  }
+
+  if (CompanyId) {
+    whereConditions += ` AND t."CompanyId" = $${parameters.length + 1}`;
+    parameters.push(CompanyId);
   }
 
   let query = `
