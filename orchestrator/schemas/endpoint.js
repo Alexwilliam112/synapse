@@ -1,7 +1,8 @@
 const { GraphQLError } = require("graphql");
 const { DateTimeResolver } = require("graphql-scalars");
 const axios = require('axios')
-const errorHandler = require('../middlewares/errorHandler')
+const errorHandler = require('../middlewares/errorHandler');
+const { signTokenServer } = require("../utils/jwt");
 
 module.exports = {
   endpointTypeDefs: `#graphql
@@ -63,6 +64,7 @@ module.exports = {
 
         const res = await axios.get('http://localhost:3002/api', {
           headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
         })
@@ -76,14 +78,18 @@ module.exports = {
 
     Mutation: {
       CreateEndpoint: async (_, args, context) => {
+        const { input } = args;
+        const { endpointUrl, description, apiKey } = input;
+
         const token = await context.auth()
-        const payload = {
-          "endpointUrl": args.input.endpointUrl,
-          "description": args.input.description,
-          "apiKey": args.input.apiKey
-        }
+        const payload = signTokenServer({
+          endpointUrl,
+          description,
+          apiKey
+        });
+
         const res = await axios.post('http://localhost:3002/api',
-          payload
+          { payload }
           , {
             headers: {
               'Content-Type': 'application/json',
@@ -98,15 +104,18 @@ module.exports = {
       },
 
       UpdateEndpoint: async (_, args, context) => {
+        const { input } = args;
+        const { endpointUrl, description, apiKey, id } = input;
+
         const token = await context.auth()
-        const { id } = args.input
-        const payload = {
-          "endpointUrl": args.input.endpointUrl,
-          "description": args.input.description,
-          "apiKey": args.input.apiKey
-        }
+        const payload = signTokenServer({
+          endpointUrl,
+          description,
+          apiKey
+        });
+
         const res = await axios.put(`http://localhost:3002/api/${id}`,
-          payload
+          { payload }
           , {
             headers: {
               'Content-Type': 'application/json',
@@ -136,7 +145,5 @@ module.exports = {
         }
       }
     }
-
-
   },
 };

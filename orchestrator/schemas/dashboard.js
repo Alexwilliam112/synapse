@@ -31,11 +31,21 @@ module.exports = {
       nonConform: Float
     }
 
+    type DashboardTableRow {
+      eventName: String
+      benchmarkTime: Float
+      average_actual: Float
+      ProcessId: Float
+      conformance_rate: Float
+      total_case: Float
+    }
+
     type ChartData {
       averageConformance_areaChart: [Float]
       overallConformance_pieChart: overallConformance_pieChart
       averageConformanceByProcess_lineChart: [LineChartFloatingPoint]
       topTenTable: [topTenTableRow]
+      dashboardTable: [DashboardTableRow]
     }
 
     type GetDashboardChartsResponse {
@@ -78,8 +88,6 @@ module.exports = {
           },
           params: { startDate, endDate, department, person, process },
         });
-
-        console.log(data.data);
 
         return {
           statusCode: 200,

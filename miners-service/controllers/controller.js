@@ -86,7 +86,7 @@ class Controller {
       } catch (error) {
         throw { name: 503, source: "analytics-service" };
       }
-      console.log(models);
+
       try {
         await axios.post(
           "http://localhost:3004/post",

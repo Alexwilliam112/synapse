@@ -52,7 +52,6 @@ module.exports = {
 
     const { data } = response;
     const serverToken = signTokenServer(data.data);
-
     return serverToken;
   },
 };
