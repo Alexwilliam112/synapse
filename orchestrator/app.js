@@ -6,16 +6,32 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { authentication } = require("./middlewares/authentication");
 const { userResolvers, userTypeDefs } = require("./schemas/user");
-const { endpointResolvers, endpointTypeDefs } = require('./schemas/endpointMiners')
+const { endpointResolvers, endpointTypeDefs } = require("./schemas/endpoint");
+const { minerTypeDefs, minerResolvers } = require("./schemas/miner");
+
+const csrfBypassPlugin = {
+  async requestDidStart() {
+    return {
+      async didResolveOperation(requestContext) {
+        if (process.env.NODE_ENV !== 'production') {
+          requestContext.preventCsrf = () => {};
+        }
+      }
+    };
+  }
+};
 
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs, endpointTypeDefs],
-  resolvers: [userResolvers, endpointResolvers],
+  typeDefs: [userTypeDefs, endpointTypeDefs, minerTypeDefs],
+  resolvers: [userResolvers, endpointResolvers, minerResolvers],
   introspection: true,
   formatError: (err) => {
     console.error(err);
     return err;
   },
+  plugins: [
+    csrfBypassPlugin,
+  ],
 });
 
 (async () => {
@@ -25,7 +41,7 @@ const server = new ApolloServer({
       return {
         auth: async () => {
           return await authentication(req);
-        }
+        },
       };
     },
   });
