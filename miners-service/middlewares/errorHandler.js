@@ -40,7 +40,7 @@ module.exports = {
           message = "processMiner-Service Failed. Server Down.";
           break;
         }
-        
+
         case "temporalMiner-service": {
           status = 503;
           message = "temporalAnalysis-Service Failed. Server Down.";
@@ -56,6 +56,12 @@ module.exports = {
         case "analytics-service": {
           status = 503;
           message = "Analytics-Service unreachable. Server Down.";
+          break;
+        }
+
+        case "modelEngine-service": {
+          status = 503;
+          message = "modelEngine-service unreachable. Server Down.";
           break;
         }
 

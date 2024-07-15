@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Event" ALTER COLUMN "benchmarkTime" SET DATA TYPE DOUBLE PRECISION;
