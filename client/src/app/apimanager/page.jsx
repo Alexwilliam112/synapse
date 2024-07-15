@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateAPI, FetchApi } from "@/queries";
+import { CreateAPI, DeleteApi, FetchApi, UpdateAPI } from "@/queries";
 import { useQuery, useMutation } from "@apollo/client";
 import { Pencil, Rocket, SquarePlus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,14 @@ const ApiManager = () => {
   const [endpointUrl, setEndpointUrl] = useState("");
   const [description, setDescription] = useState("");
   const [apiKey, setApiKey] = useState("");
+  const [selectedEndpoint, setSelectedEndpoint] = useState(null); // State to hold selected endpoint
+  const [editId, setEditId] = useState()
+  const [editEndpoint, setEditEndpoint] = useState("")
+  const [editdescription, setEditDescription] = useState("")
+  const [editApiKey, setEditApiKey] = useState("")
+  const [deleteId, setDeleteId] = useState()
+
+  // console.log(editId);
 
   //FETCH DENDPOINT
   const {
@@ -34,16 +42,24 @@ const ApiManager = () => {
     try {
       const { data } = await createEndpoint({
         variables: {
-          endpointUrl,
-          description,
-          apiKey,
+          input: {
+            endpointUrl,
+            description,
+            apiKey,
+          },
         },
       });
+
       // console.log(data, "<<<<<<");
 
       if (data.CreateEndpoint.statusCode === 200) {
-        router.push("/apimanager");
+        // Refetch the endpoints data to get the latest data
         refetch();
+
+        // Close the modal after successful submission
+        document.getElementById("my_modal_2").close();
+
+        router.push("/apimanager");
       } else {
         console.error("Error creating endpoint");
       }
@@ -51,15 +67,85 @@ const ApiManager = () => {
       console.log(JSON.stringify(error));
     }
   };
+  // Handle edit button click
+  const handleEditClick = (endpoint) => {
+    setEditEndpoint(endpoint.endpointUrl)
+    setEditDescription(endpoint.description)
+    setEditApiKey(endpoint.apiKey)
+    setSelectedEndpoint(endpoint);
+    document.getElementById("my_modal_1").showModal();
+    setEditId(endpoint.id)
+  };
 
   //EDIT ENDPOINT
+  const [
+    updateEndpoint,
+    { dataEdit: mutationDataUpdate, loading: mutationLoadingUpdate, error: mutationErrorUpdate },
+  ] = useMutation(UpdateAPI)
 
-  if (queryLoading || mutationLoading) {
+  const handleUpdateAPI = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await updateEndpoint({
+        variables: {
+          input: {
+            id: Number(editId),
+            endpointUrl: editEndpoint,
+            description: editdescription,
+            apiKey: editApiKey,
+          },
+        },
+      });
+
+      // console.log(data, '<<<<<<<<<<<<<<<');
+
+      if (data.UpdateEndpoint.statusCode === 200) {
+        refetch()
+        document.getElementById("my_modal_1").close()
+        router.push("/apimanager")
+      } else {
+        console.error("Error updating endpoint");
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  }
+
+  // Delete endpoint
+  const [deleteEndpoint, {data: mutationDataDelete, loading: mutationLoadingDelete, error: mutationErrorDelete},] = useMutation(DeleteApi)
+
+  const handleDelete = async (e) => {
+    try {
+      const { data } = await deleteEndpoint({
+        variables: {
+          input: {
+            id: Number(selectedEndpoint.id)
+          }
+        }
+      })
+      if (data.DeleteEndpoint.statusCode === 200) {
+        refetch()
+        router.push("/apimanager")
+      } else {
+        console.error("Error deleting endpoint");
+      }
+    } catch (error) {
+      console.log(JSON.stringify(error));
+    }
+  }
+
+  const handleDeleteClick = (endpoint) => {
+    setSelectedEndpoint(endpoint);
+    setDeleteId(endpoint.id)
+    handleDelete(deleteId)
+  }
+
+  if (queryLoading || mutationLoading || mutationLoadingUpdate) {
     return <div>Loading...</div>;
   }
 
-  if (queryError || mutationError) {
-    return <div>Error: {queryError?.message || mutationError?.message}</div>;
+  if (queryError || mutationError || mutationErrorUpdate) {
+    return <div>Error: {queryError?.message || mutationError?.message || mutationErrorUpdate?.message }</div>;
   }
 
   return (
@@ -81,7 +167,7 @@ const ApiManager = () => {
             </div>
 
             <form onSubmit={handleCreateAPI}>
-              <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 my-1">
                 Endpoint:
                 <input
                   type="text"
@@ -93,7 +179,7 @@ const ApiManager = () => {
                   required
                 />
               </label>
-              <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 my-1">
                 Description:
                 <input
                   type="text"
@@ -105,7 +191,7 @@ const ApiManager = () => {
                   required
                 />
               </label>
-              <label className="input input-bordered flex items-center gap-2">
+              <label className="input input-bordered flex items-center gap-2 my-1">
                 Secret Key:
                 <input
                   type="password"
@@ -167,27 +253,96 @@ const ApiManager = () => {
                   </button>
                   <button
                     className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2 mr-2"
-                    onClick={() =>
-                      document.getElementById("my_modal_1").showModal()
-                    }
+                    onClick={() => handleEditClick(data)}
                   >
                     <Pencil className="w-4 h-4 object-cover" />
                     Edit
                   </button>
+
+                  {/* modal edit */}
                   <dialog id="my_modal_1" className="modal">
                     <div className="modal-box">
-                      <h3 className="font-bold text-lg">Hello!</h3>
+                      <h3 className="font-bold text-lg">Edit your api!</h3>
                       <p className="py-4">
                         Press ESC key or click the button below to close
                       </p>
+                    
                       <div className="modal-action">
-                        <form method="dialog">
-                          <button className="btn">Close</button>
+                        
+                        <form onSubmit={handleUpdateAPI}>
+                        {/* <label className="input input-bordered items-center gap-2 my-1"> 
+                            Id: 
+                            <input
+                              type="number"
+                              name="id"
+                              className="grow"
+                              placeholder={selectedEndpoint?.id}
+                              onChange={(e) => setEditId(selectedEndpoint.id)}
+                              value={editId}
+                              required
+                            />
+                          </label> */}
+                          <label className="input input-bordered flex items-center gap-2 my-1">
+                            Endpoint:
+                            <input
+                              type="text"
+                              name="endpointUrl"
+                              className="grow"
+                              placeholder={selectedEndpoint?.endpointUrl}
+                              onChange={(e) => setEditEndpoint(e.target.value)}
+                              value={editEndpoint}
+                              required
+                            />
+                          </label>
+                          <label className="input input-bordered flex items-center gap-2 my-1">
+                            Description:
+                            <input
+                              type="text"
+                              name="description"
+                              className="grow"
+                              placeholder={selectedEndpoint?.description}
+                              onChange={(e) => setEditDescription(e.target.value)}
+                              value={editdescription}
+                              required
+                            />
+                          </label>
+                          <label className="input input-bordered flex items-center gap-2 my-1">
+                            Secret Key:
+                            <input
+                              type="password"
+                              name="apiKey"
+                              className="grow"
+                              placeholder={selectedEndpoint?.apiKey}
+                              onChange={(e) => setEditApiKey(e.target.value)}
+                              value={editApiKey}
+                              required
+                            />
+                          </label>
+                          <button
+                            type="submit"
+                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                          >
+                            Save API
+                          </button>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() =>
+                              document.getElementById("my_modal_1").close()
+                            }
+                          >
+                            Cancel
+                          </button>
                         </form>
                       </div>
                     </div>
                   </dialog>
-                  <button className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2">
+                  {/* end modal edit */}
+
+                  <button 
+                    type="button"
+                    onClick={() => handleDeleteClick(data)}
+                    className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2">
                     <Trash2 className="w-4 h-4 object-cover" />
                     Delete
                   </button>
