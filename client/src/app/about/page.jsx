@@ -70,12 +70,18 @@ const About = () => {
       </div>
 
       <div className="min-h-screen flex flex-col py-8 items-center justify-center bg-[#F4F3F7]">
-        <div className="container  bg-[#FFFFFF] md:flex xl:flex w-auto xl:w-4/5 lg:w-96 rounded-t-lg shadow-xl">
-          <div className=" p-14 lg:w-1/3">
+        <div className="container bg-[#F3F3F7] md:flex xl:grid xl:grid-cols-2 w-auto xl:w-4/5 lg:w-96 rounded-lg shadow-2xl">
+          <div className="p-14">
+            <h1 className="text-6xl font-light ">About Synapse</h1>
+          </div>
+          <div className="p-14 text-gray-600">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo veniam doloremque praesentium voluptatum nesciunt adipisci neque culpa. Ex asperiores aliquam sapiente ipsum? Eligendi non adipisci eveniet error nam, fuga expedita.</p>
+          </div>
+          <div className="p-14">
             <div>
               <video
                 className="video"
-                src="/tracing.mp4"
+                src="/ball1.mp4"
                 autoPlay
                 loop
                 muted
@@ -94,11 +100,11 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className=" p-14 lg:w-1/3">
+          <div className=" p-14">
             <div>
               <video
                 className="video"
-                src="/modelling.mp4"
+                src="/ball2.mp4"
                 autoPlay
                 loop
                 muted
@@ -117,11 +123,11 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className=" p-14 lg:w-1/3">
+          <div className=" p-14">
             <div>
               <video
                 className="video"
-                src="/visual.mp4"
+                src="/ball3.mp4"
                 autoPlay
                 loop
                 muted
