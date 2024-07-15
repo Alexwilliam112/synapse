@@ -95,6 +95,11 @@ class Controller {
   static async getChartData(req, res, next) {
     try {
       const {
+        query: dashboardTableQuery,
+        parameters: dashboardTableParameters,
+      } = DashboardTable(req.query);
+
+      const {
         query: overallConformanceQuery,
         parameters: overallConformanceParameters,
       } = OverallConformance_PieChart(req.query);
@@ -109,6 +114,11 @@ class Controller {
 
       const { query: topTenQuery, parameters: topTenParameters } =
         TopTenNonConformTable(req.query);
+
+        const tableData_raw = await prisma.$queryRawUnsafe(
+          dashboardTableQuery,
+          ...dashboardTableParameters
+        );
 
       const overallConformance_raw = await prisma.$queryRawUnsafe(
         overallConformanceQuery,
@@ -127,6 +137,11 @@ class Controller {
         ...topTenParameters
       );
 
+      const tableData = tableData_raw.map((row) => {
+        row.conformance_rate = row.conformance_rate * 100
+        return row
+      })
+
       const averageConformance_areaChart = avgConformance_raw.map((el) => {
         return el.average_conformance_rate;
       });
@@ -143,7 +158,8 @@ class Controller {
         averageConformance_areaChart,
         overallConformance_pieChart,
         averageConformanceByProcess_lineChart,
-        topTenTable: topTenNonConformant_raw
+        topTenTable: topTenNonConformant_raw,
+        dashboardTable: tableData
       });
     } catch (error) {
       next(error);
