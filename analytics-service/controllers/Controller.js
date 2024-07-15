@@ -73,6 +73,40 @@ class Controller {
     }
   }
 
+  static async getAverageConformanceRate(req, res, next) {
+    try {
+      const data = await prisma.$queryRaw`
+        SELECT
+          DATE_TRUNC('month', t."timestamp") AS month,
+          CAST(
+            (
+              (
+                COUNT(t."time") - SUM(
+                  CASE
+                    WHEN CAST(t."time" AS FLOAT) > CAST(e."benchmarkTime" AS FLOAT) THEN 1
+                    ELSE 0
+                  END
+                )
+              ) * 1.0 / NULLIF(COUNT(t."time"), 0)
+            ) AS FLOAT
+          ) AS conformance_rate
+        FROM
+          "Task" t
+          LEFT JOIN "Event" e ON t."eventName" = e."eventName"
+        WHERE
+          t."timestamp" BETWEEN '2020-01-01' AND '2024-12-31'
+        GROUP BY
+          DATE_TRUNC('month', t."timestamp")
+        ORDER BY
+          month;
+      `;
+      console.log(data);
+      res.send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async getAnalytics(req, res, next) {
     try {
       const { startDate, endDate, process, department, person } = req.query;
