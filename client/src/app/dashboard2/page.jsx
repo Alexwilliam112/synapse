@@ -10,6 +10,7 @@ import { Clock2, TriangleAlert, LayoutList, Table2 } from 'lucide-react'
 import BarChart from "@/components/BarChart"
 import RadarChart from "@/components/RadarChart"
 import PolarChart from "@/components/PolarChart"
+import Footer from "@/components/Footer"
 
 const Dashboard = () => {
   return (
@@ -20,67 +21,8 @@ const Dashboard = () => {
         <div className="flex flex-col sm:gap-4 sm:py-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
             <div className="grid auto-rows-max items-start gap-4 mt-8 md:gap-8 lg:col-span-2">
-                <h1 className="flex items-center text-4xl font-extralight"><Table2 className="w-8 h-8 font-light mr-2" /> Performance Table Data</h1>
-                <div className="overflow-hidden p-6 bg-white rounded-lg shadow">
-                    <div className="flex items-center gap-5"> 
-
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text">Person</span>
-                        </div>
-                        <select className="select select-bordered">
-                            <option disabled selected>Pick one</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
-                        </select>
-                    </label>
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text">Process</span>
-                        </div>
-                        <select className="select select-bordered">
-                            <option disabled selected>Pick one</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
-                        </select>
-                    </label>
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text">Departement</span>
-                        </div>
-                        <select className="select select-bordered">
-                            <option disabled selected>Pick one</option>
-                            <option>Star Wars</option>
-                            <option>Harry Potter</option>
-                            <option>Lord of the Rings</option>
-                            <option>Planet of the Apes</option>
-                            <option>Star Trek</option>
-                        </select>
-                    </label>
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text">Start Date</span>
-                        </div>
-                        <input type="date" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                    </label>
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text">End Date</span>
-                        </div>
-                        <input type="date" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-                    </label>
-                    </div>
-                    <div className="flex w-full justify-end mt-4">
-                        <p className="text-xs font-light text-gray-500">Filter this data on what you desire</p>
-                    </div>
-                </div>
-                <div>
+              <h1 className="flex items-center text-4xl font-extralight"><Table2 className="w-8 h-8 font-light mr-2" /> Performance Table Data</h1>
+              <div>
                 {/* <div className="flex items-center">
                   <div className="ml-auto flex items-center gap-2">
                     <button variant="outline" size="sm" className="h-7 gap-1 text-sm">
@@ -268,16 +210,69 @@ const Dashboard = () => {
                   </div>
                 </div> */}
                 <div className="">
-                    <BarChart />
-                </div>
-                <div className="">
-                    <RadarChart />
+                  <div className="items-center gap-5">
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Person</span>
+                      </div>
+                      <select className="select select-bordered">
+                        <option disabled selected>Pick one</option>
+                        <option>Star Wars</option>
+                        <option>Harry Potter</option>
+                        <option>Lord of the Rings</option>
+                        <option>Planet of the Apes</option>
+                        <option>Star Trek</option>
+                      </select>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Process</span>
+                      </div>
+                      <select className="select select-bordered">
+                        <option disabled selected>Pick one</option>
+                        <option>Star Wars</option>
+                        <option>Harry Potter</option>
+                        <option>Lord of the Rings</option>
+                        <option>Planet of the Apes</option>
+                        <option>Star Trek</option>
+                      </select>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Departement</span>
+                      </div>
+                      <select className="select select-bordered">
+                        <option disabled selected>Pick one</option>
+                        <option>Star Wars</option>
+                        <option>Harry Potter</option>
+                        <option>Lord of the Rings</option>
+                        <option>Planet of the Apes</option>
+                        <option>Star Trek</option>
+                      </select>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Start Date</span>
+                      </div>
+                      <input type="date" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">End Date</span>
+                      </div>
+                      <input type="date" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                    </label>
+                  </div>
+                  <div className="flex w-full  mt-4">
+                    <p className="text-xs font-light text-gray-500">Filter on what you desire</p>
+                  </div>
                 </div>
               </div>
             </div>
           </main>
         </div>
       </div>
+      <Footer />
     </>
 
   );

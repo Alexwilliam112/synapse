@@ -1,22 +1,210 @@
+"use client";
 // import React from "react";
 // import Navbar from "../components/Navbar"
 // import Graph from "../components/Graph"
 // import RadialGraph from "../components/RadialGraph"
-import LineGraph from "../../components/temppresent/LineGraph"
-import AreaChart from "../../components/temppresent/AreaChart"
-import DonutGraph from "../../components/temppresent/DonutGraph"
+import LineGraph from "../../components/temppresent/LineGraph";
+import AreaChart from "../../components/temppresent/AreaChart";
+import DonutGraph from "../../components/temppresent/DonutGraph";
+import BarChart from "../../components/BarChart";
+import RadarChart from "@/components/RadarChart";
 
-import { Clock2, TriangleAlert, LayoutList } from 'lucide-react'
+import { Clock2, TriangleAlert, LayoutList } from "lucide-react";
+import { useQuery } from "@apollo/client";
+import { getChartsData, getFilter } from "@/queries";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [startDate, setStartDate] = useState("");
+  const [process, setProcess] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [department, setDepartment] = useState("");
+  const [person, setPerson] = useState("");
+
+  const { loading, error, data } = useQuery(getFilter);
+  const {
+    loading: loadingCharts,
+    error: errorCharts,
+    data: dataCharts,
+  } = useQuery(getChartsData, {
+    variables: {
+      input: {
+        startDate,
+        process,
+        person,
+        endDate,
+        department,
+      },
+    },
+    fetchPolicy: "no-cache",
+  });
+
+  const resultPerson = data?.GetFilters?.data?.persons;
+  const resultProcesses = data?.GetFilters?.data?.processes;
+  const resultDepartments = data?.GetFilters?.data?.departments;
+
+  const chartsData = dataCharts?.GetDashboardCharts?.data || {};
+
+  const averageConformanceByProcess_lineChart =
+    chartsData?.averageConformanceByProcess_lineChart;
+  const averageConformance_areaChart = chartsData?.averageConformance_areaChart;
+  const overallConformance_pieChart = chartsData?.overallConformance_pieChart;
+  const topTenTable = chartsData?.topTenTable || [];
+
+  console.log(overallConformance_pieChart, "<<<<,");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission if necessary
+  };
+
+  if (loading) return <p>Loading...</p>;
   return (
     <>
       {/* Navbar */}
       {/* <Navbar /> */}
       <div className="flex min-h-screen w-full flex-col bg-[#F7F7F7]">
+        {/* <p>{JSON.stringify(data?.GetFilters?.data)}</p> */}
+
         <div className="flex flex-col sm:gap-4 sm:py-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
             <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
+              <div className="bg-white p-8 rounded-lg shadow-md w-full">
+                <h2 className="text-2xl font-light mb-6">Filter</h2>
+                <form className="lg:flex gap-5 items-center">
+                  <div>
+                    <label
+                      htmlFor="department"
+                      className="form-control w-auto max-w-xs lg:w-48"
+                    >
+                      <div className="label">
+                        <span className="label-text">Department</span>
+                      </div>
+                      <select
+                        id="department"
+                        name="department"
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                        className="select select-bordered"
+                      >
+                        <option value="" disabled selected>
+                          Select option
+                        </option>
+                        {resultDepartments.map((el, idx) => (
+                          <option key={idx} value="">
+                            {el}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="person"
+                      className="form-control w-auto max-w-xs lg:w-48"
+                    >
+
+                      <div className="label">
+                        <span className="label-text">Person</span>
+                      </div>
+                      <select
+                        id="person"
+                        name="person"
+                        value={person}
+                        onChange={(e) => setPerson(e.target.value)}
+                        className="select select-bordered"
+                      >
+                        <option value="" disabled selected>
+                          Select option
+                        </option>
+                        {resultPerson.map((el, idx) => (
+                          <option key={idx} value="">
+                            {el}
+                          </option>
+                        ))}
+                        {/* Add options here */}
+                      </select>
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="process"
+                      className="form-control w-auto max-w-xs lg:w-48"
+                    >
+
+                      <div className="label">
+                        <span className="label-text">Process</span>
+                      </div>
+                      <select
+                        id="process"
+                        name="process"
+                        value={process}
+                        onChange={(e) => setProcess(e.target.value)}
+                        className="select select-bordered"
+                      >
+                        <option value="" disabled selected>
+                          Select option
+                        </option>
+                        {resultProcesses.map((el, idx) => (
+                          <option key={idx} value="">
+                            {el}
+                          </option>
+                        ))}
+                        {/* Add options here */}
+                      </select>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="startDate"
+                      className="form-control w-full max-w-xs"
+                    >
+                      <div className="label">
+                        <span className="label-text">Start Date</span>
+                      </div>
+                      <input
+                        type="date"
+                        id="startDate"
+                        name="startDate"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="input input-bordered w-full max-w-xs"
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="endDate"
+                      className="form-control w-full max-w-xs"
+                    >
+                      <div className="label">
+                        <span className="label-text">End Date</span>
+                      </div>
+                      <input
+                        type="date"
+                        id="endDate"
+                        name="endDate"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="input input-bordered w-full max-w-xs"
+                      />
+                    </label>
+                  </div>
+
+
+                </form>
+                <div className="flex justify-end px-5 mt-5">
+                  <button
+                    type="submit"
+                    className="btn btn-[#6E8672] "
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
                 <div className="sm:col-span-2 p-6 bg-[#F1F2F2] border-2 border-[#6E8672] rounded-lg shadow">
                   <div className="pb-6 flex justify-between">
@@ -30,21 +218,33 @@ const Dashboard = () => {
                       </p>
                     </div>
                     <div>
-                      <button className="btn bg-[#6E8672] text-white hover:text-[#6E8672]">Diagram</button>
+                      <button className="btn bg-[#6E8672] text-white hover:text-[#6E8672]">
+                        Diagram
+                      </button>
                     </div>
                   </div>
                   <div className="w-auto flex items-center h-auto space-x-8">
                     <div className="w-48 sm:w-32 h-auto">
-                      <DonutGraph />
+                      <DonutGraph data={overallConformance_pieChart} />
                     </div>
                     <div className="space-y-4">
                       <div>
-                        <p className="font-light text-sm flex items-center"><Clock2 className="w-4 h-4 text-[#6E8672] font-light mr-1" /> Ontime Process</p>
-                        <p className="text-5xl">72%</p>
+                        <p className="font-light text-sm flex items-center">
+                          <Clock2 className="w-4 h-4 text-[#6E8672] font-light mr-1" />{" "}
+                          Ontime Process
+                        </p>
+                        <p className="text-5xl">
+                          {overallConformance_pieChart?.ontime}%
+                        </p>
                       </div>
                       <div>
-                        <p className="font-light text-sm flex items-center"><TriangleAlert className="w-4 h-4 text-[#8DB093] font-light mr-1" />Non-Conformance</p>
-                        <p className="text-5xl">28%</p>
+                        <p className="font-light text-sm flex items-center">
+                          <TriangleAlert className="w-4 h-4 text-[#8DB093] font-light mr-1" />
+                          Non-Conformance
+                        </p>
+                        <p className="text-5xl">
+                          {overallConformance_pieChart?.nonConform}%
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -54,10 +254,12 @@ const Dashboard = () => {
                 </div>
                 <div className="p-6 bg-white rounded-lg shadow sm:col-span-2">
                   <div className="pb-2">
-                    <p className="text-sm text-gray-600">Average Conformance Rate</p>
+                    <p className="text-sm text-gray-600">
+                      Average Conformance Rate
+                    </p>
                     {/* <h2 className="text-4xl">$1,329</h2> */}
                   </div>
-                  <AreaChart />
+                  <AreaChart data={averageConformance_areaChart} />
                 </div>
               </div>
               <div>
@@ -73,12 +275,16 @@ const Dashboard = () => {
                 </div> */}
                 <div className="p-6 bg-white rounded-lg shadow">
                   <div className="px-7">
-                    <h2 className="font-semibold">Average Conformance per Process</h2>
-                    <p className="text-sm text-gray-600">Recapitulate every process on this graph.</p>
+                    <h2 className="font-semibold">
+                      Average Conformance per Process
+                    </h2>
+                    <p className="text-sm text-gray-600">
+                      Recapitulate every process on this graph.
+                    </p>
                   </div>
                   <div className="w-full flex h-72">
                     <div className="h-auto w-full">
-                      <LineGraph />
+                      <LineGraph data={averageConformanceByProcess_lineChart} />
                     </div>
                   </div>
                 </div>
@@ -103,15 +309,20 @@ const Dashboard = () => {
                   </div> 
                 </div>*/}
                 {/* <div className="p-6 text-sm">
-                  {/* <AreaChart /> 
+                  // {/* <AreaChart /> 
                 </div> */}
                 {/* <div className="flex flex-row items-center border-t bg-[#6E8672] text-white rounded-md px-6 py-3">
                   <div className="text-xs ">
                     Updated <time dateTime="2023-11-23">November 23, 2023</time>
                   </div>
                 </div> */}
+                <BarChart />
+                <RadarChart />
                 <div className="">
-                  <h1 className="flex items-center"><LayoutList className="w-4 h-4 font-light mr-2" /> Top 10 Non Conform</h1>
+                  <h1 className="flex items-center">
+                    <LayoutList className="w-4 h-4 font-light mr-2" /> Top 10
+                    Non Conform
+                  </h1>
                   <div className="overflow-x-auto">
                     <table className="table">
                       {/* head */}
@@ -124,71 +335,14 @@ const Dashboard = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {/* row 1 */}
-                        <tr className="hover">
-                          <th>1</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>2</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr className="hover">
-                          <th>3</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>4</th>
-                          <td>Cy Ganderton</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 2 */}
-                        <tr className="hover">
-                          <th>5</th>
-                          <td>Hart Hagerty</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        {/* row 3 */}
-                        <tr className="hover">
-                          <th>6</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>7</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>8</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>9</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
-                        <tr className="hover">
-                          <th>10</th>
-                          <td>Brice Swyre</td>
-                          <td>6</td>
-                          <td>0</td>
-                        </tr>
+                        {topTenTable.map((row, index) => (
+                          <tr key={index} className="hover">
+                            <th>{row.rank}</th>
+                            <td>{row.name}</td>
+                            <td>{row.avgOverdue}</td>
+                            <td>{row.avgConformance}</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -199,9 +353,7 @@ const Dashboard = () => {
         </div>
       </div>
     </>
-
   );
-}
+};
 
-
-export default Dashboard
+export default Dashboard;

@@ -1,9 +1,11 @@
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { ApolloWrapper } from "@/lib/apollo-wrapper";
+// import { ApolloWrapper } from "@/lib/apollo-wrapper";
+import { ApolloWrapper } from "../lib/apollo-wrapper"
 // import { ApolloWrapper } from "";
+// import { useScrollToTop } from "@/components/hooks/useScrollToTop";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",
@@ -19,9 +21,11 @@ export const metadata = {
 // }
 
 export default function RootLayout({ children }) {
+  // useScrollToTop();
+
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         <ApolloWrapper>{children}</ApolloWrapper>
       </body>
     </html>

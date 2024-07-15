@@ -1,7 +1,7 @@
 import { ReactTyped } from "react-typed";
 
 const MyComponent = () => (
-  <div className="w-auto font-mono text-xl text-white p-5">
+  <div className="w-auto font-mono text-xl text-white">
     <ReactTyped strings={["PROPOSE, 13/07/2024"]} typeSpeed={50} />
     {/* <br /> */}
     {/* <ReactTyped strings={["13/07/2024"]} typeSpeed={40} className="text-xs" /> */}
