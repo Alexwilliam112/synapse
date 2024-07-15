@@ -2,8 +2,7 @@ const router = require('express').Router()
 const Controller = require('../controllers/Controller')
 
 router.get('/getTableData', Controller.getTableData)
-router.get('/getAverageConformanceRate', Controller.getAverageConformanceRate)
-router.get('/getAnalytics', Controller.getAnalytics)
+router.get('/getChartData', Controller.getChartData)
 router.post('/upsert', Controller.postAnalytics)
 
 module.exports = router

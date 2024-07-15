@@ -1,5 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const groupProcess = require("../utils/groupProcess");
+const {
+  AverageConformance_AreaChart,
+  OverallConformance_PieChart,
+  AverageConformanceByProcess_LineChart,
+  TopTenNonConformTable,
+} = require("../queries/index");
 
 class Controller {
   static async postAnalytics(req, res, next) {
@@ -73,74 +80,57 @@ class Controller {
     }
   }
 
-  static async getOverallChart(req, res, next) {
+  static async getChartData(req, res, next) {
     try {
-      const data = await prisma.$queryRaw`
-        SELECT
-          (SUM(CASE WHEN CAST(t."time" AS FLOAT) <= CAST(e."benchmarkTime" AS FLOAT) THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0)) AS percentage_ontime_process,
-          (SUM(CASE WHEN CAST(t."time" AS FLOAT) > CAST(e."benchmarkTime" AS FLOAT) THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0)) AS percentage_non_conformance
-        FROM
-          "Task" t
-          LEFT JOIN "Event" e ON t."eventName" = e."eventName"
-        WHERE
-          t."timestamp" BETWEEN '2020-01-01' AND '2024-12-31'
-          AND t."department" = 'Marketing Emporio Armani 7'
-          AND t."name" = 'Jane Doe'
-          AND t."processName" = 'PURCHASE_ORDER';
-      `;
-      console.log(data);
-      res.send(data);
-    } catch (error) {
-      next(error)
-    }
-  }
+      const {
+        query: overallConformanceQuery,
+        parameters: overallConformanceParameters,
+      } = OverallConformance_PieChart(req.query);
 
-  static async getAverageConformanceRate(req, res, next) {
-    try {
-      const data = await prisma.$queryRaw`
-        SELECT
-          DATE_TRUNC('month', t."timestamp") AS month,
-          CAST(
-            (
-              (
-                COUNT(t."time") - SUM(
-                  CASE
-                    WHEN CAST(t."time" AS FLOAT) > CAST(e."benchmarkTime" AS FLOAT) THEN 1
-                    ELSE 0
-                  END
-                )
-              ) * 1.0 / NULLIF(COUNT(t."time"), 0)
-            ) AS FLOAT
-          ) AS conformance_rate
-        FROM
-          "Task" t
-          LEFT JOIN "Event" e ON t."eventName" = e."eventName"
-        WHERE
-          t."timestamp" BETWEEN '2020-01-01' AND '2024-12-31'
-          AND t."department" = 'Marketing Emporio Armani 7'
-          AND t."name" = 'Jane Doe'
-          AND t."processName" = 'PURCHASE_ORDER';
-        GROUP BY
-          DATE_TRUNC('month', t."timestamp")
-        ORDER BY
-          month;
-      `;
-      console.log(data);
-      res.send(data);
-    } catch (error) {
-      next(error);
-    }
-  }
+      const {
+        query: avgConformanceQuery,
+        parameters: avgConformanceParameters,
+      } = AverageConformance_AreaChart(req.query);
 
-  static async getAnalytics(req, res, next) {
-    try {
-      const { startDate, endDate, process, department, person } = req.query;
-      res.send({
-        startDate,
-        endDate,
-        process,
-        department,
-        person,
+      const { query: avgProcessQuery, parameters: avgProcessParameters } =
+        AverageConformanceByProcess_LineChart(req.query);
+
+      const { query: topTenQuery, parameters: topTenParameters } =
+        TopTenNonConformTable(req.query);
+
+      const overallConformance_raw = await prisma.$queryRawUnsafe(
+        overallConformanceQuery,
+        ...overallConformanceParameters
+      );
+      const avgConformance_raw = await prisma.$queryRawUnsafe(
+        avgConformanceQuery,
+        ...avgConformanceParameters
+      );
+      const avgConformanceByProcess_raw = await prisma.$queryRawUnsafe(
+        avgProcessQuery,
+        ...avgProcessParameters
+      );
+      const topTenNonConformant_raw = await prisma.$queryRawUnsafe(
+        topTenQuery,
+        ...topTenParameters
+      );
+
+      const averageConformance_areaChart = avgConformance_raw.map((el) => {
+        return el.average_conformance_rate;
+      });
+      const overallConformance_pieChart = {
+        ontime: overallConformance_raw[0].percentage_ontime_process,
+        nonConform: overallConformance_raw[0].percentage_non_conformance,
+      };
+      const averageConformanceByProcess_lineChart = groupProcess(
+        avgConformanceByProcess_raw
+      );
+
+      res.status(200).json({
+        averageConformance_areaChart,
+        overallConformance_pieChart,
+        averageConformanceByProcess_lineChart,
+        topTenTable: topTenNonConformant_raw
       });
     } catch (error) {
       next(error);
