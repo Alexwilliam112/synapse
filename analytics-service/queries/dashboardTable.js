@@ -32,15 +32,15 @@ module.exports = function DashboardTable(
   let query = `
       SELECT
         t."eventName",
-        CAST(e."benchmarkTime" AS INTEGER) AS "benchmarkTime",
+        COALESCE(CAST(e."benchmarkTime" AS INTEGER), 0) AS "benchmarkTime",
         AVG(CAST(t."time" AS FLOAT)) AS average_actual,
-        CAST(e."ProcessId" AS INTEGER) AS "ProcessId",
+        COALESCE(CAST(e."ProcessId" AS INTEGER), 0) AS "ProcessId",
         CAST(
           (
             (
               COUNT(t."time") - SUM(
                 CASE
-                  WHEN CAST(t."time" AS FLOAT) > CAST(e."benchmarkTime" AS FLOAT) THEN 1
+                  WHEN CAST(t."time" AS FLOAT) > COALESCE(CAST(e."benchmarkTime" AS FLOAT), 0) THEN 1
                   ELSE 0
                 END
               )
@@ -48,12 +48,12 @@ module.exports = function DashboardTable(
           ) AS FLOAT
         ) AS conformance_rate,
         CAST(COUNT(t."eventName") AS INTEGER) AS total_case
-      FROM
+    FROM
         "Task" t
         LEFT JOIN "Event" e ON t."eventName" = e."eventName"
-      WHERE
+    WHERE
         ${whereConditions}
-      GROUP BY
+    GROUP BY
         t."eventName",
         e."benchmarkTime",
         e."ProcessId";
