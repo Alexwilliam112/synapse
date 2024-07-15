@@ -220,8 +220,7 @@ const ApiManager = () => {
         <div className="w-full flex justify-end px-4 mb-4">
           <button
             onClick={() => document.getElementById("my_modal_2").showModal()}
-            className="btn bg-white border border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white"
-          >
+            className="btn bg-white border border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white">
             <SquarePlus /> Add API
           </button>
         </div>
@@ -272,15 +271,13 @@ const ApiManager = () => {
               <div className="modal-action">
                 <button
                   type="submit"
-                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                >
+                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                   Save API
                 </button>
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => document.getElementById("my_modal_2").close()}
-                >
+                  onClick={() => document.getElementById("my_modal_2").close()}>
                   Cancel
                 </button>
               </div>
@@ -317,8 +314,7 @@ const ApiManager = () => {
                     onClick={() =>
                       document.getElementById("my_modal_4").showModal()
                     }
-                    className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2 mr-2"
-                  >
+                    className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2 mr-2">
                     <Rocket className="w-4 h-4 object-cover" />
                     Start
                   </button>
@@ -354,8 +350,7 @@ const ApiManager = () => {
                           </label>
                           <button
                             type="submit"
-                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                          >
+                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                             Confirm
                           </button>
                           <button
@@ -363,8 +358,7 @@ const ApiManager = () => {
                             className="btn"
                             onClick={() =>
                               document.getElementById("my_modal_4").close()
-                            }
-                          >
+                            }>
                             Cancel
                           </button>
                         </form>
@@ -373,8 +367,7 @@ const ApiManager = () => {
                   </dialog>
                   <button
                     className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2 mr-2"
-                    onClick={() => handleEditClick(data)}
-                  >
+                    onClick={() => handleEditClick(data)}>
                     <Pencil className="w-4 h-4 object-cover" />
                     Edit
                   </button>
@@ -440,33 +433,30 @@ const ApiManager = () => {
                             />
                           </label>
                           <div className="modal-action">
-                          <button
-                            type="submit"
-                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                          >
-                            Save API
-                          </button>
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={() =>
-                              document.getElementById("my_modal_1").close()
-                            }
-                          >
-                            Cancel
-                          </button>
+                            <button
+                              type="submit"
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
+                              Save API
+                            </button>
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() =>
+                                document.getElementById("my_modal_1").close()
+                              }>
+                              Cancel
+                            </button>
                           </div>
                         </form>
                       </div>
-                    
+                    </div>
                   </dialog>
                   {/* end modal edit */}
 
                   <button
                     type="button"
                     onClick={() => handleDeleteClick(data)}
-                    className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2"
-                  >
+                    className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2">
                     <Trash2 className="w-4 h-4 object-cover" />
                     Delete
                   </button>

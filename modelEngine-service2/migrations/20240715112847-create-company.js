@@ -2,34 +2,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Eventlogs', {
+    await queryInterface.createTable('Companies', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      processName: {
+      companyName: {
         type: Sequelize.STRING
       },
-      caseId: {
-        type: Sequelize.STRING
-      },
-      timestamp: {
+      expiration: {
         type: Sequelize.DATE
       },
-      eventName: {
-        type: Sequelize.STRING
+      createdAt: {
+        type: Sequelize.DATE
       },
-      name: {
-        type: Sequelize.STRING
-      },
-      department: {
-        type: Sequelize.STRING
+      updatedAt: {
+        type: Sequelize.DATE
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Eventlogs');
+    await queryInterface.dropTable('Companies');
   }
 };
