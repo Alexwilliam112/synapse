@@ -7,6 +7,7 @@ import { UserLogin } from "../../queries/index";
 import TypewriterEffect from "../../components/Typewriter";
 import Cookies from "js-cookie";
 import ErrComp from "@/components/ErrorComponent";
+import makeClient from "@/config/ApolloClient";
 
 // import TypeIt from 'typeit';
 

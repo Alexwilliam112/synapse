@@ -1,10 +1,17 @@
 "use client";
 
-import { CreateAPI, DeleteApi, FetchApi, UpdateAPI } from "@/queries";
+import makeClient from "@/config/ApolloClient";
+import {
+  CreateAPI,
+  DeleteApi,
+  FetchApi,
+  StartMining,
+  UpdateAPI,
+} from "@/queries";
 import { useQuery, useMutation } from "@apollo/client";
 import { Pencil, Rocket, SquarePlus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ApiManager = () => {
   const router = useRouter();
@@ -12,11 +19,13 @@ const ApiManager = () => {
   const [description, setDescription] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [selectedEndpoint, setSelectedEndpoint] = useState(null); // State to hold selected endpoint
-  const [editId, setEditId] = useState()
-  const [editEndpoint, setEditEndpoint] = useState("")
-  const [editdescription, setEditDescription] = useState("")
-  const [editApiKey, setEditApiKey] = useState("")
-  const [deleteId, setDeleteId] = useState()
+  const [editId, setEditId] = useState();
+  const [editEndpoint, setEditEndpoint] = useState("");
+  const [editdescription, setEditDescription] = useState("");
+  const [editApiKey, setEditApiKey] = useState("");
+  const [deleteId, setDeleteId] = useState();
+  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState("");
 
   // console.log(editId);
 
@@ -27,6 +36,7 @@ const ApiManager = () => {
     data: queryData,
     refetch,
   } = useQuery(FetchApi);
+
   // console.log(queryData);
   const endpointsData = queryData?.GetEndpoints?.data;
 
@@ -69,19 +79,23 @@ const ApiManager = () => {
   };
   // Handle edit button click
   const handleEditClick = (endpoint) => {
-    setEditEndpoint(endpoint.endpointUrl)
-    setEditDescription(endpoint.description)
-    setEditApiKey(endpoint.apiKey)
+    setEditEndpoint(endpoint.endpointUrl);
+    setEditDescription(endpoint.description);
+    setEditApiKey(endpoint.apiKey);
     setSelectedEndpoint(endpoint);
     document.getElementById("my_modal_1").showModal();
-    setEditId(endpoint.id)
+    setEditId(endpoint.id);
   };
 
   //EDIT ENDPOINT
   const [
     updateEndpoint,
-    { dataEdit: mutationDataUpdate, loading: mutationLoadingUpdate, error: mutationErrorUpdate },
-  ] = useMutation(UpdateAPI)
+    {
+      dataEdit: mutationDataUpdate,
+      loading: mutationLoadingUpdate,
+      error: mutationErrorUpdate,
+    },
+  ] = useMutation(UpdateAPI);
 
   const handleUpdateAPI = async (e) => {
     e.preventDefault();
@@ -100,52 +114,105 @@ const ApiManager = () => {
       // console.log(data, '<<<<<<<<<<<<<<<');
 
       if (data.UpdateEndpoint.statusCode === 200) {
-        refetch()
-        document.getElementById("my_modal_1").close()
-        router.push("/apimanager")
+        refetch();
+        document.getElementById("my_modal_1").close();
+        router.push("/apimanager");
       } else {
         console.error("Error updating endpoint");
       }
     } catch (error) {
       console.log(JSON.stringify(error));
     }
-  }
+  };
 
   // Delete endpoint
-  const [deleteEndpoint, {data: mutationDataDelete, loading: mutationLoadingDelete, error: mutationErrorDelete},] = useMutation(DeleteApi)
+  const [
+    deleteEndpoint,
+    {
+      data: mutationDataDelete,
+      loading: mutationLoadingDelete,
+      error: mutationErrorDelete,
+    },
+  ] = useMutation(DeleteApi);
 
   const handleDelete = async (e) => {
     try {
       const { data } = await deleteEndpoint({
         variables: {
           input: {
-            id: Number(selectedEndpoint.id)
-          }
-        }
-      })
+            id: Number(selectedEndpoint.id),
+          },
+        },
+      });
       if (data.DeleteEndpoint.statusCode === 200) {
-        refetch()
-        router.push("/apimanager")
+        refetch();
+        router.push("/apimanager");
       } else {
         console.error("Error deleting endpoint");
       }
     } catch (error) {
       console.log(JSON.stringify(error));
     }
-  }
+  };
 
   const handleDeleteClick = (endpoint) => {
     setSelectedEndpoint(endpoint);
-    setDeleteId(endpoint.id)
-    handleDelete(deleteId)
-  }
+    setDeleteId(endpoint.id);
+    handleDelete(deleteId);
+  };
+
+  //HANDLE START
+  const [
+    startMining,
+    {
+      data: mutationDataStart,
+      loading: mutationLoadingStart,
+      error: mutationErrorStart,
+    },
+  ] = useMutation(StartMining);
+
+  const handleStart = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await startMining({
+        variables: {
+          input: {
+            startDate,
+            endpointUrl,
+            endDate,
+            apiKey,
+          },
+        },
+      });
+      console.log(data);
+
+      // if (data.startMining.statusCode === 200) {
+      // Refetch the endpoints data to get the latest data
+      refetch();
+
+      // Close the modal after successful submission
+      document.getElementById("my_modal_4").close();
+
+      router.push("/apimanager");
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (queryLoading || mutationLoading || mutationLoadingUpdate) {
     return <div>Loading...</div>;
   }
 
   if (queryError || mutationError || mutationErrorUpdate) {
-    return <div>Error: {queryError?.message || mutationError?.message || mutationErrorUpdate?.message }</div>;
+    return (
+      <div>
+        Error:{" "}
+        {queryError?.message ||
+          mutationError?.message ||
+          mutationErrorUpdate?.message}
+      </div>
+    );
   }
 
   return (
@@ -247,10 +314,64 @@ const ApiManager = () => {
                 <td>{data.apiKey}</td>
                 <td>{data.status}</td>
                 <td className="space-x-2 flex items-center">
-                  <button className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2 mr-2">
+                  <button
+                    onClick={() =>
+                      document.getElementById("my_modal_4").showModal()
+                    }
+                    className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2 mr-2"
+                  >
                     <Rocket className="w-4 h-4 object-cover" />
                     Start
                   </button>
+
+                  {/* modal start */}
+                  <dialog id="my_modal_4" className="modal">
+                    <div className="modal-box">
+                      <h3 className="font-bold text-lg">Select date</h3>
+
+                      <div className="modal-action">
+                        <form onSubmit={handleStart}>
+                          <label className="input input-bordered flex items-center gap-2 my-1">
+                            Start Date:
+                            <input
+                              type="date"
+                              name="startDate"
+                              className="grow"
+                              onChange={(e) => setStartDate(e.target.value)}
+                              value={startDate}
+                              required
+                            />
+                          </label>
+                          <label className="input input-bordered flex items-center gap-2 my-1">
+                            End Date:
+                            <input
+                              type="date"
+                              name="endDate"
+                              className="grow"
+                              onChange={(e) => setEndDate(e.target.value)}
+                              value={endDate}
+                              required
+                            />
+                          </label>
+                          <button
+                            type="submit"
+                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() =>
+                              document.getElementById("my_modal_4").close()
+                            }
+                          >
+                            Cancel
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
                   <button
                     className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2 mr-2"
                     onClick={() => handleEditClick(data)}
@@ -266,11 +387,10 @@ const ApiManager = () => {
                       <p className="py-4">
                         Press ESC key or click the button below to close
                       </p>
-                    
+
                       <div className="modal-action">
-                        
                         <form onSubmit={handleUpdateAPI}>
-                        {/* <label className="input input-bordered items-center gap-2 my-1"> 
+                          {/* <label className="input input-bordered items-center gap-2 my-1"> 
                             Id: 
                             <input
                               type="number"
@@ -301,7 +421,9 @@ const ApiManager = () => {
                               name="description"
                               className="grow"
                               placeholder={selectedEndpoint?.description}
-                              onChange={(e) => setEditDescription(e.target.value)}
+                              onChange={(e) =>
+                                setEditDescription(e.target.value)
+                              }
                               value={editdescription}
                               required
                             />
@@ -339,10 +461,11 @@ const ApiManager = () => {
                   </dialog>
                   {/* end modal edit */}
 
-                  <button 
+                  <button
                     type="button"
                     onClick={() => handleDeleteClick(data)}
-                    className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2">
+                    className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2"
+                  >
                     <Trash2 className="w-4 h-4 object-cover" />
                     Delete
                   </button>

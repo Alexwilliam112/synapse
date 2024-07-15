@@ -35,17 +35,25 @@ export const CreateAPI = gql`
 `;
 
 export const UpdateAPI = gql`
-mutation Mutation($input: UpdateEndpointInput) {
-  UpdateEndpoint(input: $input) {
-    statusCode
+  mutation Mutation($input: UpdateEndpointInput) {
+    UpdateEndpoint(input: $input) {
+      statusCode
+    }
   }
-}
 `;
 
 export const DeleteApi = gql`
-mutation DeleteEndpoint($input: DeleteEndpointInput) {
-  DeleteEndpoint(input: $input) {
-    statusCode
+  mutation DeleteEndpoint($input: DeleteEndpointInput) {
+    DeleteEndpoint(input: $input) {
+      statusCode
+    }
   }
-}
+`;
+
+export const StartMining = gql`
+  mutation StartMining($input: MiningRequest) {
+    StartMining(input: $input) {
+      statusCode
+    }
+  }
 `;
