@@ -35,7 +35,7 @@ module.exports = {
     Mutation: {
       StartMining: async (_, args, context) => {
         const { startDate, endDate, endpointUrl, apiKey } = args.input;
-        const token = context.auth()
+        const token = await context.auth()
 
         const serverPayload = signTokenServer({
           startDate,

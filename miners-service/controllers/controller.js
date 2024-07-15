@@ -2,7 +2,7 @@ const processMinerClient = require("../config/proto/processMiner/grpcClient-proc
 const temporalAnalysisClient = require("../config/proto/temporalAnalysis/grpcClient-temporalAnalysis");
 const axios = require("axios");
 const Eventlog = require("../models/eventlog");
-const { signTokenServer } = require("../utils/jwt");
+const { signTokenServer, verifyTokenServer } = require("../utils/jwt");
 
 async function requestProcessMining(eventlogData) {
   return new Promise((resolve, reject) => {
@@ -49,6 +49,9 @@ async function requestCaseTracing(data) {
 class Controller {
   static async startMining(req, res, next) {
     try {
+      const { authorization } = req.headers;
+      const token = authorization.split(" ")[1]
+      const data = verifyTokenServer(token);
       const jsonData = require("../data/json/eventlog_practice.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
@@ -56,11 +59,10 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
-
       const tasks = await requestTemporalAnalysis(jsonData);
       const models = await requestProcessMining(eventlogs);
 
-      const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN });
+      const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN, CompanyId: data.CompanyId });
 
       res.status(200).json({
         tasks,

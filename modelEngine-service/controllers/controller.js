@@ -9,7 +9,6 @@ class ModelEngine {
           CompanyId
         }
       })
-      console.log(process);
       res.status(200).json({
         statusCode: 200,
         data: process
@@ -51,8 +50,6 @@ class ModelEngine {
       console.log(req.data);
       const { models } = req.body;
       const CompanyId = req?.data?.CompanyId || 1
-      // const CompanyId = 1
-      console.log(`==== Start ====`);
       for (const model of models) {
         let { processName, fitness, arcs, transitions, places } = model;
 
@@ -126,14 +123,12 @@ class ModelEngine {
           await upsert({ ProcessId, states, events, dataLinks })
         }
       }
-      console.log(`==== Stop ====`);
 
       res.status(200).json({
         statusCode: 200,
         data: "Success"
       });
     } catch (error) {
-      console.log(error);
       next({
         statusCode: 400
       });

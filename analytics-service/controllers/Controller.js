@@ -73,7 +73,6 @@ class Controller {
           e."ProcessId";
         `;
 
-      console.log(data);
       res.send(data);
     } catch (error) {
       next(error);
