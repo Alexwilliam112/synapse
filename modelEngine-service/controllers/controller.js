@@ -48,8 +48,10 @@ class ModelEngine {
 
   static async create(req, res, next) {
     try {
+      console.log(req.data);
       const { models } = req.body;
-      const CompanyId = 1
+      const CompanyId = req?.data?.CompanyId || 1
+      // const CompanyId = 1
       console.log(`==== Start ====`);
       for (const model of models) {
         let { processName, fitness, arcs, transitions, places } = model;
@@ -61,7 +63,7 @@ class ModelEngine {
           description: "This is a test process",
           lastUpdate: new Date(),
           fitness,
-          CompanyId: 1,
+          CompanyId,
         };
 
         const statePayload = transitions.map((transition) => ({
