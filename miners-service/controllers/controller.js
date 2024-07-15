@@ -69,23 +69,23 @@ class Controller {
         models,
       });
 
-      // try {
-      //   await axios.post(
-      //     "http://localhost:3003/upsert",
-      //     {
-      //       tasks
-      //     },
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${serverToken}`,
-      //       },
-      //     }
-      //   );
+      try {
+        await axios.post(
+          "http://localhost:3003/upsert",
+          {
+            tasks
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serverToken}`,
+            },
+          }
+        );
 
-      // } catch (error) {
-      //   throw { name: 503, source: "analytics-service" };
-      // }
+      } catch (error) {
+        throw { name: 503, source: "analytics-service" };
+      }
 
       try {
         await axios.post(
