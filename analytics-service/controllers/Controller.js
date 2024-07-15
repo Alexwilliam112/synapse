@@ -73,6 +73,28 @@ class Controller {
     }
   }
 
+  static async getOverallChart(req, res, next) {
+    try {
+      const data = await prisma.$queryRaw`
+        SELECT
+          (SUM(CASE WHEN CAST(t."time" AS FLOAT) <= CAST(e."benchmarkTime" AS FLOAT) THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0)) AS percentage_ontime_process,
+          (SUM(CASE WHEN CAST(t."time" AS FLOAT) > CAST(e."benchmarkTime" AS FLOAT) THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0)) AS percentage_non_conformance
+        FROM
+          "Task" t
+          LEFT JOIN "Event" e ON t."eventName" = e."eventName"
+        WHERE
+          t."timestamp" BETWEEN '2020-01-01' AND '2024-12-31'
+          AND t."department" = 'Marketing Emporio Armani 7'
+          AND t."name" = 'Jane Doe'
+          AND t."processName" = 'PURCHASE_ORDER';
+      `;
+      console.log(data);
+      res.send(data);
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async getAverageConformanceRate(req, res, next) {
     try {
       const data = await prisma.$queryRaw`
@@ -95,6 +117,9 @@ class Controller {
           LEFT JOIN "Event" e ON t."eventName" = e."eventName"
         WHERE
           t."timestamp" BETWEEN '2020-01-01' AND '2024-12-31'
+          AND t."department" = 'Marketing Emporio Armani 7'
+          AND t."name" = 'Jane Doe'
+          AND t."processName" = 'PURCHASE_ORDER';
         GROUP BY
           DATE_TRUNC('month', t."timestamp")
         ORDER BY
