@@ -43,8 +43,20 @@ module.exports = {
       data: ChartData
     }
 
+    type FiltersResponse {
+      departments: [String]
+      persons: [String]
+      processes: [String]
+    }
+
+    type GetFiltersResponse {
+      statusCode: Int
+      data: FiltersResponse
+    }
+
     type Query {
       GetDashboardCharts(input: DashboardFilter): GetDashboardChartsResponse
+      GetFilters: GetFiltersResponse
     }
   `,
 
@@ -74,6 +86,21 @@ module.exports = {
           data: data.data
         };
       },
+
+      GetFilters: async (_, __, context) => {
+        const token = await context.auth();
+
+        const data = await axios.get("http://localhost:3003/filters", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+        return {
+          statusCode: 200,
+          data: data.data
+        };
+      }
     },
 
     Mutation: {},
