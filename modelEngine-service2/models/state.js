@@ -18,6 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
+    identifier: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
+    },
     isTextEditable: {
       type: DataTypes.BOOLEAN,
       allowNull: false

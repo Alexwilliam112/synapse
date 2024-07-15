@@ -52,28 +52,38 @@ class Controller {
         try {
             const { models } = req.body;
             const CompanyId = req?.data?.CompanyId;
-
+            console.log(CompanyId);
             // Start a transaction
             console.log(`=== Transaction started ===`);
-            transaction = await sequelize.transaction();
+
+
             for (const model of models) {
+                transaction = await sequelize.transaction();
                 let { processName, fitness, arcs, transitions, places } = model;
 
                 processName = processName.split(", ").sort().join(", ");
 
                 const processPayload = {
                     processName,
-                    description: "This is a test process",
-                    lastUpdate: new Date(),
+                    description: "This is a test lagi",
+                    lastUpdate: new Date().toISOString(),
                     fitness,
                     CompanyId,
+                    identifier: `${processName}-${CompanyId}`
                 };
+
+                const process = await Process.bulkCreate([processPayload], {
+                    transaction,
+                    updateOnDuplicate: ["processName", 'identifier', 'description', 'lastUpdate', 'fitness', 'CompanyId'],
+                });
+                const ProcessId = process[0].id;
 
                 const statePayload = transitions.map((transition) => ({
                     eventName: transition.key,
                     isTextEditable: false,
-                    color: "#ADD8E6",
-                    ProcessId: null, // Placeholder for later assignment
+                    color: "#ADD8E7",
+                    ProcessId,
+                    identifier: `${transition.key}-${ProcessId}`
                 }));
 
                 const eventPayload = places.map((event) => ({
@@ -82,8 +92,9 @@ class Controller {
                     benchmarkTime: 0,
                     time: event.time,
                     isTextEditable: false,
-                    color: "#FF0000",
-                    ProcessId: null, // Placeholder for later assignment
+                    color: "#FF0099",
+                    ProcessId,
+                    identifier: `${event.key}-${ProcessId}`
                 }));
 
                 const dataLinkPayload = arcs.map((arc) => ({
@@ -91,30 +102,38 @@ class Controller {
                     from: arc.from_,
                     to: arc.to,
                     text: "",
-                    ProcessId: null, // Placeholder for later assignment
+                    ProcessId,
+                    identifier: `${arc.from_}-${arc.to}-${ProcessId}`
+
                 }));
 
-                // Create or update the Process record
-                const [upsertProcess, created] = await Process.upsert(processPayload, {
-                    where: { processName, CompanyId },
+                // Perform bulk upsert operations
+                await State.bulkCreate(statePayload, {
                     transaction,
+                    updateOnDuplicate: ['identifier', 'eventName', 'isTextEditable', 'color', 'ProcessId']
+                });
+                console.log(eventPayload, eventPayload.length);
+
+                await Event.bulkCreate(eventPayload, {
+                    transaction,
+                    updateOnDuplicate: ['identifier', 'eventName', 'frequency', 'benchmarkTime', 'time', 'isTextEditable', 'color', 'ProcessId']
+                }).then(result => {
+                    console.log(result, `<<<<<<<<<<<<<<<< res`); // Inspect the result
+                }).catch(error => {
+                    console.error(error, `<<<<<<<<<<<<<<<<<<<<<< err`); // Inspect any errors
                 });
 
-                const ProcessId = upsertProcess.id;
+                await DataLink.bulkCreate(dataLinkPayload, {
+                    transaction,
+                    updateOnDuplicate: ['identifier', 'canRelinkFrom', 'from', 'to', 'text', 'ProcessId']
+                }).then(result => {
+                    console.log(result, `<<<<<<<<<<<<<<<< res`); // Inspect the result
+                }).catch(error => {
+                    console.error(error, `<<<<<<<<<<<<<<<<<<<<<< err`); // Inspect any errors
+                });
 
-                // Assign ProcessId to payloads
-                statePayload.forEach(state => state.ProcessId = ProcessId);
-                eventPayload.forEach(event => event.ProcessId = ProcessId);
-                dataLinkPayload.forEach(dataLink => dataLink.ProcessId = ProcessId);
-
-                // Perform bulk upsert operations
-                await State.bulkCreate(statePayload, { transaction, updateOnDuplicate: ['eventName', 'ProcessId'] });
-                await Event.bulkCreate(eventPayload, { transaction, updateOnDuplicate: ['eventName', 'ProcessId'] });
-                await DataLink.bulkCreate(dataLinkPayload, { transaction, updateOnDuplicate: ['from', 'to', 'ProcessId'] });
+                await transaction.commit();
             }
-
-            // Commit the transaction if all operations succeed
-            await transaction.commit();
             console.log(`=== Transaction committed ===`);
             res.status(200).json({
                 statusCode: 200,
@@ -132,6 +151,5 @@ class Controller {
         }
     }
 }
-
 
 module.exports = Controller;
