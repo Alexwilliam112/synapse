@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import makeClient from "@/config/ApolloClient";
 
 const Navbar = () => {
   // const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,7 @@ const Navbar = () => {
 
   function handleLogout() {
     Cookies.remove("token");
+    makeClient().clearStore();
     router.push("/");
   }
 
