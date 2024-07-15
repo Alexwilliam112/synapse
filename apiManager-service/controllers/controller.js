@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 class Api {
     static async getAll(req, res, next) {
         try {
-            const { CompanyId } = req.data
+            const { CompanyId } = req.loginInfo
             const allEndpoint = await prisma.endpoint.findMany({
                 where: {
                     CompanyId
@@ -44,7 +44,7 @@ class Api {
 
     static async create(req, res, next) {
         try {
-            let { CompanyId } = req.data
+            let { CompanyId } = req.loginInfo
             const { endpointUrl, status = "Completed", apiKey, description } = req.body;
             if (!endpointUrl || !status || !apiKey || !CompanyId || !description) {
                 throw new Error("All data must be filled");

@@ -79,8 +79,6 @@ module.exports = {
           params: { startDate, endDate, department, person, process },
         });
 
-        console.log(data.data);
-
         return {
           statusCode: 200,
           data: data.data
