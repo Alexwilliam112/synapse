@@ -6,7 +6,7 @@ const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { authentication } = require("./middlewares/authentication");
 const { userResolvers, userTypeDefs } = require("./schemas/user");
-const { endpointResolvers, endpointTypeDefs} = require('./schemas/endpointMiners')
+const { endpointResolvers, endpointTypeDefs } = require('./schemas/endpointMiners')
 
 const server = new ApolloServer({
   typeDefs: [userTypeDefs, endpointTypeDefs],
@@ -29,6 +29,5 @@ const server = new ApolloServer({
       };
     },
   });
-
   console.log(`Server starting at ${url}`);
 })();
