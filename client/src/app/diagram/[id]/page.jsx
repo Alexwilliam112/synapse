@@ -10,7 +10,7 @@ import { saveAs } from "file-saver";
 import { DiagramWrapper } from "../../../components/diagram/DiagramWrapper";
 import { SelectionInspector } from "../../../components/diagram/SelectionInspector";
 import makeClient from "@/config/ApolloClient";
-import { getModelById } from "@/queries";
+import { getModelById, updateEvent } from "@/queries";
 
 const colorMapping = {
   lightblue: "#50B8E7",
@@ -540,7 +540,8 @@ class App extends React.Component {
               </button>
             </form>
             <h3 className="font-light text-2xl">Node Information</h3>
-            <p className="py-4"> {inspector}</p>
+            <p>test</p>
+            {/* <p className="py-4"> {inspector}</p> */}
           </div>
         </dialog>
       </div>
