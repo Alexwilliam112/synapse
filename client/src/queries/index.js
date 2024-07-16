@@ -110,3 +110,67 @@ export const getFilter = gql`
     }
   }
 `;
+
+export const getModelById = gql`
+  query GetById($input: InputModelById) {
+    GetById(input: $input) {
+      statusCode
+      data {
+        id
+        processName
+        identifier
+        description
+        lastUpdate
+        fitness
+        CompanyId
+        dataLinks {
+          id
+          canRelinkFrom
+          identifier
+          from
+          to
+          text
+          ProcessId
+        }
+        events {
+          id
+          eventName
+          identifier
+          frequency
+          time
+          benchmarkTime
+          isTextEditable
+          color
+          shape
+          ProcessId
+        }
+        states {
+          id
+          eventName
+          identifier
+          isTextEditable
+          color
+          shape
+          ProcessId
+        }
+      }
+    }
+  }
+`;
+
+export const getAllProcess = gql`
+  query GetAllProcess {
+    GetAllProcess {
+      statusCode
+      data {
+        id
+        processName
+        identifier
+        description
+        lastUpdate
+        fitness
+        CompanyId
+      }
+    }
+  }
+`;

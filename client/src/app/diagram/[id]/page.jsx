@@ -7,8 +7,10 @@ import { produce } from "immer";
 import React from "react";
 import { saveAs } from "file-saver";
 
-import { DiagramWrapper } from "../../components/diagram/DiagramWrapper";
-import { SelectionInspector } from "../../components/diagram/SelectionInspector";
+import { DiagramWrapper } from "../../../components/diagram/DiagramWrapper";
+import { SelectionInspector } from "../../../components/diagram/SelectionInspector";
+import makeClient from "@/config/ApolloClient";
+import { getModelById } from "@/queries";
 
 const colorMapping = {
   lightblue: "#50B8E7",
@@ -41,6 +43,7 @@ class App extends React.Component {
       newLinkFrom: 0,
       newLinkTo: 1,
       currentFileName: null,
+      loading: true, // Initialize loading state
     };
     this.mapNodeKeyIdx = new Map();
     this.mapLinkKeyIdx = new Map();
@@ -55,6 +58,68 @@ class App extends React.Component {
     this.handleExport = this.handleExport.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+  }
+
+  componentDidMount() {
+    const id = this.props.params.id;
+    // console.log(id, "iniiiii");
+    // console.log(this.props.params.id);
+    this.fetchData(id);
+  }
+
+  async fetchData(id) {
+    // console.log(id);
+    const { data } = await makeClient().query({
+      query: getModelById,
+      variables: {
+        input: {
+          id: Number(id),
+        },
+      },
+    });
+
+    const mappedData = {
+      nodeDataArray: [],
+      linkDataArray: [],
+      modelData: { canRelink: true },
+    };
+
+    // Mapping events and states to nodeDataArray
+    let nodeId = 0;
+    data?.GetById?.data?.states?.forEach((state) => {
+      mappedData.nodeDataArray.push({
+        id: state.eventName,
+        eventName: state.eventName,
+        color: state.color,
+        shape: state.shape === "Ellipse" ? "Ellipse" : "RoundedRectangle",
+        isTextEditable: state.isTextEditable,
+      });
+    });
+
+    data?.GetById?.data?.events?.forEach((event) => {
+      mappedData.nodeDataArray.push({
+        id: event.eventName,
+        eventName: event.eventName,
+        color: event.color === "#FF0099" ? "orange" : "yellow",
+        shape:
+          event.shape === "Rounded rectangle" ? "RoundedRectangle" : "Ellipse",
+        isTextEditable: event.isTextEditable,
+      });
+    });
+
+    // Mapping dataLinks to linkDataArray
+    data?.GetById?.data?.dataLinks?.forEach((link) => {
+      mappedData.linkDataArray.push({
+        id: link.id,
+        from: link.from,
+        to: link.to,
+        text: link.text,
+        canRelinkFrom: link.canRelinkFrom,
+      });
+    });
+
+    this.setState({ ...mappedData, loading: false }); // Set loading to false once data is fetched
+    console.log(mappedData);
   }
 
   refreshNodeIndex(nodeArr) {
@@ -358,16 +423,8 @@ class App extends React.Component {
     }
   }
 
-  // handleReshape() {
-  //   // Implementing the reshaping functionality
-  //   const diagram = this.diagramRef.current.getDiagram();
-  //   if (diagram instanceof go.Diagram) {
-  //     diagram.layoutDiagram(true); // This will reshape the diagram according to the specified layout
-  //   }
-  // }
-
   render() {
-    const selectedData = this.state.selectedData;
+    const { loading, selectedData } = this.state;
     let inspector;
     if (selectedData !== null) {
       inspector = (
@@ -375,6 +432,14 @@ class App extends React.Component {
           selectedData={this.state.selectedData}
           onInputChange={this.handleInputChange}
         />
+      );
+    }
+
+    if (loading) {
+      return (
+        <div className="h-screen w-screen flex items-center justify-center">
+          <div className="loader">Loading...</div>
+        </div>
       );
     }
 
@@ -429,48 +494,6 @@ class App extends React.Component {
               Add Node
             </button>
           </div>
-          {/* <div>
-          <h3>Add Link</h3>
-          <label>
-            Text:
-            <input
-              type="text"
-              value={this.state.newLinkText}
-              onChange={(e) => this.setState({ newLinkText: e.target.value })}
-            />
-          </label>
-          <label>
-            From Node:
-            <select
-              value={this.state.newLinkFrom}
-              onChange={(e) =>
-                this.setState({ newLinkFrom: parseInt(e.target.value) })
-              }
-            >
-              {this.state.nodeDataArray.map((node) => (
-                <option key={node.id} value={node.id}>
-                  {node.eventName}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            To Node:
-            <select
-              value={this.state.newLinkTo}
-              onChange={(e) =>
-                this.setState({ newLinkTo: parseInt(e.target.value) })
-              }
-            >
-              {this.state.nodeDataArray.map((node) => (
-                <option key={node.id} value={node.id}>
-                  {node.eventName}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button onClick={this.handleAddLink}>Add Link</button>
-        </div> */}
           <div className="flex flex-row mt-2 mb-4 justify-between">
             <button
               onClick={this.handleExport}
@@ -478,7 +501,6 @@ class App extends React.Component {
             >
               Export Diagram
             </button>
-            {/* <button onClick={this.handleSave}>Save Diagram</button> */}
             <label className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm cursor-pointer">
               Choose File
               <input
@@ -495,15 +517,6 @@ class App extends React.Component {
           >
             Reshape Diagram
           </button>
-          {/* <label>
-          Allow Relinking?
-          <input
-            type="checkbox"
-            id="relink"
-            checked={this.state.modelData.canRelink}
-            onChange={this.handleRelinkChange}
-          />
-        </label> */}
           {inspector}
         </div>
         <div className="flex-1 p-4">
