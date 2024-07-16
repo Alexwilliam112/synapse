@@ -9,7 +9,7 @@ import {
   UpdateAPI,
 } from "@/queries";
 import { useQuery, useMutation } from "@apollo/client";
-import { Pencil, Rocket, SquarePlus, Trash2, Copy, Check, EyeOff, Eye } from "lucide-react";
+import { Pencil, Rocket, SquarePlus, Trash2, Copy, Check, EyeOff, Eye, FolderKey } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -226,15 +226,17 @@ const ApiManager = () => {
 
   return (
     <>
-      <div className="overflow-x-auto min-h-screen">
-        <div className="w-full flex justify-end px-4 mb-4">
-          <button
-            onClick={() => document.getElementById("my_modal_2").showModal()}
-            className="btn bg-white border border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white"
-          >
-            <SquarePlus /> Add API
-          </button>
-        </div>
+      <div className="w-full flex justify-between px-12 mb-4 py-4">
+        <h1 className="text-4xl flex gap-2"><FolderKey className="w-10 h-10 object-cover font-light" /> API Manager</h1>
+        <button
+          onClick={() => document.getElementById("my_modal_2").showModal()}
+          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white"
+        >
+          <SquarePlus /> Add API
+        </button>
+      </div>
+      <div className="overflow-x-auto h-screen px-8">
+
         <dialog id="my_modal_2" className="modal">
           <div className="modal-box space-y-4">
             <div className="block w-full">
@@ -297,7 +299,7 @@ const ApiManager = () => {
             </form>
           </div>
         </dialog>
-        <table className="table">
+        <table className="table h-1/3">
           <thead>
             <tr>
               <th>No.</th>

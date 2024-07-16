@@ -17,6 +17,7 @@ import {
   selectDepartment,
   selectPerson,
 } from "@/Redux/filterSlice";
+import { useState } from "react";
 
 const formatNumberToTwoDecimals = (num) => {
   return Number.isInteger(num) ? num.toString() : num.toFixed(2);
@@ -31,7 +32,13 @@ const Dashboard = () => {
   const department = useSelector(selectDepartment);
   const person = useSelector(selectPerson);
 
-  // console.log(person);
+  const [formState, setFormState] = useState({
+    startDate,
+    process,
+    endDate,
+    department,
+    person,
+  });
 
   const { loading, error, data } = useQuery(getFilter);
   const {
@@ -41,11 +48,11 @@ const Dashboard = () => {
   } = useQuery(getChartsData, {
     variables: {
       input: {
-        startDate,
-        process,
-        person,
-        endDate,
-        department,
+        startDate: formState.startDate,
+        process: formState.process,
+        person: formState.person,
+        endDate: formState.endDate,
+        department: formState.department,
       },
     },
     fetchPolicy: "no-cache",
@@ -58,28 +65,64 @@ const Dashboard = () => {
   const chartsData = dataCharts?.GetDashboardCharts?.data || {};
   const dashboardTable = chartsData?.dashboardTable || [];
 
-  if (loading || loadingCharts) return <div className="flex items-center justify-center h-screen w-screen"> <div className="flex gap-2 items-center"> <span className="loading loading-ball loading-lg"></span> <p className="font-mono">Building Data..</p></div> </div>;
-  if (error) return (
-    <>
-      <div className="flex items-center justify-center h-screen w-screen">
-        <div>
-          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
-          <p className="font-mono" >Error fetching filters: {error.message}</p>
-        </div>
-      </div>
-    </>
-  )
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
 
-  if (errorCharts) return (
-    <>
+  const handleClick = (e) => {
+    dispatch(setStartDate(formState.startDate));
+    dispatch(setProcess(formState.process));
+    dispatch(setEndDate(formState.endDate));
+    dispatch(setDepartment(formState.department));
+    dispatch(setPerson(formState.person));
+  };
+
+  if (loading || loadingCharts)
+    return (
       <div className="flex items-center justify-center h-screen w-screen">
-        <div>
-          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
-          <p className="font-mono">Error fetching charts: {errorCharts.message}</p>
+        <div className="flex gap-2 items-center">
+          <span className="loading loading-ball loading-lg"></span>
+          <p className="font-mono">Building Data..</p>
         </div>
       </div>
-    </>
-  )
+    );
+  if (error)
+    return (
+      <>
+        <div className="flex items-center justify-center h-screen w-screen">
+          <div>
+            <img
+              src="/catconfuse.gif"
+              alt="errorcatnyan"
+              className="h-24 object-cover"
+            />
+            <p className="font-mono">Error fetching filters: {error.message}</p>
+          </div>
+        </div>
+      </>
+    );
+
+  if (errorCharts)
+    return (
+      <>
+        <div className="flex items-center justify-center h-screen w-screen">
+          <div>
+            <img
+              src="/catconfuse.gif"
+              alt="errorcatnyan"
+              className="h-24 object-cover"
+            />
+            <p className="font-mono">
+              Error fetching charts: {errorCharts.message}
+            </p>
+          </div>
+        </div>
+      </>
+    );
 
   return (
     <>
@@ -87,7 +130,7 @@ const Dashboard = () => {
         <div className="flex flex-col sm:gap-4 sm:py-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
             <div className="grid auto-rows-max items-start gap-4 mt-8 md:gap-8 lg:col-span-2">
-              <h1 className="flex items-center text-4xl font-light">
+              <h1 className="flex items-center text-4xl ">
                 <Table2 className="w-8 h-8 font-light mr-2" /> Performance Table
                 Data
               </h1>
@@ -115,7 +158,8 @@ const Dashboard = () => {
                             </td>
                             <td>{row.ProcessId}</td>
                             <td>
-                              {formatNumberToTwoDecimals(row.conformance_rate)}%
+                              {formatNumberToTwoDecimals(row.conformance_rate)}
+                              %
                             </td>
                             <td>{row.total_case}</td>
                           </tr>
@@ -134,100 +178,104 @@ const Dashboard = () => {
             </div>
             <div>
               <div className="overflow-hidden p-6 bg-white rounded-lg shadow">
-                <div className="items-center gap-5">
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text">Person</span>
-                    </div>
-                    <select
-                      className="select select-bordered"
-                      value={person}
-                      onChange={(e) => dispatch(setPerson(e.target.value))}
-                      defaultValue={"Pick one"}
-                    >
-                      <option value="" disabled>
-                        Select option
-                      </option>
-                      {resultPerson.map((el, idx) => (
-                        <option key={idx} value={el}>
-                          {el}
+                <form action="" onSubmit={handleClick}>
+                  <div className="items-center gap-5">
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Person</span>
+                      </div>
+                      <select
+                        className="select select-bordered"
+                        name="person"
+                        value={formState.person}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          Select option
                         </option>
-                      ))}
-                      {/* Map through your options here */}
-                    </select>
-                  </label>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text">Process</span>
-                    </div>
-                    <select
-                      className="select select-bordered"
-                      value={process}
-                      onChange={(e) => dispatch(setProcess(e.target.value))}
-                      defaultValue={"Pick one"}
-                    >
-                      <option value="" disabled>
-                        Select option
-                      </option>
-                      {resultProcesses.map((el, idx) => (
-                        <option key={idx} value={el}>
-                          {el}
+                        {resultPerson.map((el, idx) => (
+                          <option key={idx} value={el}>
+                            {el}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Process</span>
+                      </div>
+                      <select
+                        className="select select-bordered"
+                        name="process"
+                        value={formState.process}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          Select option
                         </option>
-                      ))}
-                      {/* Map through your options here */}
-                    </select>
-                  </label>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text">Department</span>
-                    </div>
-                    <select
-                      className="select select-bordered"
-                      value={department}
-                      onChange={(e) => dispatch(setDepartment(e.target.value))}
-                      defaultValue={"Pick one"}
-                    >
-                      <option value="" disabled>
-                        Select option
-                      </option>
-                      {resultDepartments.map((el, idx) => (
-                        <option key={idx} value={el}>
-                          {el}
+                        {resultProcesses.map((el, idx) => (
+                          <option key={idx} value={el}>
+                            {el}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Department</span>
+                      </div>
+                      <select
+                        className="select select-bordered"
+                        name="department"
+                        value={formState.department}
+                      // onChange={handleChange}
+                      >
+                        <option value="" disabled>
+                          Select option
                         </option>
-                      ))}
-                      {/* Map through your options here */}
-                    </select>
-                  </label>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text">Start Date</span>
-                    </div>
-                    <input
-                      type="date"
-                      placeholder="Type here"
-                      className="input input-bordered w-full max-w-xs"
-                      value={startDate}
-                      onChange={(e) => dispatch(setStartDate(e.target.value))}
-                    />
-                  </label>
-                  <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                      <span className="label-text">End Date</span>
-                    </div>
-                    <input
-                      type="date"
-                      placeholder="Type here"
-                      className="input input-bordered w-full max-w-xs"
-                      value={endDate}
-                      onChange={(e) => dispatch(setEndDate(e.target.value))}
-                    />
-                  </label>
-                </div>
-                <div className="flex w-full mt-4">
-                  <p className="text-xs font-light text-gray-500">
-                    Filter on what you desire
-                  </p>
-                </div>
+                        {resultDepartments.map((el, idx) => (
+                          <option key={idx} value={el}>
+                            {el}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">Start Date</span>
+                      </div>
+                      <input
+                        type="date"
+                        name="startDate"
+                        className="input input-bordered w-full max-w-xs"
+                        value={formState.startDate}
+                      // onChange={handleChange}
+                      />
+                    </label>
+                    <label className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">End Date</span>
+                      </div>
+                      <input
+                        type="date"
+                        name="endDate"
+                        className="input input-bordered w-full max-w-xs"
+                        value={formState.endDate}
+                      // onChange={handleChange}
+                      />
+                    </label>
+                  </div>
+                  <div className="w-full flex justify-end pt-4">
+                    <button type="submit" className="btn bg-[#6E8672] text-white hover:bg-[#47594A] px-20">
+                      Apply
+                    </button>
+                  </div>
+                  <div className="flex w-full mt-4">
+                    <p className="text-xs font-light text-gray-500">
+                      Filter on what you desire
+                    </p>
+                  </div>
+                </form>
               </div>
             </div>
           </main>
