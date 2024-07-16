@@ -47,7 +47,7 @@ module.exports = {
 
     type conformanceByTask {
       labels: [String]
-      datasets: [Int]
+      datasets: [Float]
     }
 
     type ChartData {

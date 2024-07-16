@@ -22,6 +22,22 @@ const csrfBypassPlugin = {
   },
 };
 
+// Cache control plugin to disable cache
+const disableCachePlugin = {
+  async requestDidStart() {
+    return {
+      async willSendResponse(requestContext) {
+        requestContext.response.extensions = {
+          ...requestContext.response.extensions,
+          cacheControl: {
+            defaultMaxAge: 0, // Disable cache by setting the default max age to 0
+          },
+        };
+      },
+    };
+  },
+};
+
 const server = new ApolloServer({
   typeDefs: [userTypeDefs, endpointTypeDefs, minerTypeDefs, dashboardTypes],
   resolvers: [userResolvers, endpointResolvers, minerResolvers, dashboardResolvers],
@@ -30,7 +46,7 @@ const server = new ApolloServer({
     console.error(err);
     return err;
   },
-  plugins: [csrfBypassPlugin],
+  plugins: [csrfBypassPlugin, disableCachePlugin],
 });
 
 (async () => {
