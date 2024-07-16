@@ -57,10 +57,15 @@ class Controller {
   static async postAnalytics(req, res, next) {
     try {
       let tasks = req.body.tasks;
-      if (!Array.isArray(tasks) || tasks.length === 0)
+      if (!Array.isArray(tasks) || tasks.length === 0) {
         throw { name: "Invalid" };
+      }
 
-      for (const task of tasks) {
+      const pLimit = (await import('p-limit')).default;
+      const limit = pLimit(15);
+  
+      const upsertPromises = tasks.map(task => limit(async () => {
+        console.log('POSTING TASK:  ', task);
         const identifier = task.caseId;
         const formattedTask = {
           ...task,
@@ -69,17 +74,18 @@ class Controller {
           CompanyId: parseFloat(task.CompanyId),
           identifier
         };
-
-
-        await prisma.task.upsert({
+  
+        return prisma.task.upsert({
           where: {
             identifier,
           },
           update: formattedTask,
           create: formattedTask,
         });
-      }
-
+      }));
+  
+      await Promise.all(upsertPromises);
+  
       res.status(201).json({
         statusCode: 201,
       });

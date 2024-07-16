@@ -1,11 +1,23 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
-import { ScrollText, LogIn, Unplug, Power, LightbulbOff } from "lucide-react";
+import { ScrollText, LogIn, Unplug, Power, LightbulbOff, LayoutList } from "lucide-react";
 // import BallGreen from "../../public/ballgreen.json"
 // import { Player } from '@lottiefiles/react-lottie-player';
 import Footer from "../components/Footer";
+import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 
 const Landing = () => {
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    setToken(token);
+    console.log(token);
+  }, []);
+
+
   return (
     <>
       <div data-theme="dark" className="navbar bg-base-100 fixed z-10">
@@ -22,11 +34,15 @@ const Landing = () => {
                 <ScrollText className="w-4 h-4 object-cover" /> About
               </Link>
             </li>
-            <li>
+            {token ? <li>
+              <Link href={"/dashboard"}>
+                <LayoutList className="w-4 h-4 object-cover" /> Dashboard
+              </Link>
+            </li> : <li>
               <Link href={"/login"}>
                 <LogIn className="w-4 h-4 object-cover" /> Login
               </Link>
-            </li>
+            </li>}
           </ul>
         </div>
       </div>

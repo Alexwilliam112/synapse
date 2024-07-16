@@ -67,9 +67,28 @@ const Dashboard = () => {
     e.preventDefault();
   };
 
-  if (loading || loadingCharts) return <div className="flex items-center justify-center h-screen w-screen"><span className="loading loading-spinner loading-lg"></span></div>;
-  if (error) return <div className="flex items-center justify-center h-screen w-screen">Error fetching filters: {error.message}</div>;
-  if (errorCharts) return <div className="flex items-center justify-center h-screen w-screen">Error fetching charts: {errorCharts.message}</div>;
+  if (loading || loadingCharts) return <div className="flex items-center justify-center h-screen w-screen"> <div className="flex gap-2 items-center"> <span className="loading loading-ball loading-lg"></span> <p className="font-mono">Building Data..</p></div> </div>;
+  if (error) return (
+    <>
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
+          <p className="font-mono" >Error fetching filters: {error.message}</p>
+        </div>
+      </div>
+    </>
+  )
+
+  if (errorCharts) return (
+    <>
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
+          <p className="font-mono">Error fetching charts: {errorCharts.message}</p>
+        </div>
+      </div>
+    </>
+  )
 
   return (
     <>
@@ -204,14 +223,14 @@ const Dashboard = () => {
                     </label>
                   </div>
                 </form>
-                <div className="flex justify-end px-5 mt-5">
-                  <button type="submit" className="btn btn-[#6E8672] ">
-                    Submit
-                  </button>
-                </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
                 <div className="sm:col-span-2 p-6 bg-[#FFFFFF] rounded-lg shadow-md">
+                  <div className="pb-2">
+                    <p className="text-sm text-gray-600">
+                      Conformance by Process
+                    </p>
+                  </div>
                   <BarChart data={caseByProcess} />
                 </div>
                 <div className="p-6 bg-white rounded-lg shadow sm:col-span-2">
@@ -247,10 +266,10 @@ const Dashboard = () => {
                   <div>
                     <h2 className="font-">Nganu Technology & Consultant</h2>
                     <p className="text-sm font-light">
-                      Good Morning, Rayhan Wijaya.
+                      Good Day, Rayhan Wijaya.
                     </p>
                     <p className="text-sm font-light">
-                      Lets take a look at you company performance!
+                      Lets take a look at your company performance!
                     </p>
                   </div>
                   <div>
@@ -292,6 +311,11 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="overflow-hidden p-6 bg-white rounded-lg shadow">
+                <div className="pb-2">
+                  <p className="text-sm text-gray-600">
+                    Conformance by Task
+                  </p>
+                </div>
                 <RadarChart data={conformanceByTask} />
                 <div className="">
                   <h1 className="flex items-center">

@@ -210,7 +210,7 @@ const ApiManager = () => {
   };
 
   if (queryLoading || mutationLoading || mutationLoadingUpdate) {
-    return <div>Loading...</div>;
+    return <div className="flex items-center justify-center h-screen w-screen"> <div className="flex gap-2 items-center"> <span className="loading loading-ball loading-lg"></span> <p className="font-mono">Fetching APIs..</p></div> </div>;
   }
 
   if (queryError || mutationError || mutationErrorUpdate) {
@@ -226,7 +226,7 @@ const ApiManager = () => {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto min-h-screen">
         <div className="w-full flex justify-end px-4 mb-4">
           <button
             onClick={() => document.getElementById("my_modal_2").showModal()}
