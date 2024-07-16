@@ -51,6 +51,7 @@ module.exports = {
             message = `Data not found`
         }
 
+        console.log(err);
         res.status(status).json({
             message,
             msg: err.message

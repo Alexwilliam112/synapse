@@ -16,13 +16,14 @@ module.exports = (sequelize, DataTypes) => {
   Eventlogs.init({
     processName: DataTypes.STRING,
     caseId: DataTypes.STRING,
-    timestamp: DataTypes.DATE,
+    timestamp: DataTypes.STRING,
     eventName: DataTypes.STRING,
     name: DataTypes.STRING,
     department: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Eventlogs',
+    timestamps: false
   });
   return Eventlogs;
 };

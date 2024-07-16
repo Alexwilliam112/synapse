@@ -4,11 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    const data = require('../data/eventlogs.json').map((el) => {
-      el.createdAt = el.updatedAt = new Date()
-      el.timestamp = new Date(el.timestamp)
-      return el
-    })
+    const data = require('../data/eventlogs.json')
     await queryInterface.bulkInsert('Eventlogs', data, {})
   },
 
