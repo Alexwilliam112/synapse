@@ -1,5 +1,5 @@
 "use client";
-// import React, { useState } from 'react';
+import React from "react";
 import {
   LayoutDashboard,
   FilePieChart,
@@ -10,13 +10,12 @@ import {
   FolderKey,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // use next/router instead of next/navigation
 import Cookies from "js-cookie";
 import makeClient from "@/config/ApolloClient";
 
 const Navbar = () => {
-  // const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
+  const pathname = usePathname();
 
   function handleLogout() {
     Cookies.remove("token");
@@ -48,49 +47,35 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <a>Dashboard</a>
+            <li className={pathname === "/dashboard" && pathname === "/dashboard2" ? "bg-[#323232] text-white" : ""}>
+              <Link href="/dashboard">Dashboard</Link>
             </li>
-            {/* <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li><a>Submenu 1</a></li>
-                  <li><a>Submenu 2</a></li>
-                </ul>
-              </li> */}
-            <li>
-              <a>Diagram</a>
+            <li className={pathname === "/diagram" ? "bg-[#323232] text-white" : ""}>
+              <Link href="/diagram">Diagram</Link>
             </li>
           </ul>
         </div>
         <div className="flex items-center space-x-2">
-          <img src="/logo.png" alt="" className="w-8 h-8 object-cover" />
-          <p className=" text-xl">Synapse</p>
+          <img src="/logo.png" alt="" className="w-10 h-auto object-cover" />
+          <p className="text-2xl font-light">Synapse</p>
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li className="rounded-full">
-            <Link href={"/dashboard"}>
+          <li
+            className={`rounded-xl ${pathname === "/dashboard" ? "bg-[#323232] text-white" : ""} ${pathname === "/dashboard2" ? "bg-[#323232] text-white" : ""}`}
+          >
+            <Link href="/dashboard">
               <LayoutDashboard className="h-4 w-4" /> Dashboard
             </Link>
           </li>
-          {/* <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li><a>Submenu 1</a></li>
-                  <li><a>Submenu 2</a></li>
-                </ul>
-              </details>
-            </li> */}
-          <li>
-            <Link href={"/diagram"}>
+          <li className={`rounded-xl ${pathname === "/diagram" ? "bg-[#323232] text-white" : ""}`}>
+            <Link href="/diagram">
               <FilePieChart className="h-4 w-4" /> Diagram
             </Link>
           </li>
-          <li>
-            <Link href={"/apimanager"}>
+          <li className={`rounded-xl ${pathname === "/apimanager" ? "bg-[#323232] text-white" : ""}`}>
+            <Link href="/apimanager">
               <FolderKey className="h-4 w-4" /> API Manager
             </Link>
           </li>
@@ -102,7 +87,7 @@ const Navbar = () => {
             <img
               src="https://images.unsplash.com/photo-1718506921663-ee4571a3f92e?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt=""
-              className="h-8 w-8 object-cover rounded-full"
+              className="h-10 w-10 object-cover rounded-full"
             />
           </div>
           <ul

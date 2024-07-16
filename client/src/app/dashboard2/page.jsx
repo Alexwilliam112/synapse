@@ -208,7 +208,6 @@ const Dashboard = () => {
           </main>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

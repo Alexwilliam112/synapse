@@ -9,9 +9,10 @@ import {
   UpdateAPI,
 } from "@/queries";
 import { useQuery, useMutation } from "@apollo/client";
-import { Pencil, Rocket, SquarePlus, Trash2 } from "lucide-react";
+import { Pencil, Rocket, SquarePlus, Trash2, Copy, Check, EyeOff, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const ApiManager = () => {
   const router = useRouter();
@@ -26,6 +27,13 @@ const ApiManager = () => {
   const [deleteId, setDeleteId] = useState();
   const [endDate, setEndDate] = useState("");
   const [startDate, setStartDate] = useState("");
+  // this is state for table interaction (copy, reveal)
+  const [copied, setCopied] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  const toggleReveal = () => {
+    setIsRevealed(!isRevealed);
+  };
 
   // console.log(editId);
 
@@ -309,28 +317,44 @@ const ApiManager = () => {
                     <pre data-prefix="$">
                       <code>{data.endpointUrl}</code>
                     </pre>
+                    <CopyToClipboard text={data.endpointUrl} onCopy={() => setCopied(true)}>
+                      <button className="absolute top-0 right-0 m-2 btn btn-sm">
+                        {copied ? <Check className="w-4 h-4 object-cover" /> : <Copy className="w-4 h-4 object-cover" />}
+                      </button>
+                    </CopyToClipboard>
                   </div>
                 </td>
                 <td>{data.description}</td>
-                <td>{data.apiKey}</td>
+                <td>
+                  {/* {data.apiKey} */}
+                  <div className='flex items-center'>
+                    <p>{isRevealed ? data.apiKey : '************'}</p>
+                    <button onClick={toggleReveal} className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]">
+                      {isRevealed ? <EyeOff /> : <Eye />}
+                    </button>
+                  </div>
+
+                </td>
                 <td>{data.status}</td>
-                <td className="space-x-2 flex items-center">
-                  <button
-                    onClick={() =>
-                      document.getElementById("my_modal_4").showModal()
-                    }
-                    className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2 mr-2"
-                  >
-                    <Rocket className="w-4 h-4 object-cover" />
-                    Start
-                  </button>
+                <td className="flex items-center">
+                  <div className="pt-4 flex space-x-2">
+                    <button
+                      onClick={() =>
+                        document.getElementById("my_modal_4").showModal()
+                      }
+                      className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
+                    >
+                      <Rocket className="w-4 h-4 object-cover" />
+                      Start
+                    </button>
 
-                  {/* modal start */}
-                  <dialog id="my_modal_4" className="modal">
-                    <div className="modal-box">
-                      <h3 className="font-bold text-lg">Select date</h3>
-
-                      <div className="modal-action">
+                    {/* modal start */}
+                    <dialog id="my_modal_4" className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-light text-2xl">Select Date!</h3>
+                        <p className="py-4">
+                          Press ESC key or click the button below to close
+                        </p>
                         <form onSubmit={handleStart}>
                           <label className="input input-bordered flex items-center gap-2 my-1">
                             Start Date:
@@ -353,43 +377,43 @@ const ApiManager = () => {
                               value={endDate}
                               required
                             />
-                          </label>
-                          <button
-                            type="submit"
-                            className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                          >
-                            Confirm
-                          </button>
-                          <button
-                            type="button"
-                            className="btn"
-                            onClick={() =>
-                              document.getElementById("my_modal_4").close()
-                            }
-                          >
-                            Cancel
-                          </button>
+                          </label><div className="modal-action">
+                            <button
+                              type="submit"
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                            >
+                              Confirm
+                            </button>
+                            <button
+                              type="button"
+                              className="btn"
+                              onClick={() =>
+                                document.getElementById("my_modal_4").close()
+                              }
+                            >
+                              Cancel
+                            </button>
+                          </div>
                         </form>
+
                       </div>
-                    </div>
-                  </dialog>
-                  <button
-                    className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2 mr-2"
-                    onClick={() => handleEditClick(data)}
-                  >
-                    <Pencil className="w-4 h-4 object-cover" />
-                    Edit
-                  </button>
+                    </dialog>
+                    <button
+                      className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2"
+                      onClick={() => handleEditClick(data)}
+                    >
+                      <Pencil className="w-4 h-4 object-cover" />
+                      Edit
+                    </button>
 
-                  {/* modal edit */}
-                  <dialog id="my_modal_1" className="modal">
-                    <div className="modal-box">
-                      <h3 className="font-light text-2xl">Edit your api!</h3>
-                      <p className="py-4">
-                        Press ESC key or click the button below to close
-                      </p>
+                    {/* modal edit */}
+                    <dialog id="my_modal_1" className="modal">
+                      <div className="modal-box">
+                        <h3 className="font-light text-2xl">Edit your api!</h3>
+                        <p className="py-4">
+                          Press ESC key or click the button below to close
+                        </p>
 
-                      <div className="modal-action">
                         <form onSubmit={handleUpdateAPI}>
                           {/* <label className="input input-bordered items-center gap-2 my-1"> 
                             Id: 
@@ -460,18 +484,18 @@ const ApiManager = () => {
                           </div>
                         </form>
                       </div>
-                    </div>
-                  </dialog>
-                  {/* end modal edit */}
+                    </dialog>
+                    {/* end modal edit */}
 
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteClick(data)}
-                    className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2 mr-2"
-                  >
-                    <Trash2 className="w-4 h-4 object-cover" />
-                    Delete
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteClick(data)}
+                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2"
+                    >
+                      <Trash2 className="w-4 h-4 object-cover" />
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
