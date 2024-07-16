@@ -55,17 +55,12 @@ class Controller {
 
       // try {
       //   await axios.get(
-      //     "http://localhost:3000/eventlog",
-      //     {
-      //         headers: {
-      //           authorization: apikey,
-      //         },
-      //       params: {
-      //         startDate,
-      //         endDate,
-      //       },
-      //     }
-      //   );
+      //     "http://localhost:3000/eventlog", {
+      //     headers: {
+      //       Authorization: apikey,
+      //     },
+      //     params: { startDate, endDate },
+      //   });
       // } catch (error) {
       //   next(error)
       // }
@@ -89,35 +84,35 @@ class Controller {
       const responses = { tasks, models };
 
 
-      try {
-        await axios.post(
-          "http://localhost:3003/upsert",
-          { tasks },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${serverToken}`,
-            },
-          }
-        );
-      } catch (error) {
-        next(error);
-      }
+      // try {
+      //   await axios.post(
+      //     "http://localhost:3003/upsert",
+      //     { tasks },
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${serverToken}`,
+      //       },
+      //     }
+      //   );
+      // } catch (error) {
+      //   next(error);
+      // }
 
-      try {
-        await axios.post(
-          "http://localhost:3004/post",
-          { models },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${serverToken}`,
-            },
-          }
-        );
-      } catch (error) {
-        next(error);
-      }
+      // try {
+      //   await axios.post(
+      //     "http://localhost:3004/post",
+      //     { models },
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${serverToken}`,
+      //       },
+      //     }
+      //   );
+      // } catch (error) {
+      //   next(error);
+      // }
 
       res.status(200).json({
         statusCode: 200
