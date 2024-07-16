@@ -56,6 +56,10 @@ class Controller {
 
   static async postAnalytics(req, res, next) {
     try {
+      if (req.loginInfo.origin !== process.env.USER_ORIGIN) {
+        throw { name: "Unauthorized" };
+      }
+
       let tasks = req.body.tasks;
       if (!Array.isArray(tasks) || tasks.length === 0)
         throw { name: "Invalid" };
@@ -75,7 +79,6 @@ class Controller {
         statusCode: 201,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
