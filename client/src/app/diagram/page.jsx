@@ -1,4 +1,6 @@
-"use client"
+"use client";
+import { getAllProcess, getModelById } from "@/queries";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
 import { getAllProcess } from "@/queries/index";
@@ -28,16 +30,13 @@ const ApiManager = () => {
             alt="errorcatnyan"
             className="h-24 object-cover"
           />
-          <p className="font-mono">
-            Error fetching process: {error.message}
-          </p>
+          <p className="font-mono">Error fetching process: {error.message}</p>
         </div>
       </div>
     );
 
   const processes = data?.GetAllProcess?.data || [];
   console.log(processes);
-
   return (
     <div className="w-full">
       <div className="w-full px-10 py-4">
@@ -56,6 +55,7 @@ const ApiManager = () => {
             </tr>
           </thead>
           <tbody>
+            {/* row 1 */}
             {processes.length > 0 ? (
               processes.map((process, index) => (
                 <tr key={process.id}>
@@ -64,7 +64,7 @@ const ApiManager = () => {
                   <td>{new Date(process.lastUpdate).toLocaleDateString()}</td>
                   <td>{process.description}</td>
                   <td>
-                    <Link href={`/detail/${process.id}`}>
+                    <Link href={`/diagram/${process.id}`} passHref>
                       <button
                         className="bg-white border border-[#6E8672] transition-all duration-300 hover:bg-[#6E8672] hover:text-white h-8 px-4 py-1 rounded-md text-[#6E8672] font-bold"
                         style={{ height: "2rem" }}
