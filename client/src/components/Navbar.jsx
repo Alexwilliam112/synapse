@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import makeClient from "@/config/ApolloClient";
 
 const Navbar = () => {
+  const router = useRouter();
   const pathname = usePathname();
 
   function handleLogout() {
@@ -104,7 +105,7 @@ const Navbar = () => {
                 <Cog className="h-4 w-4" /> Settings
               </a>
             </li>
-            <li>
+            <li className="rounded-md hover:bg-red-700 hover:text-white focus:bg-red-500">
               <div onClick={handleLogout}>
                 <CircleArrowOutUpRight className="h-4 w-4" /> Logout
               </div>
