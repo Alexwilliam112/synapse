@@ -53,24 +53,24 @@ class Controller {
       const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
       const { apikey, startDate, endDate } = req.body;
-      try {
-        await axios.get(
-          "http://localhost:3000/eventlog",
-          {
-            headers: {
-              authorization: apikey,
-            },
-            params: {
-              startDate,
-              endDate,
-            },
-          }
-        );
-      } catch (error) {
-        next(error)
-      }
+      // try {
+      //   await axios.get(
+      //     "http://localhost:3000/eventlog",
+      //     {
+      //       headers: {
+      //         authorization: apikey,
+      //       },
+      //       params: {
+      //         startDate,
+      //         endDate,
+      //       },
+      //     }
+      //   );
+      // } catch (error) {
+      //   next(error)
+      // }
 
-      const jsonData = require("../data/json/eventlog_practice.json");
+      const jsonData = require("../data/json/Hiring.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
 
@@ -88,6 +88,9 @@ class Controller {
 
       const responses = { tasks, models };
 
+      console.log(models[0].arcs);
+      console.log(models[0].places);
+      console.log(models[0].transitions);
 
       try {
         await axios.post(
@@ -100,6 +103,7 @@ class Controller {
             },
           }
         );
+        console.log('POSTED TO ANALYTICS');
       } catch (error) {
         next(error);
       }
@@ -115,6 +119,7 @@ class Controller {
             },
           }
         );
+        console.log('POSTED TO MODEL ENGINE');
       } catch (error) {
         next(error);
       }
