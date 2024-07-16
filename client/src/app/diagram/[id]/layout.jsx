@@ -1,6 +1,6 @@
 // import useSWR from 'swr'
 import ServerProtectedComponents from "@/components/ServerProtectedComponent";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../../components/Navbar";
 // import Footer from './footer'
 
 export default function Layout({ children }) {
