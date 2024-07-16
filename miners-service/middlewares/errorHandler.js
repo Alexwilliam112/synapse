@@ -35,6 +35,12 @@ module.exports = {
 
     if (err.name === 503) {
       switch (err.source) {
+        case "su": {
+          status = 504;
+          message = "Destination User Server is unreachable.";
+          break;
+        }
+
         case "processMiner": {
           status = 503;
           message = "processMiner-Service Failed. Server Down.";
@@ -73,7 +79,7 @@ module.exports = {
       }
     }
 
-    // console.log(err);
+    console.log(err);
     res.status(status).json({
       message,
       // err

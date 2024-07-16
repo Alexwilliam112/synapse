@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       timestamp: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       eventName: {
         type: Sequelize.STRING
