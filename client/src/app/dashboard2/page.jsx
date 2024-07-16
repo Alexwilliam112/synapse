@@ -31,6 +31,8 @@ const Dashboard = () => {
   const department = useSelector(selectDepartment);
   const person = useSelector(selectPerson);
 
+  // console.log(person);
+
   const { loading, error, data } = useQuery(getFilter);
   const {
     loading: loadingCharts,
