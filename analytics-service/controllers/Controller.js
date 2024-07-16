@@ -56,24 +56,21 @@ class Controller {
 
   static async postAnalytics(req, res, next) {
     try {
-      if (req.loginInfo.origin !== process.env.USER_ORIGIN) {
-        throw { name: "Unauthorized" };
-      }
-
       let tasks = req.body.tasks;
       if (!Array.isArray(tasks) || tasks.length === 0)
         throw { name: "Invalid" };
 
       for (const task of tasks) {
+        const identifier = `${task.processName}-${task.eventName}-${task.CompanyId}`;
         const formattedTask = {
           ...task,
           timestamp: new Date(task.timestamp).toISOString(),
           time: parseFloat(task.time),
           CompanyId: parseFloat(task.CompanyId),
+          identifier
         };
-      
-        const identifier = `${task.processName}-${task.eventName}-${task.CompanyId}`;
-      
+
+
         await prisma.task.upsert({
           where: {
             identifier,
