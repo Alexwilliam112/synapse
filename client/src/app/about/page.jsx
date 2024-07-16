@@ -34,7 +34,7 @@ const About = () => {
         <div className="container p-16 mx-auto">
           <div className="items-center lg:flex">
             <div className="w-full lg:w-1/2">
-              <div className="lg:max-w-lg">
+              <div className="lg:max-w-lg pt-16">
                 <h1 className="text-6xl font-light text-[#1d1d1d] lg:text-7xl">
                   Efficiency as the Foundation
                 </h1>
@@ -72,13 +72,17 @@ const About = () => {
       <div className="min-h-screen flex flex-col py-8 items-center justify-center bg-gradient-to-t from-[#1d1d1d] to-[#F4F3F7]">
         <div className="container bg-[#F3F3F7] md:flex xl:grid xl:grid-cols-2 w-auto xl:w-4/5 lg:w-96 rounded-3xl shadow-2xl">
           <div className="w-full p-14 lg:p-20 flex text-center">
-            <h1 className="text-4xl font-light ">About Synapse</h1>
+            <div className="space-y-3">
+              <h1 className="text-4xl font-light ">About Synapse</h1>
+              <div className="p-1 rounded-full bg-[#6E8672] w-32 h-2">
+              </div>
+            </div>
           </div>
           {/* <div className="p-14 text-gray-600">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo veniam doloremque praesentium voluptatum nesciunt adipisci neque culpa. Ex asperiores aliquam sapiente ipsum? Eligendi non adipisci eveniet error nam, fuga expedita.</p>
           </div> */}
-          <div className="p-14 lg:flex lg:gap-8">
-            <div>
+          <div className="p-14 lg:gap-8 lg:flex">
+            <div className="lg:w-24">
               <video
                 className="video"
                 src="/ball2.mp4"
@@ -91,16 +95,14 @@ const About = () => {
             <div className="lg:pb-40 space-y-6">
               <div className="space-y-4">
                 <p className="text-2xl">Our Concern</p>
-                <p className="text-md text-gray-500">
-                  Focuses on capturing detailed information about each step and
-                  action taken during the execution of a process through logs,
-                  transaction records, and system events.{" "}
+                <p className="text-md lg:w-80 text-gray-500">
+                  In today's fast-paced business environment, maintaining seamless operations and optimal performance can be challenging. Businesses often struggle with ensuring that every process is monitored comprehensively, leading to potential inefficiencies and disruptions. The need for detailed oversight is critical to keep business processes intact and productive. {" "}
                 </p>
               </div>
             </div>
           </div>
           <div className="p-14 lg:flex lg:gap-8">
-            <div>
+            <div className="lg:w-24">
               <video
                 className="video"
                 src="/ball3.mp4"
@@ -113,16 +115,14 @@ const About = () => {
             <div className="lg:pb-40 space-y-6">
               <div className="space-y-4">
                 <p className="text-2xl">Our Goals</p>
-                <p className="text-md text-gray-500">
-                  Involves mapping out each activity, decision point, and flow
-                  within the process. Businesses can identify redundancies and
-                  predict the changes before implementing them.{" "}
+                <p className="text-md lg:w-80 text-gray-500">
+                  Our primary goal is to capture detailed information about each step and action taken during the execution of a process. This is achieved through meticulous logging, transaction records, and system events. By mapping out every activity, decision point, and flow within your business processes, we help you identify redundancies and predict changes before implementing them, fostering a proactive approach to process management.
                 </p>
               </div>
             </div>
           </div>
           <div className="p-14 lg:flex lg:gap-8">
-            <div>
+            <div className="w-24">
               <video
                 className="video"
                 src="/ball1.mp4"
@@ -135,9 +135,8 @@ const About = () => {
             <div className="lg:pb-40 space-y-6">
               <div className="space-y-4">
                 <p className="text-2xl">How we work</p>
-                <p className="text-md text-gray-500">
-                  Visualization helps in quickly identifying trends, patterns,
-                  and anomalies, making it easier to make informed decisions.
+                <p className="text-md lg:w-80 text-gray-500">
+                  We focus on providing visualization tools that help quickly identify trends, patterns, and anomalies within your processes. This visualization makes it easier for you to make informed decisions, ensuring that your business operations are always optimized and efficient. Our method involves a thorough and detailed approach, ensuring that every aspect of your business processes is monitored and analyzed for continuous improvement.
                 </p>
               </div>
             </div>
