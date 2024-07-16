@@ -45,6 +45,11 @@ module.exports = {
       datasets: [Int]
     }
 
+    type conformanceByTask {
+      labels: [String]
+      datasets: [Int]
+    }
+
     type ChartData {
       averageConformance_areaChart: [Float]
       overallConformance_pieChart: overallConformance_pieChart
@@ -52,6 +57,7 @@ module.exports = {
       topTenTable: [topTenTableRow]
       dashboardTable: [DashboardTableRow]
       caseByProcess: caseByProcess
+      conformanceByTask: conformanceByTask
     }
 
     type GetDashboardChartsResponse {
