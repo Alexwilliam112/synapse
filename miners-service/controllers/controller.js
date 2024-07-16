@@ -108,21 +108,21 @@ class Controller {
         next(error);
       }
 
-      // try {
-      //   await axios.post(
-      //     "http://localhost:3004/post",
-      //     { models },
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${serverToken}`,
-      //       },
-      //     }
-      //   );
-      //   console.log('POSTED TO MODEL ENGINE');
-      // } catch (error) {
-      //   next(error);
-      // }
+      try {
+        await axios.post(
+          "http://localhost:3004/post",
+          { models },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serverToken}`,
+            },
+          }
+        );
+        console.log('POSTED TO MODEL ENGINE');
+      } catch (error) {
+        next(error);
+      }
 
       res.status(200).json({
         statusCode: 200
