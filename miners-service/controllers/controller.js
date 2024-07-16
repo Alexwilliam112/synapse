@@ -52,23 +52,23 @@ class Controller {
       const { authorization } = req.headers;
       const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
-
-      // try {
-      //   await axios.get(
-      //     "http://localhost:3000/eventlog",
-      //     {
-      //         headers: {
-      //           authorization: apikey,
-      //         },
-      //       params: {
-      //         startDate,
-      //         endDate,
-      //       },
-      //     }
-      //   );
-      // } catch (error) {
-      //   next(error)
-      // }
+      const { apikey, startDate, endDate } = req.body;
+      try {
+        await axios.get(
+          "http://localhost:3000/eventlog",
+          {
+            headers: {
+              authorization: apikey,
+            },
+            params: {
+              startDate,
+              endDate,
+            },
+          }
+        );
+      } catch (error) {
+        next(error)
+      }
 
       const jsonData = require("../data/json/demo_data.json");
       const goResponse = await requestCaseTracing(jsonData);
