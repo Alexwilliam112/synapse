@@ -139,6 +139,33 @@ class Controller {
       next(error);
     }
   }
+
+  static async update(req, res, next) {
+    try {
+      const { events } = req.body;
+      for (const event of events) {
+        await Event.update(
+          {
+            benchmarkTime: event.benchmarkTime,
+          },
+          {
+            where: {
+              identifier: event.identifier,
+            },
+          }
+        );
+      }
+      res.status(200).json({
+        statusCode: 200,
+        message: "Process updated successfully",
+      });
+    } catch (error) {
+      next({
+        statusCode: 400,
+        message: error.message,
+      });
+    }
+  }
 }
 
 module.exports = Controller;
