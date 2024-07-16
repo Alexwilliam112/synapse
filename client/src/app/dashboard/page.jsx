@@ -67,16 +67,32 @@ const Dashboard = () => {
     e.preventDefault();
   };
 
-  if (loading || loadingCharts) return <p>Loading...</p>;
-  if (error) return <p>Error fetching filters: {error.message}</p>;
-  if (errorCharts) return <p>Error fetching charts: {errorCharts.message}</p>;
+  if (loading || loadingCharts) return <div className="flex items-center justify-center h-screen w-screen"> <div className="flex gap-2 items-center"> <span className="loading loading-ball loading-lg"></span> <p className="font-mono">Building Data..</p></div> </div>;
+  if (error) return (
+    <>
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
+          <p className="font-mono" >Error fetching filters: {error.message}</p>
+        </div>
+      </div>
+    </>
+  )
+
+  if (errorCharts) return (
+    <>
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
+          <p className="font-mono">Error fetching charts: {errorCharts.message}</p>
+        </div>
+      </div>
+    </>
+  )
 
   return (
     <>
-      {/* Navbar */}
-      {/* <Navbar /> */}
       <div className="flex min-h-screen w-full flex-col bg-[#F7F7F7]">
-        {/* <p>{JSON.stringify(data?.GetFilters?.data)}</p> */}
 
         <div className="flex flex-col sm:gap-4 sm:py-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
@@ -207,61 +223,15 @@ const Dashboard = () => {
                     </label>
                   </div>
                 </form>
-                <div className="flex justify-end px-5 mt-5">
-                  <button type="submit" className="btn btn-[#6E8672] ">
-                    Submit
-                  </button>
-                </div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-                <div className="sm:col-span-2 p-6 bg-[#F1F2F2] border-2 border-[#6E8672] rounded-lg shadow">
-                  <div className="pb-6 flex justify-between">
-                    <div>
-                      <h2 className="font-">Nganu Technology & Consultant</h2>
-                      <p className="text-sm font-light">
-                        Good Morning, Rayhan Wijaya.
-                      </p>
-                      <p className="text-sm font-light">
-                        Lets take a look at you company performance!
-                      </p>
-                    </div>
-                    <div>
-                      <button className="btn bg-[#6E8672] text-white hover:text-[#6E8672]">
-                        Diagram
-                      </button>
-                    </div>
+                <div className="sm:col-span-2 p-6 bg-[#FFFFFF] rounded-lg shadow-md">
+                  <div className="pb-2">
+                    <p className="text-sm text-gray-600">
+                      Conformance by Process
+                    </p>
                   </div>
-                  <div className="w-auto flex items-center h-auto space-x-8">
-                    <div className="w-48 sm:w-32 h-auto">
-                      <DonutGraph data={overallConformance_pieChart} />
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="font-light text-sm flex items-center">
-                          <Clock2 className="w-4 h-4 text-[#6E8672] font-light mr-1" />{" "}
-                          Ontime Process
-                        </p>
-                        <p className="text-5xl">
-                          {formatNumberToTwoDecimals(
-                            overallConformance_pieChart?.ontime
-                          )}
-                          %
-                        </p>
-                      </div>
-                      <div>
-                        <p className="font-light text-sm flex items-center">
-                          <TriangleAlert className="w-4 h-4 text-[#8DB093] font-light mr-1" />
-                          Non-Conformance
-                        </p>
-                        <p className="text-5xl">
-                          {formatNumberToTwoDecimals(
-                            overallConformance_pieChart?.nonConform
-                          )}
-                          %
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <BarChart data={caseByProcess} />
                 </div>
                 <div className="p-6 bg-white rounded-lg shadow sm:col-span-2">
                   <div className="pb-2">
@@ -291,8 +261,61 @@ const Dashboard = () => {
               </div>
             </div>
             <div>
+              <div className="sm:col-span-2 p-6 bg-[#F1F2F2] border-2 border-[#6E8672] rounded-lg shadow lg:mb-7">
+                <div className="pb-6 flex justify-between">
+                  <div>
+                    <h2 className="font-">Nganu Technology & Consultant</h2>
+                    <p className="text-sm font-light">
+                      Good Day, Rayhan Wijaya.
+                    </p>
+                    <p className="text-sm font-light">
+                      Lets take a look at your company performance!
+                    </p>
+                  </div>
+                  <div>
+                    <button className="btn bg-[#6E8672] text-white hover:text-[#6E8672]">
+                      Diagram
+                    </button>
+                  </div>
+                </div>
+                <div className="w-auto flex items-center h-auto space-x-8">
+                  <div className="w-48 sm:w-32 h-auto">
+                    <DonutGraph data={overallConformance_pieChart} />
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="font-light text-sm flex items-center">
+                        <Clock2 className="w-4 h-4 text-[#6E8672] font-light mr-1" />{" "}
+                        Ontime Process
+                      </p>
+                      <p className="text-5xl">
+                        {formatNumberToTwoDecimals(
+                          overallConformance_pieChart?.ontime
+                        )}
+                        %
+                      </p>
+                    </div>
+                    <div>
+                      <p className="font-light text-sm flex items-center">
+                        <TriangleAlert className="w-4 h-4 text-[#8DB093] font-light mr-1" />
+                        Non-Conformance
+                      </p>
+                      <p className="text-5xl">
+                        {formatNumberToTwoDecimals(
+                          overallConformance_pieChart?.nonConform
+                        )}
+                        %
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="overflow-hidden p-6 bg-white rounded-lg shadow">
-                <BarChart data={caseByProcess} />
+                <div className="pb-2">
+                  <p className="text-sm text-gray-600">
+                    Conformance by Task
+                  </p>
+                </div>
                 <RadarChart data={conformanceByTask} />
                 <div className="">
                   <h1 className="flex items-center">

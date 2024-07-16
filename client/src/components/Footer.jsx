@@ -57,19 +57,19 @@ const Footer = () => {
                     href="#"
                     className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                   >
-                    Company
-                  </a>
-                  <a
-                    href="#"
-                    className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
-                  >
-                    community
+                    Synapse Flow
                   </a>
                   <a
                     href="#"
                     className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                   >
                     Careers
+                  </a>
+                  <a
+                    href="#"
+                    className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
+                  >
+                    Funding
                   </a>
                 </div>
 
@@ -81,19 +81,19 @@ const Footer = () => {
                     href="#"
                     className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                   >
-                    Tec
+                    Our Story
                   </a>
                   <a
                     href="#"
                     className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                   >
-                    Music
+                    Challenges
                   </a>
                   <a
                     href="#"
                     className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                   >
-                    Videos
+                    Devlog
                   </a>
                 </div>
 
@@ -126,10 +126,10 @@ const Footer = () => {
                     Contact
                   </h3>
                   <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">
-                    +1 526 654 8965
+                    +62 8226 0355 819
                   </span>
                   <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">
-                    example@email.com
+                    contact@synapse.com
                   </span>
                 </div>
               </div>

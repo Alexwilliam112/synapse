@@ -1,11 +1,23 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
-import { ScrollText, LogIn, Unplug, Power, LightbulbOff } from "lucide-react";
+import { ScrollText, LogIn, Unplug, Power, LightbulbOff, LayoutList } from "lucide-react";
 // import BallGreen from "../../public/ballgreen.json"
 // import { Player } from '@lottiefiles/react-lottie-player';
 import Footer from "../components/Footer";
+import Cookies from "js-cookie";
+import { useState, useEffect } from "react";
 
 const Landing = () => {
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    setToken(token);
+    console.log(token);
+  }, []);
+
+
   return (
     <>
       <div data-theme="dark" className="navbar bg-base-100 fixed z-10">
@@ -22,11 +34,15 @@ const Landing = () => {
                 <ScrollText className="w-4 h-4 object-cover" /> About
               </Link>
             </li>
-            <li>
+            {token ? <li>
+              <Link href={"/dashboard"}>
+                <LayoutList className="w-4 h-4 object-cover" /> Dashboard
+              </Link>
+            </li> : <li>
               <Link href={"/login"}>
                 <LogIn className="w-4 h-4 object-cover" /> Login
               </Link>
-            </li>
+            </li>}
           </ul>
         </div>
       </div>
@@ -35,12 +51,12 @@ const Landing = () => {
           <div className="items-center lg:flex">
             <div className="w-full lg:w-1/2">
               <div className="lg:max-w-lg">
-                <h1 className="text-6xl font-light text-white lg:text-7xl">
+                <h1 className="text-4xl font-light text-white lg:text-7xl">
                   Monitor Your
                   <br /> Company{" "}
                   <span className="text-[#6E8672]">Differently</span>
                 </h1>
-                <p className="mt-6 text-xl text-gray-400">
+                <p className="mt-6 text-md lg:text-xl text-gray-400">
                   No strings are left loose. Synapse guarantees comprehensive
                   monitoring of every process within your company, ensuring
                   seamless operations and optimal performance
@@ -87,14 +103,14 @@ const Landing = () => {
             <div className="w-full mt-4 lg:w-1/2">
               <div className="lg:max-w-lg">
                 {/* <div className="lg:flex"> */}
-                <LightbulbOff className="w-12 h-12 object-cover text-[#6E8672]" />
+                <LightbulbOff className="w-8 h-8 lg:w-12 lg:h-12 object-cover text-[#6E8672]" />
                 <h1 className="text-4xl font-light lg:text-6xl">
                   {" "}
                   <span className="text-[#6E8672]">Unlike</span> Any Other
                   Service
                 </h1>
                 {/* </div> */}
-                <p className="mt-6 text-xl text-gray-600 ">
+                <p className="mt-6 text-md text-gray-600 lg:text-lg">
                   We believe productivity must be monitored to keep business
                   processes intact. We believe that you, as a business owner,
                   has rights to keep control of every movement of your company
@@ -181,7 +197,9 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      <div className="z-50">
+        <Footer />
+      </div>
     </>
   );
 };
