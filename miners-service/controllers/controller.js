@@ -70,7 +70,7 @@ class Controller {
       //   next(error)
       // }
 
-      const jsonData = require("../data/json/Hiring.json");
+      const jsonData = require("../data/json/CustomerComplaint.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
 
