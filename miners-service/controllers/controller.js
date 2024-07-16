@@ -52,6 +52,24 @@ class Controller {
       const { authorization } = req.headers;
       const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
+      const { apikey, startDate, endDate } = req.body;
+      try {
+        await axios.get(
+          "http://localhost:3000/eventlog",
+          {
+            headers: {
+              authorization: apikey,
+            },
+            params: {
+              startDate,
+              endDate,
+            },
+          }
+        );
+      } catch (error) {
+        next(error)
+      }
+
       const jsonData = require("../data/json/eventlog_practice.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
@@ -70,6 +88,7 @@ class Controller {
 
       const responses = { tasks, models };
 
+
       try {
         await axios.post(
           "http://localhost:3003/upsert",
@@ -82,9 +101,7 @@ class Controller {
           }
         );
       } catch (error) {
-        console.log("Failed to send tasks to analytics-service");
-        responses.analyticsServiceError =
-          "Failed to send tasks to analytics-service";
+        next(error);
       }
 
       try {
@@ -99,12 +116,12 @@ class Controller {
           }
         );
       } catch (error) {
-        console.log("Failed to send models to modelEngine-service");
-        responses.modelEngineServiceError =
-          "Failed to send models to modelEngine-service";
+        next(error);
       }
 
-      res.status(200).json(responses);
+      res.status(200).json({
+        statusCode: 200
+      });
     } catch (err) {
       next(err);
     }

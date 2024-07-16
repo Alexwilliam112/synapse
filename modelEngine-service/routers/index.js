@@ -1,12 +1,12 @@
-const express = require('express')
-const ModelEngine = require('../controllers/controller')
-const verify = require('../middleware/verify')
-const router = express.Router()
+const express = require('express');
+const Controller = require('../controllers/controller');
+const Authentication = require('../middleware/authentication');
+const router = express.Router();
 
-router.use(verify)
-router.post("/post", ModelEngine.create)
+router.use(Authentication)
+router.get('/', Controller.getAll);
+router.post('/post', Controller.create);
+router.get('/:id', Controller.getById);
 
-router.get("/", ModelEngine.getAll)
-router.get("/:id", ModelEngine.getById)
-
-module.exports = router
+// Export the router
+module.exports = router;
