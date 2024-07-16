@@ -3,7 +3,7 @@ const { State, Event, DataLink, Process, sequelize } = require("../models");
 class Controller {
   static async getAll(req, res, next) {
     try {
-      const CompanyId = req?.data?.CompanyId;
+      const CompanyId = req?.loginInfo?.CompanyId;
       const processes = await Process.findAll({
         where: {
           CompanyId,
@@ -137,6 +137,33 @@ class Controller {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async update(req, res, next) {
+    try {
+      const eventPaylaod = req.body.input
+      for (const event of eventPaylaod) {
+        await Event.update(
+          {
+            benchmarkTime: event.benchmarkTime,
+          },
+          {
+            where: {
+              identifier: event.identifier,
+            },
+          }
+        );
+      }
+      res.status(200).json({
+        statusCode: 200,
+        message: "Process updated successfully",
+      });
+    } catch (error) {
+      next({
+        statusCode: 400,
+        message: error.message,
+      });
     }
   }
 }
