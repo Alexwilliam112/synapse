@@ -1,21 +1,31 @@
-"use client"
-import Image from "next/image";
-import { Chart as ChartJS } from "chart.js/auto"
+"use client";
 import { Radar } from "react-chartjs-2";
+import { Chart as ChartJS } from "chart.js/auto";
 
-export default function RadarChart() {
+export default function RadarChart({ data }) {
+  console.log(data);
   return (
-      <div className=''>
-        <Radar data={{
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [{
-            label: "Data 1",
-            data: [52, 19, 14, 25, 32, 43, 25],
-            borderColor: "#6E8672",
-            backgroundColor: "#6E8672",
-            fill: true
-          }]
-        }}/>
-      </div>
+    <div className="">
+      <Radar
+        data={{
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.datasets,
+              borderColor: "#6E8672",
+              backgroundColor: "rgba(110, 134, 114, 0.2)",
+              fill: true,
+            },
+          ],
+        }}
+        options={{
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+        }}
+      />
+    </div>
   );
 }

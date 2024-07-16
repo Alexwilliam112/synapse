@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LineGraph from "../../components/temppresent/LineGraph";
 import AreaChart from "../../components/temppresent/AreaChart";
 import DonutGraph from "../../components/temppresent/DonutGraph";
@@ -9,15 +9,27 @@ import RadarChart from "@/components/RadarChart";
 import { Clock2, TriangleAlert, LayoutList } from "lucide-react";
 import { useQuery } from "@apollo/client";
 import { getChartsData, getFilter } from "@/queries";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setStartDate,
+  setProcess,
+  setEndDate,
+  setDepartment,
+  setPerson,
+} from "@/Redux/filterSlice";
+
+const formatNumberToTwoDecimals = (num) => {
+  return Number.isInteger(num) ? num.toString() : num.toFixed(2);
+};
 
 const Dashboard = () => {
-  const [startDate, setStartDate] = useState("");
-  const [process, setProcess] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [department, setDepartment] = useState("");
-  const [person, setPerson] = useState("");
+  const dispatch = useDispatch();
+  const { startDate, process, endDate, department, person } = useSelector(
+    (state) => state.filters
+  );
 
   const { loading, error, data } = useQuery(getFilter);
+
   const {
     loading: loadingCharts,
     error: errorCharts,
@@ -48,10 +60,11 @@ const Dashboard = () => {
   const overallConformance_pieChart =
     chartsData?.overallConformance_pieChart || { ontime: 0, nonConform: 0 };
   const topTenTable = chartsData?.topTenTable || [];
+  const caseByProcess = chartsData?.caseByProcess || [];
+  const conformanceByTask = chartsData?.conformanceByTask || [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission if necessary
   };
 
   if (loading || loadingCharts) return <p>Loading...</p>;
@@ -86,7 +99,9 @@ const Dashboard = () => {
                         id="department"
                         name="department"
                         value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
+                        onChange={(e) =>
+                          dispatch(setDepartment(e.target.value))
+                        }
                         className="select select-bordered"
                       >
                         <option value="" disabled>
@@ -113,7 +128,7 @@ const Dashboard = () => {
                         id="person"
                         name="person"
                         value={person}
-                        onChange={(e) => setPerson(e.target.value)}
+                        onChange={(e) => dispatch(setPerson(e.target.value))}
                         className="select select-bordered"
                       >
                         <option value="" disabled>
@@ -139,7 +154,7 @@ const Dashboard = () => {
                         id="process"
                         name="process"
                         value={process}
-                        onChange={(e) => setProcess(e.target.value)}
+                        onChange={(e) => dispatch(setProcess(e.target.value))}
                         className="select select-bordered"
                       >
                         <option value="" disabled>
@@ -167,7 +182,7 @@ const Dashboard = () => {
                         id="startDate"
                         name="startDate"
                         value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
+                        onChange={(e) => dispatch(setStartDate(e.target.value))}
                         className="input input-bordered w-full max-w-xs"
                       />
                     </label>
@@ -186,7 +201,7 @@ const Dashboard = () => {
                         id="endDate"
                         name="endDate"
                         value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        onChange={(e) => dispatch(setEndDate(e.target.value))}
                         className="input input-bordered w-full max-w-xs"
                       />
                     </label>
@@ -227,7 +242,10 @@ const Dashboard = () => {
                           Ontime Process
                         </p>
                         <p className="text-5xl">
-                          {overallConformance_pieChart?.ontime}%
+                          {formatNumberToTwoDecimals(
+                            overallConformance_pieChart?.ontime
+                          )}
+                          %
                         </p>
                       </div>
                       <div>
@@ -236,7 +254,10 @@ const Dashboard = () => {
                           Non-Conformance
                         </p>
                         <p className="text-5xl">
-                          {overallConformance_pieChart?.nonConform}%
+                          {formatNumberToTwoDecimals(
+                            overallConformance_pieChart?.nonConform
+                          )}
+                          %
                         </p>
                       </div>
                     </div>
@@ -271,8 +292,8 @@ const Dashboard = () => {
             </div>
             <div>
               <div className="overflow-hidden p-6 bg-white rounded-lg shadow">
-                <BarChart />
-                <RadarChart />
+                <BarChart data={caseByProcess} />
+                <RadarChart data={conformanceByTask} />
                 <div className="">
                   <h1 className="flex items-center">
                     <LayoutList className="w-4 h-4 font-light mr-2" /> Top 10
@@ -293,8 +314,13 @@ const Dashboard = () => {
                           <tr key={index} className="hover">
                             <th>{row.rank}</th>
                             <td>{row.name}</td>
-                            <td>{row.avgOverdue}</td>
-                            <td>{row.avgConformance}</td>
+                            <td>
+                              {" "}
+                              {formatNumberToTwoDecimals(row.avgOverdue)}
+                            </td>
+                            <td>
+                              {formatNumberToTwoDecimals(row.avgConformance)}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
