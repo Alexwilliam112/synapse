@@ -1,210 +1,144 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-class ModelEngine {
+const { State, Event, DataLink, Process, sequelize } = require("../models");
+
+class Controller {
   static async getAll(req, res, next) {
     try {
-      const { CompanyId } = req.data
-      const process = await prisma.process.findMany({
+      const CompanyId = req?.data?.CompanyId || 1;
+      const processes = await Process.findAll({
         where: {
-          CompanyId
-        }
-      })
+          CompanyId,
+        },
+      });
       res.status(200).json({
         statusCode: 200,
-        data: process
-      })
+        data: processes,
+      });
     } catch (error) {
       next({
-        statusCode: 400
+        statusCode: 400,
+        message: error.message,
       });
     }
   }
 
   static async getById(req, res, next) {
     try {
-      const { id } = req.params
-      const process = await prisma.process.findUnique({
-        where: {
-          id: Number(id)
-        },
-        include: {
-          dataLinks: true,
-          events: true,
-          states: true
-        }
+      const { id } = req.params;
+      const process = await Process.findByPk(id, {
+        include: [
+          { model: DataLink, as: "dataLinks" },
+          { model: Event, as: "events" },
+          { model: State, as: "states" },
+        ],
       });
       res.status(200).json({
         statusCode: 200,
-        data: process
-      })
+        data: process,
+      });
     } catch (error) {
-      console.log(error);
       next({
-        statusCode: 400
+        statusCode: 400,
+        message: error.message,
       });
     }
   }
 
   static async create(req, res, next) {
+    const { models } = req.body;
+    console.log('INSERTING MODEL DATA');
     try {
-      console.log(req.data);
-      const { models } = req.body;
-      const CompanyId = req?.data?.CompanyId || 1
-      for (const model of models) {
-        let { processName, fitness, arcs, transitions, places } = model;
+      for (const modelSet of models) {
+        modelSet.processName = modelSet.processName.split(" ").sort().join(" ");
 
-        processName = processName.split(", ").sort().join(", ");
+        await sequelize.transaction(async (t) => {
+          const [process] = await Process.upsert(
+            {
+              processName: modelSet.processName,
+              identifier: `${modelSet.processName}-${req.loginInfo.CompanyId}`,
+              description: "",
+              lastUpdate: new Date(),
+              fitness: 0,
+              CompanyId: req.loginInfo.CompanyId,
+            },
+            {
+              where: {
+                identifier: `${modelSet.processName}-${req.loginInfo.CompanyId}`,
+              },
+              transaction: t,
+              returning: true,
+            }
+          );
 
-        const processPayload = {
-          processName,
-          description: "This is a test process",
-          lastUpdate: new Date(),
-          fitness,
-          CompanyId,
-          identifier: `${processName}-${CompanyId}`
-        };
+          const processId = process.id || process.dataValues.id;
 
-        const statePayload = transitions.map((transition) => ({
-          eventName: transition.key,
-          isTextEditable: false,
-          color: "#ADD8E6",
-        }));
+          const states = modelSet.transitions.map((el) => ({
+            eventName: el.key,
+            isTextEditable: false,
+            color: "#ADD8E7",
+            shape: "Ellipse",
+            ProcessId: processId,
+            identifier: `${el.key}-${processId}`,
+          }));
 
-        const eventPayload = places.map((event) => ({
-          eventName: event.key,
-          frequency: event.frequency,
-          benchmarkTime: 0,
-          time: event.time,
-          isTextEditable: false,
-          color: "#FF0000",
-        }));
-
-        const dataLinkPayload = arcs.map((arc) => ({
-          canRelinkFrom: false,
-          from: arc.from_,
-          to: arc.to,
-          text: "",
-        }));
-
-        // Process
-        const checkProcess = await prisma.process.findFirst({
-          where: {
-            processName,
-            CompanyId: processPayload.CompanyId
+          for (const state of states) {
+            await State.upsert(state, {
+              where: {
+                identifier: state.identifier
+              },
+              transaction: t
+            })
           }
+
+          const events = modelSet.places.map((el) => ({
+            eventName: el.key,
+            frequency: el.frequency,
+            time: el.time,
+            benchmarkTime: 0,
+            ProcessId: processId,
+            identifier: `${el.key}-${processId}`,
+            isTextEditable: false,
+            color: "#FF0099",
+            shape: "Rounded rectangle",
+          }));
+
+          for (const event of events) {
+            await Event.upsert(event, {
+              where: {
+                identifier: event.identifier
+              },
+              transaction: t
+            })
+          }
+
+          const datalinks = modelSet.arcs.map((el) => ({
+            from: el.from_,
+            to: el.to,
+            ProcessId: processId,
+            identifier: `${el.from_}-${el.to}-${processId}`,
+            text: "",
+            canRelinkFrom: false,
+          }));
+
+          for (const link of datalinks) {
+            await DataLink.upsert(link, {
+              where: {
+                identifier: link.identifier
+              },
+              transaction: t
+            })
+          }
+
+          console.log('End of Transaction - loop');
         });
-
-        const upsertProcess = await prisma.process.upsert({
-          where: {
-            id: checkProcess?.id || 0
-          },
-          update: processPayload,
-          create: processPayload
-        });
-
-        const ProcessId = upsertProcess.id;
-
-        // Payload
-        const states = statePayload.map((state) => ({
-          ...state,
-          ProcessId,
-          identifier: `${state.eventName}-${ProcessId}`
-
-        }));
-
-        const events = eventPayload.map((event) => ({
-          ...event,
-          ProcessId,
-          identifier: `${event.eventName}-${ProcessId}`
-        }));
-
-        const dataLinks = dataLinkPayload.map((dataLink) => ({
-          ...dataLink,
-          ProcessId,
-          identifier: `${dataLink.from_}-${dataLink.to}-${ProcessId}`
-        }));
-
-        if (upsertProcess) {
-          await upsert({ ProcessId, states, events, dataLinks })
-        }
       }
-
       res.status(200).json({
         statusCode: 200,
-        data: "Success"
+        message: "Processes created successfully",
       });
     } catch (error) {
-      console.log(error);
-      next({
-        statusCode: 400
-      });
+      next(error);
     }
   }
 }
 
-async function upsert({ ProcessId, states, events, dataLinks }) {
-  try {
-    // await prisma.$transaction(async (prisma) => {
-    // State
-    for (const state of states) {
-      const checkState = await prisma.state.findFirst({
-        where: {
-          eventName: state.eventName,
-          ProcessId
-        }
-      });
-
-      await prisma.state.upsert({
-        where: {
-          id: checkState?.id || 0
-        },
-        update: state,
-        create: state
-      });
-    }
-
-    // Event
-    for (const event of events) {
-      const checkEvent = await prisma.event.findFirst({
-        where: {
-          eventName: event.eventName,
-          ProcessId
-        }
-      });
-
-      await prisma.event.upsert({
-        where: {
-          id: checkEvent?.id || 0
-        },
-        update: event,
-        create: event
-      });
-    }
-
-    // DataLink
-    for (const dataLink of dataLinks) {
-      const checkDataLink = await prisma.dataLink.findFirst({
-        where: {
-          from: dataLink.from,
-          to: dataLink.to,
-          ProcessId
-        }
-      });
-
-      await prisma.dataLink.upsert({
-        where: {
-          id: checkDataLink?.id || 0
-        },
-        update: dataLink,
-        create: dataLink
-      });
-    }
-    console.log(ProcessId, "ok");
-    // });
-
-  } catch (error) {
-    console.log(">>>>>>>>>>>>>>> \n", error, `\n <<<<<<<<<<<<<<<<<<<<<ini err`);
-  }
-}
-
-module.exports = ModelEngine
+module.exports = Controller;
