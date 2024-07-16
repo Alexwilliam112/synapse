@@ -64,16 +64,24 @@ class Controller {
       if (!Array.isArray(tasks) || tasks.length === 0)
         throw { name: "Invalid" };
 
-      tasks = tasks.map((task) => ({
-        ...task,
-        timestamp: new Date(task.timestamp).toISOString(),
-        time: parseFloat(task.time),
-        CompanyId: parseFloat(task.CompanyId),
-      }));
-
-      await prisma.task.createMany({
-        data: tasks,
-      });
+      for (const task of tasks) {
+        const formattedTask = {
+          ...task,
+          timestamp: new Date(task.timestamp).toISOString(),
+          time: parseFloat(task.time),
+          CompanyId: parseFloat(task.CompanyId),
+        };
+      
+        const identifier = `${task.processName}-${task.eventName}-${task.CompanyId}`;
+      
+        await prisma.task.upsert({
+          where: {
+            identifier,
+          },
+          update: formattedTask,
+          create: formattedTask,
+        });
+      }
 
       res.status(201).json({
         statusCode: 201,
