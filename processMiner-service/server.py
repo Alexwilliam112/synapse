@@ -39,7 +39,7 @@ class AlphaMinerServicer(processMining_pb2_grpc.AlphaMinerServicer):
                     json_model.transitions.add(key=transition['key'])
 
                 for arc in formatted_net['arcs']:
-                    json_model.arcs.add(from_=arc['from'], to=arc['to'])
+                    json_model.arcs.add(from_=arc['from_'], to=arc['to'])
                 
                 json_model.fitness = formatted_net.get('fitness', 0)
 
@@ -49,6 +49,8 @@ class AlphaMinerServicer(processMining_pb2_grpc.AlphaMinerServicer):
         except Exception as e:
             context.set_details(f'Exception calling application: {str(e)}')
             context.set_code(grpc.StatusCode.UNKNOWN)
+            
+            print("Error================", e)
             return processMining_pb2.JsonModelList()
 
 def serve():

@@ -70,7 +70,7 @@ class Controller {
       //   next(error)
       // }
 
-      const jsonData = require("../data/json/eventlog_practice.json");
+      const jsonData = require("../data/json/demo_data.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
 
@@ -88,6 +88,9 @@ class Controller {
 
       const responses = { tasks, models };
 
+      console.log(models[0].arcs);
+      console.log(models[0].places);
+      console.log(models[0].transitions);
 
       try {
         await axios.post(
@@ -100,24 +103,26 @@ class Controller {
             },
           }
         );
+        console.log('POSTED TO ANALYTICS');
       } catch (error) {
         next(error);
       }
 
-      try {
-        await axios.post(
-          "http://localhost:3004/post",
-          { models },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${serverToken}`,
-            },
-          }
-        );
-      } catch (error) {
-        next(error);
-      }
+      // try {
+      //   await axios.post(
+      //     "http://localhost:3004/post",
+      //     { models },
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         Authorization: `Bearer ${serverToken}`,
+      //       },
+      //     }
+      //   );
+      //   console.log('POSTED TO MODEL ENGINE');
+      // } catch (error) {
+      //   next(error);
+      // }
 
       res.status(200).json({
         statusCode: 200
