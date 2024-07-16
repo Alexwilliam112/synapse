@@ -1,8 +1,5 @@
 "use client";
-// import React from "react";
-// import Navbar from "../components/Navbar"
-// import Graph from "../components/Graph"
-// import RadialGraph from "../components/RadialGraph"
+import React, { useEffect, useState } from "react";
 import LineGraph from "../../components/temppresent/LineGraph";
 import AreaChart from "../../components/temppresent/AreaChart";
 import DonutGraph from "../../components/temppresent/DonutGraph";
@@ -12,16 +9,27 @@ import RadarChart from "@/components/RadarChart";
 import { Clock2, TriangleAlert, LayoutList } from "lucide-react";
 import { useQuery } from "@apollo/client";
 import { getChartsData, getFilter } from "@/queries";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setStartDate,
+  setProcess,
+  setEndDate,
+  setDepartment,
+  setPerson,
+} from "@/Redux/filterSlice";
+
+const formatNumberToTwoDecimals = (num) => {
+  return Number.isInteger(num) ? num.toString() : num.toFixed(2);
+};
 
 const Dashboard = () => {
-  const [startDate, setStartDate] = useState("");
-  const [process, setProcess] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [department, setDepartment] = useState("");
-  const [person, setPerson] = useState("");
+  const dispatch = useDispatch();
+  const { startDate, process, endDate, department, person } = useSelector(
+    (state) => state.filters
+  );
 
   const { loading, error, data } = useQuery(getFilter);
+
   const {
     loading: loadingCharts,
     error: errorCharts,
@@ -39,26 +47,30 @@ const Dashboard = () => {
     fetchPolicy: "no-cache",
   });
 
-  const resultPerson = data?.GetFilters?.data?.persons;
-  const resultProcesses = data?.GetFilters?.data?.processes;
-  const resultDepartments = data?.GetFilters?.data?.departments;
+  const resultPerson = data?.GetFilters?.data?.persons || [];
+  const resultProcesses = data?.GetFilters?.data?.processes || [];
+  const resultDepartments = data?.GetFilters?.data?.departments || [];
 
   const chartsData = dataCharts?.GetDashboardCharts?.data || {};
 
   const averageConformanceByProcess_lineChart =
-    chartsData?.averageConformanceByProcess_lineChart;
-  const averageConformance_areaChart = chartsData?.averageConformance_areaChart;
-  const overallConformance_pieChart = chartsData?.overallConformance_pieChart;
+    chartsData?.averageConformanceByProcess_lineChart || [];
+  const averageConformance_areaChart =
+    chartsData?.averageConformance_areaChart || [];
+  const overallConformance_pieChart =
+    chartsData?.overallConformance_pieChart || { ontime: 0, nonConform: 0 };
   const topTenTable = chartsData?.topTenTable || [];
-
-  console.log(overallConformance_pieChart, "<<<<,");
+  const caseByProcess = chartsData?.caseByProcess || [];
+  const conformanceByTask = chartsData?.conformanceByTask || [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission if necessary
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading || loadingCharts) return <p>Loading...</p>;
+  if (error) return <p>Error fetching filters: {error.message}</p>;
+  if (errorCharts) return <p>Error fetching charts: {errorCharts.message}</p>;
+
   return (
     <>
       {/* Navbar */}
@@ -71,11 +83,14 @@ const Dashboard = () => {
             <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
               <div className="bg-white p-8 rounded-lg shadow-md w-full">
                 <h2 className="text-2xl font-light mb-6">Filter</h2>
-                <form className="lg:flex gap-5 items-center">
+                <form
+                  className="lg:flex gap-5 items-center"
+                  onSubmit={handleSubmit}
+                >
                   <div>
                     <label
                       htmlFor="department"
-                      className="form-control w-auto max-w-xs lg:w-48"
+                      className="form-control w-auto max-w-xs md:w-48 lg:w-48"
                     >
                       <div className="label">
                         <span className="label-text">Department</span>
@@ -84,14 +99,16 @@ const Dashboard = () => {
                         id="department"
                         name="department"
                         value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
+                        onChange={(e) =>
+                          dispatch(setDepartment(e.target.value))
+                        }
                         className="select select-bordered"
                       >
-                        <option value="" disabled selected>
+                        <option value="" disabled>
                           Select option
                         </option>
                         {resultDepartments.map((el, idx) => (
-                          <option key={idx} value="">
+                          <option key={idx} value={el}>
                             {el}
                           </option>
                         ))}
@@ -104,7 +121,6 @@ const Dashboard = () => {
                       htmlFor="person"
                       className="form-control w-auto max-w-xs lg:w-48"
                     >
-
                       <div className="label">
                         <span className="label-text">Person</span>
                       </div>
@@ -112,18 +128,17 @@ const Dashboard = () => {
                         id="person"
                         name="person"
                         value={person}
-                        onChange={(e) => setPerson(e.target.value)}
+                        onChange={(e) => dispatch(setPerson(e.target.value))}
                         className="select select-bordered"
                       >
-                        <option value="" disabled selected>
+                        <option value="" disabled>
                           Select option
                         </option>
                         {resultPerson.map((el, idx) => (
-                          <option key={idx} value="">
+                          <option key={idx} value={el}>
                             {el}
                           </option>
                         ))}
-                        {/* Add options here */}
                       </select>
                     </label>
                   </div>
@@ -132,7 +147,6 @@ const Dashboard = () => {
                       htmlFor="process"
                       className="form-control w-auto max-w-xs lg:w-48"
                     >
-
                       <div className="label">
                         <span className="label-text">Process</span>
                       </div>
@@ -140,18 +154,17 @@ const Dashboard = () => {
                         id="process"
                         name="process"
                         value={process}
-                        onChange={(e) => setProcess(e.target.value)}
+                        onChange={(e) => dispatch(setProcess(e.target.value))}
                         className="select select-bordered"
                       >
-                        <option value="" disabled selected>
+                        <option value="" disabled>
                           Select option
                         </option>
                         {resultProcesses.map((el, idx) => (
-                          <option key={idx} value="">
+                          <option key={idx} value={el}>
                             {el}
                           </option>
                         ))}
-                        {/* Add options here */}
                       </select>
                     </label>
                   </div>
@@ -169,7 +182,7 @@ const Dashboard = () => {
                         id="startDate"
                         name="startDate"
                         value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
+                        onChange={(e) => dispatch(setStartDate(e.target.value))}
                         className="input input-bordered w-full max-w-xs"
                       />
                     </label>
@@ -188,19 +201,14 @@ const Dashboard = () => {
                         id="endDate"
                         name="endDate"
                         value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        onChange={(e) => dispatch(setEndDate(e.target.value))}
                         className="input input-bordered w-full max-w-xs"
                       />
                     </label>
                   </div>
-
-
                 </form>
                 <div className="flex justify-end px-5 mt-5">
-                  <button
-                    type="submit"
-                    className="btn btn-[#6E8672] "
-                  >
+                  <button type="submit" className="btn btn-[#6E8672] ">
                     Submit
                   </button>
                 </div>
@@ -234,7 +242,10 @@ const Dashboard = () => {
                           Ontime Process
                         </p>
                         <p className="text-5xl">
-                          {overallConformance_pieChart?.ontime}%
+                          {formatNumberToTwoDecimals(
+                            overallConformance_pieChart?.ontime
+                          )}
+                          %
                         </p>
                       </div>
                       <div>
@@ -243,36 +254,25 @@ const Dashboard = () => {
                           Non-Conformance
                         </p>
                         <p className="text-5xl">
-                          {overallConformance_pieChart?.nonConform}%
+                          {formatNumberToTwoDecimals(
+                            overallConformance_pieChart?.nonConform
+                          )}
+                          %
                         </p>
                       </div>
                     </div>
                   </div>
-                  {/* <div>
-                    <button className="bg-[#6E8672] text-white px-4 py-2 rounded-lg">Create New Order</button>
-                  </div> */}
                 </div>
                 <div className="p-6 bg-white rounded-lg shadow sm:col-span-2">
                   <div className="pb-2">
                     <p className="text-sm text-gray-600">
                       Average Conformance Rate
                     </p>
-                    {/* <h2 className="text-4xl">$1,329</h2> */}
                   </div>
                   <AreaChart data={averageConformance_areaChart} />
                 </div>
               </div>
               <div>
-                {/* <div className="flex items-center">
-                  <div className="ml-auto flex items-center gap-2">
-                    <button variant="outline" size="sm" className="h-7 gap-1 text-sm">
-                      <span className="sr-only sm:not-sr-only">Filter</span>
-                    </button>
-                    <button size="sm" variant="outline" className="h-7 gap-1 text-sm">
-                      <span className="sr-only sm:not-sr-only">Export</span>
-                    </button>
-                  </div>
-                </div> */}
                 <div className="p-6 bg-white rounded-lg shadow">
                   <div className="px-7">
                     <h2 className="font-semibold">
@@ -292,32 +292,8 @@ const Dashboard = () => {
             </div>
             <div>
               <div className="overflow-hidden p-6 bg-white rounded-lg shadow">
-                {/*<div className="flex flex-row items-start p-4">
-                   <div className="grid gap-0.5">
-                    <div className="group flex items-center gap-2 text-lg font-light">
-                      Average Conformance Rate
-                    </div>
-                    <div className="text-sm text-gray-600">Timespan: YTD</div>
-                  </div> 
-                   <div className="ml-auto flex items-center gap-1">
-                    <button size="sm" variant="outline" className="h-8 gap-1">
-                      <span className="lg:sr-only xl:not-sr-only xl:whitespace-nowrap">Track Order</span>
-                    </button>
-                    <button size="icon" variant="outline" className="h-8 w-8">
-                      <span className="sr-only">More</span>
-                    </button>
-                  </div> 
-                </div>*/}
-                {/* <div className="p-6 text-sm">
-                  // {/* <AreaChart /> 
-                </div> */}
-                {/* <div className="flex flex-row items-center border-t bg-[#6E8672] text-white rounded-md px-6 py-3">
-                  <div className="text-xs ">
-                    Updated <time dateTime="2023-11-23">November 23, 2023</time>
-                  </div>
-                </div> */}
-                <BarChart />
-                <RadarChart />
+                <BarChart data={caseByProcess} />
+                <RadarChart data={conformanceByTask} />
                 <div className="">
                   <h1 className="flex items-center">
                     <LayoutList className="w-4 h-4 font-light mr-2" /> Top 10
@@ -325,9 +301,8 @@ const Dashboard = () => {
                   </h1>
                   <div className="overflow-x-auto">
                     <table className="table">
-                      {/* head */}
                       <thead>
-                        <tr className="">
+                        <tr>
                           <th>Rank</th>
                           <th>Name</th>
                           <th>Avg. Overdue</th>
@@ -339,8 +314,13 @@ const Dashboard = () => {
                           <tr key={index} className="hover">
                             <th>{row.rank}</th>
                             <td>{row.name}</td>
-                            <td>{row.avgOverdue}</td>
-                            <td>{row.avgConformance}</td>
+                            <td>
+                              {" "}
+                              {formatNumberToTwoDecimals(row.avgOverdue)}
+                            </td>
+                            <td>
+                              {formatNumberToTwoDecimals(row.avgConformance)}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

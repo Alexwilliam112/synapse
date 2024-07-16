@@ -11,7 +11,7 @@ const RadialChart = ({ data }) => {
     datasets: [
       {
         label: "# of Votes",
-        data: [data.ontime, data.nonConform],
+        data: [data?.ontime, data?.nonConform],
         backgroundColor: ["#6E8672", "#C2E4C8"],
         borderColor: ["#6E8672", "#C2E4C8"],
         borderWidth: 1,

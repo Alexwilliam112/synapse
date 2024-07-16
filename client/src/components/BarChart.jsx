@@ -1,21 +1,29 @@
-"use client"
-import Image from "next/image";
-import { Chart as ChartJS } from "chart.js/auto"
+"use client";
 import { Bar } from "react-chartjs-2";
 
-export default function BarChart() {
+export default function BarChart({ data }) {
+  // console.log(data, "ini data");
   return (
-      <div className=''>
-        <Bar data={{
-          labels: ['Process A', 'Process B', 'Process C', 'Process D', 'Process E', 'Process G'],
-          datasets: [{
-            label: "Data 1",
-            data: [12, 19, 3, 5, 2, 3, 15],
-            backgroundColor: "#6e8672",
-            borderColor: "#6e8672"
-          }]
-
-        }}/>
-      </div>
+    <div className="">
+      <Bar
+        data={{
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.datasets,
+              backgroundColor: "#6e8672",
+              borderColor: "#6e8672",
+            },
+          ],
+        }}
+        options={{
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+        }}
+      />
+    </div>
   );
 }
