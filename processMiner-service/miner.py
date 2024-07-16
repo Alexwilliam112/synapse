@@ -60,42 +60,66 @@ def format_petri_net(net, place_frequencies, place_average_times):
     transitions = list(net.transitions)
     arcs = list(net.arcs)
 
-    # Create a mapping of original names to new keys with "T-" prefix for transitions
-    transition_name_to_key = {transition.name: f"T-{index}" for index, transition in enumerate(transitions)}
-    place_name_to_key = {place.name: place.name.split("'")[1] if "'" in place.name else place.name for place in places}
-
-    # Format places
+    # Extract event names from places and remove 'start' and 'end'
     formatted_places = [
         {
-            "key": place_name_to_key[place.name],
-            "frequency": place_frequencies.get(place_name_to_key[place.name], 0),
-            "time": round(place_average_times.get(place_name_to_key[place.name], 0), 2)
+            "key": f"{place.name.split("'")[1] if "'" in place.name else place.name}",
+            "frequency": place_frequencies.get(place.name.split("'")[1] if "'" in place.name else place.name, 0),
+            "time": round(place_average_times.get(place.name.split("'")[1] if "'" in place.name else place.name, 0), 2)
         }
         for place in places if place.name not in ['start', 'end']
     ]
-
+    
     # Format transitions using the new keys with "T-" prefix
-    formatted_transitions = [
-        {"key": transition_name_to_key[transition.name]}
-        for transition in transitions
-    ]
+    formatted_transitions = [{"key": f"T-{transition.name}"} for transition in transitions]
 
     # Format arcs, ensuring arcs referencing transitions use the new keys with "T-" prefix
-    formatted_arcs = [
-        {
-            "from_": transition_name_to_key.get(str(arc.source).split("'")[1], place_name_to_key.get(str(arc.source).split("'")[1], str(arc.source))),
-            "to": transition_name_to_key.get(str(arc.target).split("'")[1], place_name_to_key.get(str(arc.target).split("'")[1], str(arc.target)))
-        }
-        for arc in arcs
-        if 'start' not in str(arc.source) and 'end' not in str(arc.target)
-    ]
+    formatted_arcs = []
+    seen_arcs = set()
+
+    for arc in arcs:
+        source = str(arc.source).split("'")[1] if "'" in str(arc.source) else str(arc.source)
+        target = str(arc.target).split("'")[1] if "'" in str(arc.target) else str(arc.target)
+
+        # Exclude arcs to/from 'start' and 'end'
+        if 'start' in source or 'end' in target:
+            continue
+
+        # Identify if the source and target are places or transitions
+        source_is_transition = arc.source in transitions
+        target_is_transition = arc.target in transitions
+
+        # Create arcs accordingly
+        if source_is_transition and target_is_transition:
+            # Transition to Transition
+            source_key = f"T-{source}"
+            target_key = f"T-{target}"
+            if (source_key, target_key) not in seen_arcs:
+                formatted_arcs.append({"from": source_key, "to": target_key})
+                seen_arcs.add((source_key, target_key))
+        elif source_is_transition:
+            # Transition to Place
+            source_key = f"T-{source}"
+            if (source_key, target) not in seen_arcs:
+                formatted_arcs.append({"from": source_key, "to": target})
+                seen_arcs.add((source_key, target))
+        elif target_is_transition:
+            # Place to Transition
+            target_key = f"T-{target}"
+            if (source, target_key) not in seen_arcs:
+                formatted_arcs.append({"from": source, "to": target_key})
+                seen_arcs.add((source, target_key))
+        else:
+            # Place to Place
+            if (source, target) not in seen_arcs:
+                formatted_arcs.append({"from": source, "to": target})
+                seen_arcs.add((source, target))
 
     formatted_output = {
         "places": formatted_places,
         "transitions": formatted_transitions,
         "arcs": formatted_arcs
     }
-    print(formatted_output)
     return formatted_output
 
 def extract_final_transitions(net, final_marking):
@@ -138,7 +162,6 @@ def main(eventlog):
         formatted_net = format_petri_net(net, place_frequencies, place_average_times)
         formatted_net["fitness"] = fitness
 
-        print("WORK DONE===============================")
         return formatted_net
     except Exception as e:
         print(f"Error in main function: {e}")

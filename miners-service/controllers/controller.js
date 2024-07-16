@@ -53,24 +53,24 @@ class Controller {
       const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
       const { apikey, startDate, endDate } = req.body;
-      try {
-        await axios.get(
-          "http://localhost:3000/eventlog",
-          {
-            headers: {
-              authorization: apikey,
-            },
-            params: {
-              startDate,
-              endDate,
-            },
-          }
-        );
-      } catch (error) {
-        next(error)
-      }
+      // try {
+      //   await axios.get(
+      //     "http://localhost:3000/eventlog",
+      //     {
+      //       headers: {
+      //         authorization: apikey,
+      //       },
+      //       params: {
+      //         startDate,
+      //         endDate,
+      //       },
+      //     }
+      //   );
+      // } catch (error) {
+      //   next(error)
+      // }
 
-      const jsonData = require("../data/json/demo_data.json");
+      const jsonData = require("../data/json/Hiring.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
 
@@ -108,21 +108,21 @@ class Controller {
         next(error);
       }
 
-      // try {
-      //   await axios.post(
-      //     "http://localhost:3004/post",
-      //     { models },
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${serverToken}`,
-      //       },
-      //     }
-      //   );
-      //   console.log('POSTED TO MODEL ENGINE');
-      // } catch (error) {
-      //   next(error);
-      // }
+      try {
+        await axios.post(
+          "http://localhost:3004/post",
+          { models },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serverToken}`,
+            },
+          }
+        );
+        console.log('POSTED TO MODEL ENGINE');
+      } catch (error) {
+        next(error);
+      }
 
       res.status(200).json({
         statusCode: 200

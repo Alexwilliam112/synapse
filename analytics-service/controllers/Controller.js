@@ -61,7 +61,7 @@ class Controller {
         throw { name: "Invalid" };
 
       for (const task of tasks) {
-        const identifier = `${task.processName}-${task.eventName}-${task.CompanyId}`;
+        const identifier = task.caseId;
         const formattedTask = {
           ...task,
           timestamp: new Date(task.timestamp).toISOString(),
