@@ -3,7 +3,7 @@ const { State, Event, DataLink, Process, sequelize } = require("../models");
 class Controller {
   static async getAll(req, res, next) {
     try {
-      const CompanyId = req?.data?.CompanyId;
+      const CompanyId = req?.loginInfo?.CompanyId;
       const processes = await Process.findAll({
         where: {
           CompanyId,

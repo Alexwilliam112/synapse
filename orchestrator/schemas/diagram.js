@@ -77,8 +77,12 @@ module.exports = {
       CompanyId: Int,
     }
 
+    type debug {
+      statusCode: Int
+    }
+    
     type Query {
-      GetAll: ModelRes
+      GetAllProcess: ModelRes
       GetById(input: InputModelById): ModelByIdRes
     }
 
@@ -108,20 +112,20 @@ module.exports = {
         };
       },
 
-      GetAll: async (_, __, context) => {
+      GetAllProcess: async (_, __, context) => {
         const token = await context.auth()
 
-        const data = await axios.get('http://localhost:3004/', {
+        const data = await axios.get(`http://localhost:3004/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         });
-        console.log('GETTING ALL');
 
+        console.log(data.data.data);
         errorHandler(data)
 
         return {
-          statusCode: 200,
+          statusCode: "200",
           data: data.data.data
         };
       }
