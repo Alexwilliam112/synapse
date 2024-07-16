@@ -67,6 +67,19 @@ module.exports = {
       ProcessId: Int,
     }
 
+      input events2 {
+      id: Int!,
+      eventName: String,
+      identifier: String,
+      frequency: Int,
+      time: Float,
+      benchmarkTime: Int,
+      isTextEditable: Boolean,
+      color: String,
+      shape: String,
+      ProcessId: Int,
+    }
+
     type Process {
       id: Int!,
       processName: String,
@@ -76,16 +89,19 @@ module.exports = {
       fitness: Int,
       CompanyId: Int,
     }
-
-    type debug {
+    
+    type StatusRes {
       statusCode: Int
     }
-    
+
     type Query {
       GetAllProcess: ModelRes
       GetById(input: InputModelById): ModelByIdRes
     }
 
+    type Mutation {
+      UpdateEvent(input: [events2]): StatusRes
+    }
   `,
 
   diagramResolvers: {
@@ -130,5 +146,27 @@ module.exports = {
         };
       }
     },
+
+    Mutation: {
+      UpdateEvent: async (_, args, context) => {
+        const token = await context.auth()
+        const { input } = args;
+
+        // console.log(input, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        const data = await axios.put(`http://localhost:3004/`, { input }, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+        console.log(`okkkkkkkkkkkkkkkkkkkk mamankk`);
+        errorHandler(data)
+
+        return {
+          statusCode: 200,
+        };
+      }
+    }
   },
 };
