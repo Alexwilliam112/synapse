@@ -8,7 +8,7 @@ const {
   TopTenNonConformTable,
   DashboardTable,
   TotalCaseCountPerProcess_BarChart,
-  AverageConformanceByTask_RadarChart
+  AverageConformanceByTask_RadarChart,
 } = require("../queries/index");
 
 class Controller {
@@ -137,30 +137,42 @@ class Controller {
       );
 
       const tableData = tableData_raw.map((row) => {
-        row.conformance_rate = row.conformance_rate * 100;
+        let data = row.conformance_rate;
+        if (data === null || data === "null") data = 0;
+
+        row.conformance_rate = data * 100;
         return row;
       });
 
       const caseByProcess_BarChart = {
         labels: [],
-        datasets: []
-      }
-      totalCaseByProcess_raw.forEach(set => {
-        caseByProcess_BarChart.labels.push(set.processName)
-        caseByProcess_BarChart.datasets.push(set.task_count)
+        datasets: [],
+      };
+      totalCaseByProcess_raw.forEach((set) => {
+        let data = Number(set.task_count);
+        if (data === null || data === "null") data = 0;
+
+        caseByProcess_BarChart.labels.push(set.processName);
+        caseByProcess_BarChart.datasets.push(data);
       });
 
       const conformanceByTask_RadarChart = {
         labels: [],
-        datasets: []
-      }
-      conformanceByTask_raw.forEach(set => {
-        conformanceByTask_RadarChart.labels.push(set.eventName)
-        conformanceByTask_RadarChart.datasets.push(Number(set.average_conformance_rate))
+        datasets: [],
+      };
+      conformanceByTask_raw.forEach((set) => {
+        let data = Number(set.average_conformance_rate);
+        if (data === null || data === "null") data = 0;
+
+        conformanceByTask_RadarChart.labels.push(set.eventName);
+        conformanceByTask_RadarChart.datasets.push(data);
       });
 
       const averageConformance_areaChart = avgConformance_raw.map((el) => {
-        return el.average_conformance_rate;
+        let data = Number(el.average_conformance_rate);
+        if (data === null || data === "null") data = 0;
+
+        return data;
       });
 
       const overallConformance_pieChart = {
@@ -180,7 +192,7 @@ class Controller {
         topTenTable: topTenNonConformant_raw,
         dashboardTable: tableData,
         caseByProcess: caseByProcess_BarChart,
-        conformanceByTask: conformanceByTask_RadarChart
+        conformanceByTask: conformanceByTask_RadarChart,
       });
     } catch (error) {
       next(error);
