@@ -15,6 +15,9 @@ class Controller {
   static async getFilters(req, res, next) {
     try {
       const departments = await prisma.task.findMany({
+        where: {
+          CompanyId: Number(req.loginInfo.CompanyId),
+        },
         select: {
           department: true,
         },
@@ -22,6 +25,9 @@ class Controller {
       });
 
       const persons = await prisma.task.findMany({
+        where: {
+          CompanyId: Number(req.loginInfo.CompanyId),
+        },
         select: {
           name: true,
         },
@@ -29,6 +35,9 @@ class Controller {
       });
 
       const processes = await prisma.task.findMany({
+        where: {
+          CompanyId: Number(req.loginInfo.CompanyId),
+        },
         select: {
           processName: true,
         },
@@ -76,33 +85,39 @@ class Controller {
       const {
         query: dashboardTableQuery,
         parameters: dashboardTableParameters,
-      } = DashboardTable(req.query);
+      } = DashboardTable(req.query, req.loginInfo.CompanyId);
 
       const {
         query: totalCaseByProcessQuery,
         parameters: totalCaseByProcessParameters,
-      } = TotalCaseCountPerProcess_BarChart(req.query);
+      } = TotalCaseCountPerProcess_BarChart(req.query, req.loginInfo.CompanyId);
 
       const {
         query: conformanceByTaskQuery,
         parameters: conformanceByTaskParameters,
-      } = AverageConformanceByTask_RadarChart(req.query);
+      } = AverageConformanceByTask_RadarChart(
+        req.query,
+        req.loginInfo.CompanyId
+      );
 
       const {
         query: overallConformanceQuery,
         parameters: overallConformanceParameters,
-      } = OverallConformance_PieChart(req.query);
+      } = OverallConformance_PieChart(req.query, req.loginInfo.CompanyId);
 
       const {
         query: avgConformanceQuery,
         parameters: avgConformanceParameters,
-      } = AverageConformance_AreaChart(req.query);
+      } = AverageConformance_AreaChart(req.query, req.loginInfo.CompanyId);
 
       const { query: avgProcessQuery, parameters: avgProcessParameters } =
-        AverageConformanceByProcess_LineChart(req.query);
+        AverageConformanceByProcess_LineChart(
+          req.query,
+          req.loginInfo.CompanyId
+        );
 
       const { query: topTenQuery, parameters: topTenParameters } =
-        TopTenNonConformTable(req.query);
+        TopTenNonConformTable(req.query, req.loginInfo.CompanyId);
 
       const tableData_raw = await prisma.$queryRawUnsafe(
         dashboardTableQuery,
