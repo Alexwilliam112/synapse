@@ -50,7 +50,7 @@ class Controller {
   static async startMining(req, res, next) {
     try {
       const { authorization } = req.headers;
-      const token = authorization.split(" ")[1]
+      const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
       const jsonData = require("../data/json/eventlog_practice.json");
       const goResponse = await requestCaseTracing(jsonData);
@@ -59,22 +59,21 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
+
       const tasks = await requestTemporalAnalysis(jsonData);
       const models = await requestProcessMining(eventlogs);
 
-      const serverToken = signTokenServer({ origin: process.env.USER_ORIGIN, CompanyId: data.CompanyId });
-
-      res.status(200).json({
-        tasks,
-        models,
+      const serverToken = signTokenServer({
+        origin: process.env.USER_ORIGIN,
+        CompanyId: data.CompanyId,
       });
+
+      const responses = { tasks, models };
 
       try {
         await axios.post(
           "http://localhost:3003/upsert",
-          {
-            tasks
-          },
+          { tasks },
           {
             headers: {
               "Content-Type": "application/json",
@@ -82,17 +81,16 @@ class Controller {
             },
           }
         );
-
       } catch (error) {
-        throw { name: 503, source: "analytics-service" };
+        console.log("Failed to send tasks to analytics-service");
+        responses.analyticsServiceError =
+          "Failed to send tasks to analytics-service";
       }
 
       try {
         await axios.post(
           "http://localhost:3004/post",
-          {
-            models
-          },
+          { models },
           {
             headers: {
               "Content-Type": "application/json",
@@ -101,11 +99,16 @@ class Controller {
           }
         );
       } catch (error) {
-        throw { name: 503, source: "modelEngine-service" };
+        console.log("Failed to send models to modelEngine-service");
+        responses.modelEngineServiceError =
+          "Failed to send models to modelEngine-service";
       }
+
+      res.status(200).json(responses);
     } catch (err) {
       next(err);
     }
   }
 }
+
 module.exports = Controller;
