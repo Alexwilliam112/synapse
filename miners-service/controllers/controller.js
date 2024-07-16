@@ -119,7 +119,9 @@ class Controller {
         next(error);
       }
 
-      res.status(200).json(responses);
+      res.status(200).json({
+        statusCode: 200
+      });
     } catch (err) {
       next(err);
     }
