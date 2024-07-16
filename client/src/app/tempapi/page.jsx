@@ -94,7 +94,6 @@ const App = () => {
                 <button onClick={toggleReveal} className="top-0 right-0 m-2 btn bg-[#6E8672] text-white">
                   {isRevealed ? <EyeOff /> : <Eye />}
                 </button>
-
               </div>
             </div>
             <div>

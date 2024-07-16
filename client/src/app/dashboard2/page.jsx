@@ -31,6 +31,8 @@ const Dashboard = () => {
   const department = useSelector(selectDepartment);
   const person = useSelector(selectPerson);
 
+  // console.log(person);
+
   const { loading, error, data } = useQuery(getFilter);
   const {
     loading: loadingCharts,
@@ -56,18 +58,41 @@ const Dashboard = () => {
   const chartsData = dataCharts?.GetDashboardCharts?.data || {};
   const dashboardTable = chartsData?.dashboardTable || [];
 
+  if (loading || loadingCharts) return <div className="flex items-center justify-center h-screen w-screen"> <div className="flex gap-2 items-center"> <span className="loading loading-ball loading-lg"></span> <p className="font-mono">Building Data..</p></div> </div>;
+  if (error) return (
+    <>
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
+          <p className="font-mono" >Error fetching filters: {error.message}</p>
+        </div>
+      </div>
+    </>
+  )
+
+  if (errorCharts) return (
+    <>
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img src="/catconfuse.gif" alt="errorcatnyan" className="h-24 object-cover" />
+          <p className="font-mono">Error fetching charts: {errorCharts.message}</p>
+        </div>
+      </div>
+    </>
+  )
+
   return (
     <>
       <div className="flex min-h-screen w-full flex-col bg-[#F7F7F7]">
         <div className="flex flex-col sm:gap-4 sm:py-4">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
             <div className="grid auto-rows-max items-start gap-4 mt-8 md:gap-8 lg:col-span-2">
-              <h1 className="flex items-center text-4xl font-extralight">
+              <h1 className="flex items-center text-4xl font-light">
                 <Table2 className="w-8 h-8 font-light mr-2" /> Performance Table
                 Data
               </h1>
               <div className="border-2 border-[#6e8672] rounded-xl p-8">
-                <div className="overflow-x-auto" style={{ maxHeight: "400px" }}>
+                <div className="overflow-x-auto h-96">
                   <table className="table w-full">
                     <thead className="sticky top-0 bg-[#6e8672] text-white">
                       <tr>
@@ -208,7 +233,6 @@ const Dashboard = () => {
           </main>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
