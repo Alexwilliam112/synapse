@@ -8,6 +8,7 @@ const {
   TopTenNonConformTable,
   DashboardTable,
   TotalCaseCountPerProcess_BarChart,
+  AverageConformanceByTask_RadarChart
 } = require("../queries/index");
 
 class Controller {
@@ -83,6 +84,11 @@ class Controller {
       } = TotalCaseCountPerProcess_BarChart(req.query);
 
       const {
+        query: conformanceByTaskQuery,
+        parameters: conformanceByTaskParameters,
+      } = AverageConformanceByTask_RadarChart(req.query);
+
+      const {
         query: overallConformanceQuery,
         parameters: overallConformanceParameters,
       } = OverallConformance_PieChart(req.query);
@@ -106,6 +112,11 @@ class Controller {
       const totalCaseByProcess_raw = await prisma.$queryRawUnsafe(
         totalCaseByProcessQuery,
         ...totalCaseByProcessParameters
+      );
+
+      const conformanceByTask_raw = await prisma.$queryRawUnsafe(
+        conformanceByTaskQuery,
+        ...conformanceByTaskParameters
       );
 
       const overallConformance_raw = await prisma.$queryRawUnsafe(
@@ -139,6 +150,15 @@ class Controller {
         caseByProcess_BarChart.datasets.push(set.task_count)
       });
 
+      const conformanceByTask_RadarChart = {
+        labels: [],
+        datasets: []
+      }
+      conformanceByTask_raw.forEach(set => {
+        conformanceByTask_RadarChart.labels.push(set.eventName)
+        conformanceByTask_RadarChart.datasets.push(Number(set.average_conformance_rate))
+      });
+
       const averageConformance_areaChart = avgConformance_raw.map((el) => {
         return el.average_conformance_rate;
       });
@@ -159,7 +179,8 @@ class Controller {
         averageConformanceByProcess_lineChart,
         topTenTable: topTenNonConformant_raw,
         dashboardTable: tableData,
-        caseByProcess: caseByProcess_BarChart
+        caseByProcess: caseByProcess_BarChart,
+        conformanceByTask: conformanceByTask_RadarChart
       });
     } catch (error) {
       next(error);
