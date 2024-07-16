@@ -61,6 +61,7 @@ class ModelEngine {
           lastUpdate: new Date(),
           fitness,
           CompanyId,
+          identifier: `${processName}-${CompanyId}`
         };
 
         const statePayload = transitions.map((transition) => ({
@@ -106,17 +107,21 @@ class ModelEngine {
         // Payload
         const states = statePayload.map((state) => ({
           ...state,
-          ProcessId
+          ProcessId,
+          identifier: `${state.eventName}-${ProcessId}`
+
         }));
 
         const events = eventPayload.map((event) => ({
           ...event,
-          ProcessId
+          ProcessId,
+          identifier: `${event.eventName}-${ProcessId}`
         }));
 
         const dataLinks = dataLinkPayload.map((dataLink) => ({
           ...dataLink,
-          ProcessId
+          ProcessId,
+          identifier: `${dataLink.from_}-${dataLink.to}-${ProcessId}`
         }));
 
         if (upsertProcess) {
@@ -129,6 +134,7 @@ class ModelEngine {
         data: "Success"
       });
     } catch (error) {
+      console.log(error);
       next({
         statusCode: 400
       });

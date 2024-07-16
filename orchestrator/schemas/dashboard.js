@@ -40,12 +40,18 @@ module.exports = {
       total_case: Float
     }
 
+    type caseByProcess {
+      labels: [String]
+      datasets: [Int]
+    }
+
     type ChartData {
       averageConformance_areaChart: [Float]
       overallConformance_pieChart: overallConformance_pieChart
       averageConformanceByProcess_lineChart: [LineChartFloatingPoint]
       topTenTable: [topTenTableRow]
       dashboardTable: [DashboardTableRow]
+      caseByProcess: caseByProcess
     }
 
     type GetDashboardChartsResponse {
