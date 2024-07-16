@@ -73,7 +73,6 @@ module.exports = {
       }
     }
 
-    console.log(err);
     res.status(status).json({
       message,
       // err

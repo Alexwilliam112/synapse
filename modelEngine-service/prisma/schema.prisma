@@ -99,7 +99,8 @@ model DataLink {
 
 model Task {
   id          Int      @id @default(autoincrement())
-  processName String
+  identifier  String   @unique
+  processName String  
   department  String
   caseId      String
   name        String
@@ -109,3 +110,4 @@ model Task {
   CompanyId   Int
   company     Company  @relation(fields: [CompanyId], references: [id])
 }
+

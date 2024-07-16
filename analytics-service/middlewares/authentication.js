@@ -10,7 +10,7 @@ const authentication = async (req, res, next) => {
 
         if (!payload) throw { name: "Unauthorized"}
 
-        req.data = payload
+        req.loginInfo = payload
 
         next()
     } catch (error) {
