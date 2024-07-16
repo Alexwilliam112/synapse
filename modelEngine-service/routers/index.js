@@ -8,5 +8,4 @@ router.get('/', Controller.getAll);
 router.post('/post', Controller.create);
 router.get('/:id', Controller.getById);
 
-// Export the router
 module.exports = router;
