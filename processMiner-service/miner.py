@@ -60,18 +60,60 @@ def format_petri_net(net, place_frequencies, place_average_times):
     transitions = list(net.transitions)
     arcs = list(net.arcs)
 
-    # Extract event names from places and add 'T:' prefix, remove 'start' and 'end'
-    formatted_places = [{"key": f"{place.name.split("'")[1] if "'" in place.name else place.name}", 
-                         "frequency": place_frequencies.get(place.name.split("'")[1] if "'" in place.name else place.name, 0),
-                         "time": round(place_average_times.get(place.name.split("'")[1] if "'" in place.name else place.name, 0), 2)} 
-                        for place in places if place.name not in ['start', 'end']]
+    # Extract event names from places and remove 'start' and 'end'
+    formatted_places = [
+        {
+            "key": f"{place.name.split("'")[1] if "'" in place.name else place.name}",
+            "frequency": place_frequencies.get(place.name.split("'")[1] if "'" in place.name else place.name, 0),
+            "time": round(place_average_times.get(place.name.split("'")[1] if "'" in place.name else place.name, 0), 2)
+        }
+        for place in places if place.name not in ['start', 'end']
+    ]
     
-    formatted_transitions = [{"key": f"{transition.name}"} for transition in transitions]
+    # Format transitions using the new keys with "T-" prefix
+    formatted_transitions = [{"key": f"T-{transition.name}"} for transition in transitions]
 
-    # Format arcs and remove arcs that point to/from 'start' and 'end'
-    formatted_arcs = [{"from": f"T:{str(arc.source).split("'")[1] if "'" in str(arc.source) else str(arc.source)}",
-                       "to": f"T:{str(arc.target).split("'")[1] if "'" in str(arc.target) else str(arc.target)}"} 
-                      for arc in arcs if 'start' not in str(arc.source) and 'end' not in str(arc.target)]
+    # Format arcs, ensuring arcs referencing transitions use the new keys with "T-" prefix
+    formatted_arcs = []
+    seen_arcs = set()
+
+    for arc in arcs:
+        source = str(arc.source).split("'")[1] if "'" in str(arc.source) else str(arc.source)
+        target = str(arc.target).split("'")[1] if "'" in str(arc.target) else str(arc.target)
+
+        # Exclude arcs to/from 'start' and 'end'
+        if 'start' in source or 'end' in target:
+            continue
+
+        # Identify if the source and target are places or transitions
+        source_is_transition = arc.source in transitions
+        target_is_transition = arc.target in transitions
+
+        # Create arcs accordingly
+        if source_is_transition and target_is_transition:
+            # Transition to Transition
+            source_key = f"T-{source}"
+            target_key = f"T-{target}"
+            if (source_key, target_key) not in seen_arcs:
+                formatted_arcs.append({"from": source_key, "to": target_key})
+                seen_arcs.add((source_key, target_key))
+        elif source_is_transition:
+            # Transition to Place
+            source_key = f"T-{source}"
+            if (source_key, target) not in seen_arcs:
+                formatted_arcs.append({"from": source_key, "to": target})
+                seen_arcs.add((source_key, target))
+        elif target_is_transition:
+            # Place to Transition
+            target_key = f"T-{target}"
+            if (source, target_key) not in seen_arcs:
+                formatted_arcs.append({"from": source, "to": target_key})
+                seen_arcs.add((source, target_key))
+        else:
+            # Place to Place
+            if (source, target) not in seen_arcs:
+                formatted_arcs.append({"from": source, "to": target})
+                seen_arcs.add((source, target))
 
     formatted_output = {
         "places": formatted_places,
