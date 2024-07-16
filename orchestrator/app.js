@@ -9,13 +9,14 @@ const { userResolvers, userTypeDefs } = require("./schemas/user");
 const { endpointResolvers, endpointTypeDefs } = require("./schemas/endpoint");
 const { minerTypeDefs, minerResolvers } = require("./schemas/miner");
 const { dashboardTypes, dashboardResolvers } = require("./schemas/dashboard");
+const { diagramTypes, diagramResolvers } = require("./schemas/diagram");
 
 const csrfBypassPlugin = {
   async requestDidStart() {
     return {
       async didResolveOperation(requestContext) {
         if (process.env.NODE_ENV !== "production") {
-          requestContext.preventCsrf = () => {};
+          requestContext.preventCsrf = () => { };
         }
       },
     };
@@ -39,8 +40,8 @@ const disableCachePlugin = {
 };
 
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs, endpointTypeDefs, minerTypeDefs, dashboardTypes],
-  resolvers: [userResolvers, endpointResolvers, minerResolvers, dashboardResolvers],
+  typeDefs: [userTypeDefs, endpointTypeDefs, minerTypeDefs, dashboardTypes, diagramTypes],
+  resolvers: [userResolvers, endpointResolvers, minerResolvers, dashboardResolvers, diagramResolvers],
   introspection: true,
   formatError: (err) => {
     console.error(err);
