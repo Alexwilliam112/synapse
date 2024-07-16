@@ -53,24 +53,25 @@ class Controller {
       const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
       const { apikey, startDate, endDate } = req.body;
-      // try {
-      //   await axios.get(
-      //     "http://localhost:3000/eventlog",
-      //     {
-      //       headers: {
-      //         authorization: apikey,
-      //       },
-      //       params: {
-      //         startDate,
-      //         endDate,
-      //       },
-      //     }
-      //   );
-      // } catch (error) {
-      //   next(error)
-      // }
 
-      const jsonData = require("../data/json/CustomerComplaint.json");
+      let jsonData
+      try {
+        const res = await axios.get("http://localhost:4000/eventlog", {
+          headers: {
+            authorization: apikey,
+          },
+          params: {
+            startDate,
+            endDate,
+          },
+        });
+
+        jsonData = res.data.data
+      } catch (error) {
+        next({ name: 503, source: 'su'});
+      }
+
+      // const jsonData = require("../data/json/CustomerComplaint.json");
       const goResponse = await requestCaseTracing(jsonData);
       const resData = goResponse.data.preprocessedData;
 
@@ -103,7 +104,7 @@ class Controller {
             },
           }
         );
-        console.log('POSTED TO ANALYTICS');
+        console.log("POSTED TO ANALYTICS");
       } catch (error) {
         next(error);
       }
@@ -119,13 +120,13 @@ class Controller {
             },
           }
         );
-        console.log('POSTED TO MODEL ENGINE');
+        console.log("POSTED TO MODEL ENGINE");
       } catch (error) {
         next(error);
       }
 
       res.status(200).json({
-        statusCode: 200
+        statusCode: 200,
       });
     } catch (err) {
       next(err);
