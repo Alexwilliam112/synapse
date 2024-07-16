@@ -104,7 +104,9 @@ class Controller {
           "Failed to send models to modelEngine-service";
       }
 
-      res.status(200).json(responses);
+      res.status(200).json({
+        statusCode: 200
+      });
     } catch (err) {
       next(err);
     }
