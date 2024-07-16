@@ -8,7 +8,7 @@ const authentication = async (req, res, next) => {
         const access_token = authorization.split(' ')[1]
         const payload = verifyToken(access_token)
 
-        if (!payload) throw { name: "Unauthorized"}
+        if (!payload) throw { name: "Unauthorized" }
 
         req.loginInfo = payload
 

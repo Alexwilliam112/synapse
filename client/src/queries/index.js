@@ -59,38 +59,54 @@ export const StartMining = gql`
 `;
 
 export const getChartsData = gql`
-query GetDashboardCharts($input: DashboardFilter) {
-  GetDashboardCharts(input: $input) {
-    data {
-      averageConformanceByProcess_lineChart {
-        label
-        data
-      }
-      averageConformance_areaChart
-      overallConformance_pieChart {
-        ontime
-        nonConform
-      }
-      topTenTable {
-        rank
-        name
-        avgOverdue
-        avgConformance
+  query GetDashboardCharts($input: DashboardFilter) {
+    GetDashboardCharts(input: $input) {
+      statusCode
+      data {
+        averageConformance_areaChart
+        overallConformance_pieChart {
+          ontime
+          nonConform
+        }
+        averageConformanceByProcess_lineChart {
+          label
+          data
+        }
+        topTenTable {
+          rank
+          name
+          avgOverdue
+          avgConformance
+        }
+        dashboardTable {
+          eventName
+          benchmarkTime
+          average_actual
+          ProcessId
+          conformance_rate
+          total_case
+        }
+        caseByProcess {
+          labels
+          datasets
+        }
+        conformanceByTask {
+          labels
+          datasets
+        }
       }
     }
-    statusCode
   }
-}
-`
+`;
 
 export const getFilter = gql`
-query Data {
-  GetFilters {
-    data {
-      departments
-      persons
-      processes
+  query Data {
+    GetFilters {
+      data {
+        departments
+        persons
+        processes
+      }
     }
   }
-}
-`
+`;
