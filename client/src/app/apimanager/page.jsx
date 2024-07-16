@@ -28,11 +28,29 @@ const ApiManager = () => {
   const [endDate, setEndDate] = useState("");
   const [startDate, setStartDate] = useState("");
   // this is state for table interaction (copy, reveal)
-  const [copied, setCopied] = useState(false);
-  const [isRevealed, setIsRevealed] = useState(false);
+  const [copiedUrls, setCopiedUrls] = useState({});
+  const [revealedApiKeys, setRevealedApiKeys] = useState({});
 
-  const toggleReveal = () => {
-    setIsRevealed(!isRevealed);
+  const toggleReveal = (id) => {
+    setRevealedApiKeys((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleCopy = (id) => {
+    setCopiedUrls((prev) => ({
+      ...prev,
+      [id]: true,
+    }));
+
+    // Reset the copied status after a short delay
+    setTimeout(() => {
+      setCopiedUrls((prev) => ({
+        ...prev,
+        [id]: false,
+      }));
+    }, 2000); // Adjust the delay as needed
   };
 
   // console.log(editId);
@@ -319,23 +337,24 @@ const ApiManager = () => {
                     <pre data-prefix="$">
                       <code>{data.endpointUrl}</code>
                     </pre>
-                    <CopyToClipboard text={data.endpointUrl} onCopy={() => setCopied(true)}>
+                    <CopyToClipboard text={data.endpointUrl} onCopy={() => handleCopy(data.id)}>
                       <button className="absolute top-0 right-0 m-2 btn btn-sm">
-                        {copied ? <Check className="w-4 h-4 object-cover" /> : <Copy className="w-4 h-4 object-cover" />}
+                        {copiedUrls[data.id] ? <Check className="w-4 h-4 object-cover" /> : <Copy className="w-4 h-4 object-cover" />}
                       </button>
                     </CopyToClipboard>
                   </div>
                 </td>
                 <td>{data.description}</td>
                 <td>
-                  {/* {data.apiKey} */}
-                  <div className='flex items-center'>
-                    <p>{isRevealed ? data.apiKey : '************'}</p>
-                    <button onClick={toggleReveal} className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]">
-                      {isRevealed ? <EyeOff /> : <Eye />}
+                  <div className="flex items-center">
+                    <p>{revealedApiKeys[data.id] ? data.apiKey : '************'}</p>
+                    <button
+                      onClick={() => toggleReveal(data.id)}
+                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]"
+                    >
+                      {revealedApiKeys[data.id] ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
-
                 </td>
                 <td>{data.status}</td>
                 <td className="flex items-center">

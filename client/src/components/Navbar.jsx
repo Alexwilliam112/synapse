@@ -70,7 +70,7 @@ const Navbar = () => {
               <LayoutDashboard className="h-4 w-4" /> Dashboard
             </Link>
           </li>
-          <li className={`rounded-xl ${pathname === "/diagram" ? "bg-[#323232] text-white" : ""} ${pathname === "/detail" ? "bg-[#323232] text-white" : ""}`}>
+          <li className={`rounded-xl ${/^\/diagram/.test(pathname) ? "bg-[#323232] text-white" : ""}`}>
             <Link href="/diagram">
               <FilePieChart className="h-4 w-4" /> Diagram
             </Link>
@@ -82,6 +82,7 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
+
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="rounded-full m-1">
