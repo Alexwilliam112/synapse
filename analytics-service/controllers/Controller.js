@@ -6,7 +6,9 @@ const {
   OverallConformance_PieChart,
   AverageConformanceByProcess_LineChart,
   TopTenNonConformTable,
-  DashboardTable
+  DashboardTable,
+  TotalCaseCountPerProcess_BarChart,
+  AverageConformanceByTask_RadarChart
 } = require("../queries/index");
 
 class Controller {
@@ -14,35 +16,35 @@ class Controller {
     try {
       const departments = await prisma.task.findMany({
         select: {
-          department: true
+          department: true,
         },
-        distinct: ['department']
+        distinct: ["department"],
       });
 
       const persons = await prisma.task.findMany({
         select: {
-          name: true
+          name: true,
         },
-        distinct: ['name']
+        distinct: ["name"],
       });
 
       const processes = await prisma.task.findMany({
         select: {
-          processName: true
+          processName: true,
         },
-        distinct: ['processName']
+        distinct: ["processName"],
       });
 
       res.status(200).json({
-        departments: departments.map(d => d.department),
-        persons: persons.map(p => p.name),
-        processes: processes.map(p => p.processName)
+        departments: departments.map((d) => d.department),
+        persons: persons.map((p) => p.name),
+        processes: processes.map((p) => p.processName),
       });
     } catch (error) {
       next(error);
     }
   }
-  
+
   static async postAnalytics(req, res, next) {
     try {
       let tasks = req.body.tasks;
@@ -69,35 +71,22 @@ class Controller {
     }
   }
 
-  static async getTableData(req, res, next) {
-    try {
-      const {
-        query,
-        parameters,
-      } = DashboardTable(req.query);
-
-      const tableData_raw = await prisma.$queryRawUnsafe(
-        query,
-        ...parameters
-      );
-      
-      const tableData = tableData_raw.map((row) => {
-        row.conformance_rate = row.conformance_rate * 100
-        return row
-      })
-
-      res.status(200).json(tableData)
-    } catch (error) {
-      next(error);
-    }
-  }
-
   static async getChartData(req, res, next) {
     try {
       const {
         query: dashboardTableQuery,
         parameters: dashboardTableParameters,
       } = DashboardTable(req.query);
+
+      const {
+        query: totalCaseByProcessQuery,
+        parameters: totalCaseByProcessParameters,
+      } = TotalCaseCountPerProcess_BarChart(req.query);
+
+      const {
+        query: conformanceByTaskQuery,
+        parameters: conformanceByTaskParameters,
+      } = AverageConformanceByTask_RadarChart(req.query);
 
       const {
         query: overallConformanceQuery,
@@ -115,10 +104,20 @@ class Controller {
       const { query: topTenQuery, parameters: topTenParameters } =
         TopTenNonConformTable(req.query);
 
-        const tableData_raw = await prisma.$queryRawUnsafe(
-          dashboardTableQuery,
-          ...dashboardTableParameters
-        );
+      const tableData_raw = await prisma.$queryRawUnsafe(
+        dashboardTableQuery,
+        ...dashboardTableParameters
+      );
+
+      const totalCaseByProcess_raw = await prisma.$queryRawUnsafe(
+        totalCaseByProcessQuery,
+        ...totalCaseByProcessParameters
+      );
+
+      const conformanceByTask_raw = await prisma.$queryRawUnsafe(
+        conformanceByTaskQuery,
+        ...conformanceByTaskParameters
+      );
 
       const overallConformance_raw = await prisma.$queryRawUnsafe(
         overallConformanceQuery,
@@ -138,9 +137,27 @@ class Controller {
       );
 
       const tableData = tableData_raw.map((row) => {
-        row.conformance_rate = row.conformance_rate * 100
-        return row
-      })
+        row.conformance_rate = row.conformance_rate * 100;
+        return row;
+      });
+
+      const caseByProcess_BarChart = {
+        labels: [],
+        datasets: []
+      }
+      totalCaseByProcess_raw.forEach(set => {
+        caseByProcess_BarChart.labels.push(set.processName)
+        caseByProcess_BarChart.datasets.push(set.task_count)
+      });
+
+      const conformanceByTask_RadarChart = {
+        labels: [],
+        datasets: []
+      }
+      conformanceByTask_raw.forEach(set => {
+        conformanceByTask_RadarChart.labels.push(set.eventName)
+        conformanceByTask_RadarChart.datasets.push(Number(set.average_conformance_rate))
+      });
 
       const averageConformance_areaChart = avgConformance_raw.map((el) => {
         return el.average_conformance_rate;
@@ -148,7 +165,9 @@ class Controller {
 
       const overallConformance_pieChart = {
         ontime: Number(overallConformance_raw[0].percentage_ontime_process),
-        nonConform: Number(overallConformance_raw[0].percentage_non_conformance),
+        nonConform: Number(
+          overallConformance_raw[0].percentage_non_conformance
+        ),
       };
       const averageConformanceByProcess_lineChart = groupProcess(
         avgConformanceByProcess_raw
@@ -159,7 +178,9 @@ class Controller {
         overallConformance_pieChart,
         averageConformanceByProcess_lineChart,
         topTenTable: topTenNonConformant_raw,
-        dashboardTable: tableData
+        dashboardTable: tableData,
+        caseByProcess: caseByProcess_BarChart,
+        conformanceByTask: conformanceByTask_RadarChart
       });
     } catch (error) {
       next(error);
