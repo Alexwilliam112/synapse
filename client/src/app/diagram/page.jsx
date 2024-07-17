@@ -1,10 +1,8 @@
 "use client";
 import { getAllProcess, getModelById } from "@/queries";
-// import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
-// import { getAllProcess } from "@/queries/index";
-import { PackageSearch } from 'lucide-react'
+import { PackageSearch } from "lucide-react";
 
 const ApiManager = () => {
   const { loading, error, data } = useQuery(getAllProcess);
@@ -40,8 +38,12 @@ const ApiManager = () => {
   return (
     <div className="w-full">
       <div className="w-full px-10 py-4">
-        <h1 className="text-4xl flex gap-2"><PackageSearch className="w-10 h-10 object-cover" /> Process List</h1>
-        <p className="font-light text-lg py-2">View your processes as a diagram</p>
+        <h1 className="text-4xl flex gap-2">
+          <PackageSearch className="w-10 h-10 object-cover" /> Process List
+        </h1>
+        <p className="font-light text-lg py-2">
+          View your processes as a diagram
+        </p>
       </div>
       <div className="overflow-x-auto px-8 border-t">
         <table className="table">
