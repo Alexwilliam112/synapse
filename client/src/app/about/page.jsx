@@ -11,7 +11,7 @@ const About = () => {
       <div data-theme="cupcake" className="navbar bg-base-100 fixed z-10">
         <div className="flex-1">
           <Link href={"/"} className="btn btn-ghost text-xl">
-            <img src="/logo.png" alt="" className="w-6 h-6 object-cover" />
+            <Image src="/logo.png" alt="" className="w-6 h-6 object-cover" width={50} height={50} />
             <p className="font-light text-2xl ">Synapse</p>
           </Link>
         </div>
