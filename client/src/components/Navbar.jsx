@@ -10,7 +10,7 @@ import {
   FolderKey,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation"; // use next/router instead of next/navigation
+import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 import makeClient from "@/config/ApolloClient";
 
@@ -48,7 +48,7 @@ const Navbar = () => {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            <li className={pathname === "/dashboard" && pathname === "/dashboard2" ? "bg-[#323232] text-white" : ""}>
+            <li className={pathname === "/dashboard" || pathname === "/dashboard2" ? "bg-[#323232] text-white" : ""}>
               <Link href="/dashboard">Dashboard</Link>
             </li>
             <li className={pathname === "/diagram" ? "bg-[#323232] text-white" : ""}>

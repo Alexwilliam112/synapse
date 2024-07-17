@@ -7,7 +7,17 @@ const authentication = require("../middlewares/authentication");
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 1,
-  keyGenerator: (req) => { req.userSessionId },
+  keyGenerator: function (req) {
+    return req.userSessionId;
+  },
+  handler: function (req, res, next) {
+    res.status(429).json({
+      message: "Too many requests, please try again in a minute.",
+    })
+  },
+  skip: function (req, res) {
+    return res.status < 200 || res.status >= 300
+  }
 });
 
 router.use(authentication)

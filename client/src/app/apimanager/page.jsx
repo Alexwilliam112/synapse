@@ -2,6 +2,7 @@
 
 import ErrorModal from "@/components/ErrorModal";
 import makeClient from "@/config/ApolloClient";
+import Link from "next/link";
 import {
   CreateAPI,
   DeleteApi,
@@ -249,15 +250,15 @@ const ApiManager = () => {
     }
   };
 
-  if (mutationLoadingDelete) {
+  if (mutationLoadingStart) {
     return (
-      <div className="flex items-center justify-center h-screen w-screen">
-        {" "}
-        <div className="flex gap-2 items-center">
-          {" "}
-          <span className="loading loading-ball loading-lg"></span>{" "}
-          <p className="font-mono">Deleting APIs..</p>
-        </div>{" "}
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="flex flex-col items-center bg-white p-6 rounded-md shadow-lg">
+          <span className="loading loading-ball loading-lg"></span>
+          <p className="font-mono mt-4">
+            Processing data, don't close this tab
+          </p>
+        </div>
       </div>
     );
   }
