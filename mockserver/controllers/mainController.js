@@ -15,7 +15,6 @@ class MainController {
                 endDate = new Date('3000-01-01')
             }
 
-            console.log(new Date(startDate), "startDate", endDate, "endDate");
             const data = await Eventlogs.findAll({
                 attributes: [
                     'processName',

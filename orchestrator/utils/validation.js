@@ -11,7 +11,6 @@ module.exports = (() => {
         }
 
         static dataType(inputValue, dataType) {
-            console.log(typeof (inputValue), inputValue);
             if (typeof (inputValue) !== dataType) {
                 throw new GraphQLError(
                     `Invalid data type for ${fieldName}`

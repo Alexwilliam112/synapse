@@ -65,7 +65,6 @@ class Controller {
       const limit = pLimit(15);
   
       const upsertPromises = tasks.map(task => limit(async () => {
-        console.log('POSTING TASK:  ', task);
         const identifier = task.caseId;
         const formattedTask = {
           ...task,

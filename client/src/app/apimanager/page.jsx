@@ -196,7 +196,6 @@ const ApiManager = () => {
 
   const handleDeleteClick = (endpoint) => {
     setSelectedEndpoint(endpoint);
-    console.log(selectedEndpoint);
     // setDeleteId(endpoint.id);
     handleDelete(endpoint);
   };
@@ -309,8 +308,7 @@ const ApiManager = () => {
         </h1>
         <button
           onClick={() => document.getElementById("my_modal_2").showModal()}
-          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white"
-        >
+          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white">
           <SquarePlus /> Add API
         </button>
       </div>
@@ -362,15 +360,13 @@ const ApiManager = () => {
               <div className="modal-action">
                 <button
                   type="submit"
-                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                >
+                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                   Save API
                 </button>
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => document.getElementById("my_modal_2").close()}
-                >
+                  onClick={() => document.getElementById("my_modal_2").close()}>
                   Cancel
                 </button>
               </div>
@@ -384,7 +380,7 @@ const ApiManager = () => {
               <th>Url</th>
               <th>Description</th>
               <th>API Key</th>
-              <th>Status</th>
+              {/* <th>Status</th> */}
               <th>Action</th>
             </tr>
           </thead>
@@ -399,8 +395,7 @@ const ApiManager = () => {
                     </pre>
                     <CopyToClipboard
                       text={data.endpointUrl}
-                      onCopy={() => handleCopy(data.id)}
-                    >
+                      onCopy={() => handleCopy(data.id)}>
                       <button className="absolute top-0 right-0 m-2 btn btn-sm">
                         {copiedUrls[data.id] ? (
                           <Check className="w-4 h-4 object-cover" />
@@ -419,8 +414,7 @@ const ApiManager = () => {
                     </p>
                     <button
                       onClick={() => toggleReveal(data.id)}
-                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]"
-                    >
+                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]">
                       {revealedApiKeys[data.id] ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
@@ -430,12 +424,12 @@ const ApiManager = () => {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() =>
-                      // setSelectedEndpoint(data);
-                      {
-                        document.getElementById("my_modal_4").showModal();
-                        setEndpointUrl(data.endpointUrl);
-                        setApiKey(data.apiKey);
-                      }
+                        // setSelectedEndpoint(data);
+                        {
+                          document.getElementById("my_modal_4").showModal();
+                          setEndpointUrl(data.endpointUrl);
+                          setApiKey(data.apiKey);
+                        }
                       }
                       className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
                       disabled={loadingStartProcess} // Disable button when loading
@@ -495,8 +489,7 @@ const ApiManager = () => {
                           <div className="modal-action">
                             <button
                               type="submit"
-                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                            >
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                               {loadingStartProcess ? (
                                 <span className="loading loading-spinner loading-sm"></span>
                               ) : (
@@ -505,12 +498,13 @@ const ApiManager = () => {
                             </button>
                             <button
                               type="button"
-                              className={`btn ${loadingStartProcess ? "disabled:opacity-75" : ""
-                                }`}
+                              className={`btn ${
+                                loadingStartProcess ? "disabled:opacity-75" : ""
+                              }`}
                               onClick={() =>
                                 document.getElementById("my_modal_4").close()
                               }
-                            // {loadingStartProcess ? disabled : ''}
+                              // {loadingStartProcess ? disabled : ''}
                             >
                               Cancel
                             </button>
@@ -520,8 +514,7 @@ const ApiManager = () => {
                     </dialog>
                     <button
                       className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2"
-                      onClick={() => handleEditClick(data)}
-                    >
+                      onClick={() => handleEditClick(data)}>
                       <Pencil className="w-4 h-4 object-cover" />
                       Edit
                     </button>
@@ -588,8 +581,7 @@ const ApiManager = () => {
                           <div className="modal-action">
                             <button
                               type="submit"
-                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                            >
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                               Save API
                             </button>
                             <button
@@ -597,8 +589,7 @@ const ApiManager = () => {
                               className="btn"
                               onClick={() =>
                                 document.getElementById("my_modal_1").close()
-                              }
-                            >
+                              }>
                               Cancel
                             </button>
                           </div>
@@ -610,8 +601,7 @@ const ApiManager = () => {
                     <button
                       type="button"
                       onClick={() => handleDeleteClick(data)}
-                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2"
-                    >
+                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2">
                       <Trash2 className="w-4 h-4 object-cover" />
                       Delete
                     </button>
