@@ -68,15 +68,18 @@ class Controller {
         console.log("ok");
         next({ name: 503, source: 'su' });
       }
-
       // const jsonData = require("../data/json/CustomerComplaint.json");
       const goResponse = await requestCaseTracing(jsonData);
-      const resData = goResponse.data.preprocessedData;
+      let resData = goResponse.data.preprocessedData;
+
+      if (!resData) {
+        resData = []
+      }
 
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
-
+      console.log(eventlogs);
       const tasks = await requestTemporalAnalysis(jsonData);
       const models = await requestProcessMining(eventlogs);
 
