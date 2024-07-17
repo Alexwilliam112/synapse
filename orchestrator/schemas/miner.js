@@ -36,7 +36,7 @@ module.exports = {
       StartMining: async (_, args, context) => {
         const { startDate, endDate, endpointUrl, apiKey } = args.input;
         const token = await context.auth()
-
+        console.log(apiKey, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         const serverPayload = signTokenServer({
           startDate,
           endDate,
