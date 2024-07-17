@@ -79,7 +79,9 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
-      console.log(eventlogs);
+      // console.log(eventlogs[0].eventlog[0], "eventlogs");
+      // console.log(eventlogs[eventlogs.length - 1].eventlog[eventlogs[eventlogs.length - 1].eventlog.length - 1], "eventlogs");
+
       const tasks = await requestTemporalAnalysis(jsonData);
       const models = await requestProcessMining(eventlogs);
 
