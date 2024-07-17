@@ -174,3 +174,11 @@ export const getAllProcess = gql`
     }
   }
 `;
+
+export const updateEvent = gql`
+  mutation UpdateEvent($input: [events2]) {
+    UpdateEvent(input: $input) {
+      statusCode
+    }
+  }
+`;

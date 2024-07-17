@@ -12,9 +12,7 @@ export default function Layout({ children }) {
   return (
     <>
       <ServerProtectedComponents>
-        <Navbar />
         <>{children}</>
-        {/* <Footer /> */}
       </ServerProtectedComponents>
     </>
   );

@@ -28,16 +28,35 @@ const ApiManager = () => {
   const [endDate, setEndDate] = useState("");
   const [startDate, setStartDate] = useState("");
   // this is state for table interaction (copy, reveal)
-  const [copied, setCopied] = useState(false);
-  const [isRevealed, setIsRevealed] = useState(false);
+  const [copiedUrls, setCopiedUrls] = useState({});
+  const [revealedApiKeys, setRevealedApiKeys] = useState({});
+  const [loadingStartProcess, setLoadingStartProcess] = useState(false);
 
-  const toggleReveal = () => {
-    setIsRevealed(!isRevealed);
+  const toggleReveal = (id) => {
+    setRevealedApiKeys((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleCopy = (id) => {
+    setCopiedUrls((prev) => ({
+      ...prev,
+      [id]: true,
+    }));
+
+    // Reset the copied status after a short delay
+    setTimeout(() => {
+      setCopiedUrls((prev) => ({
+        ...prev,
+        [id]: false,
+      }));
+    }, 2000); // Adjust the delay as needed
   };
 
   // console.log(editId);
 
-  //FETCH DENDPOINT
+  //FETCH ENDPOINT
   const {
     loading: queryLoading,
     error: queryError,
@@ -86,6 +105,7 @@ const ApiManager = () => {
       console.log(JSON.stringify(error));
     }
   };
+
   // Handle edit button click
   const handleEditClick = (endpoint) => {
     setEditEndpoint(endpoint.endpointUrl);
@@ -182,6 +202,7 @@ const ApiManager = () => {
 
   const handleStart = async (e) => {
     e.preventDefault();
+    setLoadingStartProcess(true);
     try {
       const { data } = await startMining({
         variables: {
@@ -206,6 +227,8 @@ const ApiManager = () => {
       // }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoadingStartProcess(false);
     }
   };
 
@@ -319,35 +342,41 @@ const ApiManager = () => {
                     <pre data-prefix="$">
                       <code>{data.endpointUrl}</code>
                     </pre>
-                    <CopyToClipboard text={data.endpointUrl} onCopy={() => setCopied(true)}>
+                    <CopyToClipboard text={data.endpointUrl} onCopy={() => handleCopy(data.id)}>
                       <button className="absolute top-0 right-0 m-2 btn btn-sm">
-                        {copied ? <Check className="w-4 h-4 object-cover" /> : <Copy className="w-4 h-4 object-cover" />}
+                        {copiedUrls[data.id] ? <Check className="w-4 h-4 object-cover" /> : <Copy className="w-4 h-4 object-cover" />}
                       </button>
                     </CopyToClipboard>
                   </div>
                 </td>
                 <td>{data.description}</td>
                 <td>
-                  {/* {data.apiKey} */}
-                  <div className='flex items-center'>
-                    <p>{isRevealed ? data.apiKey : '************'}</p>
-                    <button onClick={toggleReveal} className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]">
-                      {isRevealed ? <EyeOff /> : <Eye />}
+                  <div className="flex items-center">
+                    <p>{revealedApiKeys[data.id] ? data.apiKey : '************'}</p>
+                    <button
+                      onClick={() => toggleReveal(data.id)}
+                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]"
+                    >
+                      {revealedApiKeys[data.id] ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
-
                 </td>
                 <td>{data.status}</td>
                 <td className="flex items-center">
                   <div className="pt-4 flex space-x-2">
                     <button
-                      onClick={() =>
-                        document.getElementById("my_modal_4").showModal()
-                      }
+                      onClick={() => document.getElementById("my_modal_4").showModal()}
                       className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
+                      disabled={loadingStartProcess} // Disable button when loading
                     >
-                      <Rocket className="w-4 h-4 object-cover" />
-                      Start
+                      {loadingStartProcess ? (
+                        <span className="loading loading-spinner loading-sm"></span>
+                      ) : (
+                        <>
+                          <Rocket className="w-4 h-4 object-cover" />
+                          Start
+                        </>
+                      )}
                     </button>
 
                     {/* modal start */}
@@ -379,25 +408,32 @@ const ApiManager = () => {
                               value={endDate}
                               required
                             />
-                          </label><div className="modal-action">
+                          </label>
+                          <div className="modal-action">
                             <button
                               type="submit"
                               className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
                             >
-                              Confirm
+                              {loadingStartProcess ? (
+                                <span className="loading loading-spinner loading-sm"></span>
+                              ) : (
+                                <>
+                                  Confirm
+                                </>
+                              )}
                             </button>
                             <button
                               type="button"
-                              className="btn"
+                              className={`btn ${loadingStartProcess ? 'disabled:opacity-75' : ''}`}
                               onClick={() =>
                                 document.getElementById("my_modal_4").close()
                               }
+                            // {loadingStartProcess ? disabled : ''}
                             >
                               Cancel
                             </button>
                           </div>
                         </form>
-
                       </div>
                     </dialog>
                     <button
