@@ -1,14 +1,24 @@
 const { State, Event, DataLink, Process, sequelize } = require("../models");
-
+const redis = require("../config/redis");
+const cache = require("../lib/cache");
 class Controller {
   static async getAll(req, res, next) {
     try {
       const CompanyId = req?.loginInfo?.CompanyId;
+      const cacheKey = cache.data(CompanyId);
+      const cachedData = await redis.get(cacheKey);
+      if (cachedData) {
+        res.status(200).json(JSON.parse(cachedData));
+        return;
+      }
       const processes = await Process.findAll({
         where: {
           CompanyId,
         },
       });
+
+      await redis.set(cacheKey, JSON.stringify(processes));
+
       res.status(200).json({
         statusCode: 200,
         data: processes,
@@ -24,6 +34,10 @@ class Controller {
   static async getById(req, res, next) {
     try {
       const { id } = req.params;
+      const CompanyId = req?.loginInfo?.CompanyId;
+      const cacheKey = `${cache.data(CompanyId)}:${id}`;
+      const cachedData = await redis.get(cacheKey);
+
       const process = await Process.findByPk(id, {
         include: [
           { model: DataLink, as: "dataLinks" },
@@ -31,6 +45,9 @@ class Controller {
           { model: State, as: "states" },
         ],
       });
+
+      await redis.set(cacheKey, JSON.stringify(process));
+
       res.status(200).json({
         statusCode: 200,
         data: process,
@@ -45,6 +62,8 @@ class Controller {
 
   static async create(req, res, next) {
     const { models } = req.body;
+    const CompanyId = req?.loginInfo?.CompanyId;
+    const cacheKey = cache.data(CompanyId)
     try {
       for (const modelSet of models) {
         modelSet.processName = modelSet.processName.split(" ").sort().join(" ");
@@ -127,6 +146,7 @@ class Controller {
             })
           }
         });
+        await redis.del(cacheKey);
       }
       res.status(200).json({
         statusCode: 200,
@@ -139,8 +159,11 @@ class Controller {
 
   static async update(req, res, next) {
     try {
-      const eventPaylaod = req.body.input
-      for (const event of eventPaylaod) {
+      const eventPayload = req.body.input
+      const CompanyId = req?.loginInfo?.CompanyId;
+      const cacheKey = cache.data(CompanyId)
+
+      for (const event of eventPayload) {
         await Event.update(
           {
             benchmarkTime: event.benchmarkTime,
@@ -152,6 +175,8 @@ class Controller {
           }
         );
       }
+      await redis.del(cacheKey);
+
       res.status(200).json({
         statusCode: 200,
         message: "Process updated successfully",
