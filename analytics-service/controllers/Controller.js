@@ -90,29 +90,26 @@ class Controller {
 
       const pLimit = (await import("p-limit")).default;
       const limit = pLimit(15);
-
-      const upsertPromises = tasks.map((task) =>
-        limit(async () => {
-          console.log("POSTING TASK:  ", task);
-          const identifier = task.caseId;
-          const formattedTask = {
-            ...task,
-            timestamp: new Date(task.timestamp).toISOString(),
-            time: parseFloat(task.time),
-            CompanyId: parseFloat(task.CompanyId),
+  
+      const upsertPromises = tasks.map(task => limit(async () => {
+        const identifier = task.caseId;
+        const formattedTask = {
+          ...task,
+          timestamp: new Date(task.timestamp).toISOString(),
+          time: parseFloat(task.time),
+          CompanyId: parseFloat(task.CompanyId),
+          identifier
+        };
+  
+        return prisma.task.upsert({
+          where: {
             identifier,
-          };
-
-          return prisma.task.upsert({
-            where: {
-              identifier,
-            },
-            update: formattedTask,
-            create: formattedTask,
-          });
-        })
-      );
-
+          },
+          update: formattedTask,
+          create: formattedTask,
+        });
+      }));
+  
       await Promise.all(upsertPromises);
 
       await redis.del(cache.chartData(req.loginInfo.CompanyId));

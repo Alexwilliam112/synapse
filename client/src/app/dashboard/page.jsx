@@ -20,7 +20,7 @@ import {
 import Link from "next/link";
 
 const formatNumberToTwoDecimals = (num) => {
-  return Number.isInteger(num) ? num.toString() : num.toFixed(2);
+  return Number.isInteger(num) ? num?.toString() : num?.toFixed(2);
 };
 
 const Dashboard = () => {
@@ -107,9 +107,7 @@ const Dashboard = () => {
             alt="errorcatnyan"
             className="h-24 object-cover"
           />
-          <p className="font-mono">
-            Error fetching filters: {error.message}
-          </p>
+          <p className="font-mono">Error fetching filters: {error.message}</p>
         </div>
       </div>
     );
@@ -154,9 +152,7 @@ const Dashboard = () => {
                         onChange={handleChange}
                         className="select select-bordered"
                       >
-                        <option value="" >
-                          Select All
-                        </option>
+                        <option value="">Select All</option>
                         {resultDepartments.map((el, idx) => (
                           <option key={idx} value={el}>
                             {el}
@@ -181,9 +177,7 @@ const Dashboard = () => {
                         onChange={handleChange}
                         className="select select-bordered"
                       >
-                        <option value="">
-                          Select All
-                        </option>
+                        <option value="">Select All</option>
                         {resultPerson.map((el, idx) => (
                           <option key={idx} value={el}>
                             {el}
@@ -208,9 +202,7 @@ const Dashboard = () => {
                         onChange={handleChange}
                         className="select select-bordered"
                       >
-                        <option value="">
-                          Select All
-                        </option>
+                        <option value="">Select All</option>
                         {resultProcesses.map((el, idx) => (
                           <option key={idx} value={el}>
                             {el}
@@ -259,7 +251,10 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="w-full flex justify-end pt-4">
-                  <button type="submit" className="btn bg-[#6E8672] text-white hover:bg-[#47594A] px-20">
+                  <button
+                    type="submit"
+                    className="btn bg-[#6E8672] text-white hover:bg-[#47594A] px-20"
+                  >
                     Apply
                   </button>
                 </div>
@@ -268,13 +263,17 @@ const Dashboard = () => {
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
               <div className="sm:col-span-2 p-6 bg-[#FFFFFF] rounded-lg shadow-md">
                 <div className="pb-2">
-                  <p className="text-sm text-gray-600">Conformance by Process</p>
+                  <p className="text-sm text-gray-600">
+                    Conformance by Process
+                  </p>
                 </div>
                 <BarChart data={caseByProcess} />
               </div>
               <div className="p-6 bg-white rounded-lg shadow sm:col-span-2">
                 <div className="pb-2">
-                  <p className="text-sm text-gray-600">Average Conformance Rate</p>
+                  <p className="text-sm text-gray-600">
+                    Average Conformance Rate
+                  </p>
                 </div>
                 <AreaChart data={averageConformance_areaChart} />
               </div>
@@ -282,8 +281,12 @@ const Dashboard = () => {
             <div>
               <div className="p-6 bg-white rounded-lg shadow">
                 <div className="px-7">
-                  <h2 className="font-semibold">Average Conformance per Process</h2>
-                  <p className="text-sm text-gray-600">Recapitulate every process on this graph.</p>
+                  <h2 className="font-semibold">
+                    Average Conformance per Process
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    Recapitulate every process on this graph.
+                  </p>
                 </div>
                 <div className="w-full flex h-72">
                   <div className="h-auto w-full">
@@ -299,7 +302,9 @@ const Dashboard = () => {
                 <div>
                   <h2 className="font-">Nganu Technology & Consultant</h2>
                   <p className="text-sm font-light">Good Day, Rayhan Wijaya.</p>
-                  <p className="text-sm font-light">Lets take a look at your company performance!</p>
+                  <p className="text-sm font-light">
+                    Lets take a look at your company performance!
+                  </p>
                 </div>
                 <div>
                   <Link href={"/diagram"}>
@@ -316,16 +321,27 @@ const Dashboard = () => {
                 <div className="space-y-4">
                   <div>
                     <p className="font-light text-sm flex items-center">
-                      <Clock2 className="w-4 h-4 text-[#6E8672] font-light mr-1" /> Ontime Process
+                      <Clock2 className="w-4 h-4 text-[#6E8672] font-light mr-1" />{" "}
+                      Ontime Process
                     </p>
-                    <p className="text-5xl">{formatNumberToTwoDecimals(overallConformance_pieChart?.ontime)}%</p>
+                    <p className="text-5xl">
+                      {formatNumberToTwoDecimals(
+                        overallConformance_pieChart?.ontime
+                      )}
+                      %
+                    </p>
                   </div>
                   <div>
                     <p className="font-light text-sm flex items-center">
                       <TriangleAlert className="w-4 h-4 text-[#8DB093] font-light mr-1" />
                       Non-Conformance
                     </p>
-                    <p className="text-5xl">{formatNumberToTwoDecimals(overallConformance_pieChart?.nonConform)}%</p>
+                    <p className="text-5xl">
+                      {formatNumberToTwoDecimals(
+                        overallConformance_pieChart?.nonConform
+                      )}
+                      %
+                    </p>
                   </div>
                 </div>
               </div>
@@ -337,7 +353,8 @@ const Dashboard = () => {
               <RadarChart data={conformanceByTask} />
               <div className="">
                 <h1 className="flex items-center">
-                  <LayoutList className="w-4 h-4 font-light mr-2" /> Top 10 Non Conform
+                  <LayoutList className="w-4 h-4 font-light mr-2" /> Top 10 Non
+                  Conform
                 </h1>
                 <div className="overflow-x-auto">
                   <table className="table">
@@ -355,7 +372,9 @@ const Dashboard = () => {
                           <th>{row.rank}</th>
                           <td>{row.name}</td>
                           <td>{formatNumberToTwoDecimals(row.avgOverdue)}</td>
-                          <td>{formatNumberToTwoDecimals(row.avgConformance)}</td>
+                          <td>
+                            {formatNumberToTwoDecimals(row.avgConformance)}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

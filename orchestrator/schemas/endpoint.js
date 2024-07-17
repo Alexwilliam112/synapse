@@ -62,7 +62,7 @@ module.exports = {
       GetEndpoints: async (_, __, context) => {
         const token = await context.auth()
 
-        const res = await axios.get('http://localhost:3002/api', {
+        const res = await axios.get(`${process.env.API_MANAGER_SERVICE_URL}/api` || "http://localhost:3002/api", {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -88,7 +88,7 @@ module.exports = {
           apiKey
         });
 
-        const res = await axios.post('http://localhost:3002/api',
+        const res = await axios.post(`${process.env.API_MANAGER_SERVICE_URL}/api` || "http://localhost:3002/api",
           { payload }
           , {
             headers: {
@@ -114,7 +114,7 @@ module.exports = {
           apiKey
         });
 
-        const res = await axios.put(`http://localhost:3002/api/${id}`,
+        const res = await axios.put(`${process.env.API_MANAGER_SERVICE_URL}/api/${id}` || `http://localhost:3002/api/${id}`,
           { payload }
           , {
             headers: {
@@ -132,7 +132,7 @@ module.exports = {
       DeleteEndpoint: async (_, args, context) => {
         const token = await context.auth()
         const { id } = args.input
-        const res = await axios.delete(`http://localhost:3002/api/${id}`, {
+        const res = await axios.delete(`${process.env.API_MANAGER_SERVICE_URL}/api/${id}` || `http://localhost:3002/api/${id}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

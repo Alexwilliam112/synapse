@@ -94,7 +94,7 @@ module.exports = {
 
         const token = await context.auth();
 
-        const data = await axios.get("http://localhost:3003/getChartData", {
+        const data = await axios.get(`${process.env.ANALYTICS_SERVICE_URL}/getChartData` || "http://localhost:3003/getChartData", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -110,7 +110,7 @@ module.exports = {
       GetFilters: async (_, __, context) => {
         const token = await context.auth();
 
-        const data = await axios.get("http://localhost:3003/filters", {
+        const data = await axios.get(`${process.env.ANALYTICS_SERVICE_URL}/filters` || "http://localhost:3003/filters", {
           headers: {
             Authorization: `Bearer ${token}`,
           }

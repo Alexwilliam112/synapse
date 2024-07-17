@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Eventlogs.init({
     processName: DataTypes.STRING,
     caseId: DataTypes.STRING,
-    timestamp: DataTypes.STRING,
+    timestamp: DataTypes.DATE,
     eventName: DataTypes.STRING,
     name: DataTypes.STRING,
     department: DataTypes.STRING

@@ -44,7 +44,7 @@ module.exports = {
         };
 
         const response = await axios.post(
-          "http://localhost:3005/startminer",
+          `${process.env.MINERS_SERVICE_URL}/startminer` || "http://localhost:3005/startminer",
           { serverPayload },
           {
             headers: {

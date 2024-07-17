@@ -1,7 +1,7 @@
 // import useSWR from 'swr'
 import ServerProtectedComponents from "@/components/ServerProtectedComponent";
 import Navbar from "../../components/Navbar";
-// import Footer from './footer'
+import Footer from '@/components/Footer'
 
 export default function Layout({ children }) {
   // const { data, error } = useSWR('/api/navigation', fetcher)
@@ -14,7 +14,7 @@ export default function Layout({ children }) {
       <ServerProtectedComponents>
         <Navbar />
         <>{children}</>
-        {/* <Footer /> */}
+        <Footer />
       </ServerProtectedComponents>
     </>
   );

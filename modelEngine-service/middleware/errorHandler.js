@@ -72,12 +72,8 @@ module.exports = {
           }
         }
       }
-      console.log(err.message);
       res.status(status).json({
         message,
-        // err
-        // status,
-        // err
       });
     },
   };

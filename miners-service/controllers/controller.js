@@ -52,7 +52,7 @@ class Controller {
       const { apiKey, startDate, endDate } = req.body.serverPayload;
       let jsonData
       try {
-        const res = await axios.get("http://localhost:4000/eventlog", {
+        const res = await axios.get(`${process.env.MOCK_SERVER_URL}/eventlog` || "http://localhost:4000/eventlog", {
           headers: {
             authorization: apiKey,
           },
@@ -64,10 +64,9 @@ class Controller {
 
         jsonData = res.data.data
       } catch (error) {
-        console.log("ok");
-        next({ name: 503, source: 'su' });
+        throw ({ name: 503, source: 'su' });
       }
-      // const jsonData = require("../data/json/CustomerComplaint.json");
+
       const goResponse = await requestCaseTracing(jsonData);
       let resData = goResponse.data.preprocessedData;
 
@@ -78,8 +77,13 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
+<<<<<<< HEAD
       console.log(eventlogs);
       const tasks = await requestTemporalAnalysis(jsonData, req.loginInfo.CompanyId);
+=======
+
+      const tasks = await requestTemporalAnalysis(jsonData);
+>>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({
@@ -89,13 +93,9 @@ class Controller {
 
       const responses = { tasks, models };
 
-      console.log(models[0].arcs);
-      console.log(models[0].places);
-      console.log(models[0].transitions);
-
       try {
         await axios.post(
-          "http://localhost:3003/upsert",
+          `${process.env.ANALYTICS_SERVICE_URL}/upsert` || "http://localhost:3003/upsert",
           { tasks },
           {
             headers: {
@@ -104,14 +104,13 @@ class Controller {
             },
           }
         );
-        console.log("POSTED TO ANALYTICS");
       } catch (error) {
         next(error);
       }
 
       try {
         await axios.post(
-          "http://localhost:3004/post",
+          `${process.env.MODEL_ENGINE_SERVICE_URL}/post` || "http://localhost:3004/post",
           { models },
           {
             headers: {
@@ -120,7 +119,6 @@ class Controller {
             },
           }
         );
-        console.log("POSTED TO MODEL ENGINE");
       } catch (error) {
         next(error);
       }
