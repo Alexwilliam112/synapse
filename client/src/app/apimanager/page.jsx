@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorModal from "@/components/ErrorModal";
 import makeClient from "@/config/ApolloClient";
 import {
   CreateAPI,
@@ -41,6 +42,8 @@ const ApiManager = () => {
   const [copiedUrls, setCopiedUrls] = useState({});
   const [revealedApiKeys, setRevealedApiKeys] = useState({});
   const [loadingStartProcess, setLoadingStartProcess] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const toggleReveal = (id) => {
     setRevealedApiKeys((prev) => ({
@@ -103,7 +106,8 @@ const ApiManager = () => {
         console.error("Error creating endpoint");
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
+      setErrorMessage("Something went wrong");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -151,7 +155,9 @@ const ApiManager = () => {
         console.error("Error updating endpoint");
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log(error);
+      setErrorMessage("Something went wrong");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -181,7 +187,8 @@ const ApiManager = () => {
         console.error("Error deleting endpoint");
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
+      setErrorMessage("Something went wrong");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -232,6 +239,11 @@ const ApiManager = () => {
       router.push("/apimanager");
     } catch (error) {
       console.log(error);
+      document.getElementById("my_modal_4").close();
+      setErrorMessage(
+        "Something went wrong, please check your date parameter and data structure"
+      );
+      setIsErrorModalOpen(true);
     } finally {
       setLoadingStartProcess(false);
     }
@@ -263,46 +275,13 @@ const ApiManager = () => {
     );
   }
 
-  if (
-    queryError ||
-    mutationError ||
-    mutationErrorUpdate ||
-    mutationErrorDelete
-  ) {
-    return (
-      <div className="flex items-center justify-center h-screen w-screen">
-        <div>
-          <img
-            src="/catconfuse.gif"
-            alt="errorcatnyan"
-            className="h-24 object-cover"
-          />
-          <p className="font-mono">Something went wrong</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (mutationErrorStart) {
-    return (
-      <div className="flex items-center justify-center h-screen w-screen">
-        <div>
-          <img
-            src="/catconfuse.gif"
-            alt="errorcatnyan"
-            className="h-24 object-cover"
-          />
-          <p className="font-mono">
-            Something went wrong, please check your date parameter and data
-            structure
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message={errorMessage}
+      />
       <div className="w-full flex justify-between px-12 mb-4 py-4">
         <h1 className="text-4xl flex gap-2">
           <FolderKey className="w-10 h-10 object-cover font-light" /> API
