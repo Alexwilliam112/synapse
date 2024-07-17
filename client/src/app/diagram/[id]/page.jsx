@@ -44,6 +44,9 @@ class App extends React.Component {
       newLinkTo: 1,
       currentFileName: null,
       loading: true, // Initialize loading state
+      modalNodeData: null,
+      fetchedData: null,
+      benchmarkTimeInput: "",
     };
     this.mapNodeKeyIdx = new Map();
     this.mapLinkKeyIdx = new Map();
@@ -58,6 +61,9 @@ class App extends React.Component {
     this.handleExport = this.handleExport.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleShapeClick = this.handleShapeClick.bind(this);
+    this.handleBenchmarkTimeChange = this.handleBenchmarkTimeChange.bind(this);
+    this.handleBenchmarkTimeSubmit = this.handleBenchmarkTimeSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -78,6 +84,7 @@ class App extends React.Component {
       },
     });
 
+    this.setState({ fetchedData: data?.GetById?.data, loading: false });
     const mappedData = {
       nodeDataArray: [],
       linkDataArray: [],
@@ -104,6 +111,7 @@ class App extends React.Component {
         shape:
           event.shape === "Rounded rectangle" ? "RoundedRectangle" : "Ellipse",
         isTextEditable: event.isTextEditable,
+        // ...event,
       });
     });
 
@@ -280,11 +288,73 @@ class App extends React.Component {
       skipsDiagramUpdate: false,
     });
   }
-  handleShapeClick = (shape) => {
-    if (shape === "RoundedRectangle") {
+  handleShapeClick(nodeData) {
+    const { fetchedData } = this.state;
+
+    // Find the full data for the clicked node
+    const selectedNodeData = fetchedData?.events?.find(
+      (event) => event.eventName === nodeData.eventName
+    );
+
+    if (selectedNodeData && selectedNodeData.shape === "Rounded rectangle") {
+      this.setState({
+        modalNodeData: selectedNodeData,
+        benchmarkTimeInput: selectedNodeData.benchmarkTime || "",
+      });
       document.getElementById("my_modal_3").showModal();
     }
-  };
+  }
+
+  handleBenchmarkTimeChange(event) {
+    this.setState({ benchmarkTimeInput: event.target.value });
+  }
+
+  async handleBenchmarkTimeSubmit(event) {
+    event.preventDefault();
+    const { modalNodeData, benchmarkTimeInput, fetchedData } = this.state;
+
+    try {
+      // Call the GraphQL mutation to update the event
+      await makeClient().mutate({
+        mutation: updateEvent,
+        variables: {
+          input: [
+            {
+              id: modalNodeData.id,
+              eventName: modalNodeData.eventName,
+              identifier: modalNodeData.identifier,
+              frequency: modalNodeData.frequency,
+              time: modalNodeData.time,
+              benchmarkTime: parseFloat(benchmarkTimeInput),
+              isTextEditable: modalNodeData.isTextEditable,
+              color: modalNodeData.color,
+              shape: modalNodeData.shape,
+              ProcessId: modalNodeData.ProcessId,
+            },
+          ],
+        },
+      });
+
+      // Update the state with the new benchmarkTime
+      const updatedData = fetchedData.events.map((event) =>
+        event.eventName === modalNodeData.eventName
+          ? { ...event, benchmarkTime: parseFloat(benchmarkTimeInput) }
+          : event
+      );
+
+      this.setState({
+        fetchedData: { ...fetchedData, events: updatedData },
+        modalNodeData: {
+          ...modalNodeData,
+          benchmarkTime: parseFloat(benchmarkTimeInput),
+        },
+      });
+
+      document.getElementById("my_modal_3").close();
+    } catch (error) {
+      console.error("Error updating benchmark time:", error);
+    }
+  }
 
   handleAddNode() {
     const newNode = {
@@ -424,7 +494,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { loading, selectedData } = this.state;
+    const { loading, selectedData, modalNodeData, benchmarkTimeInput } =
+      this.state;
     let inspector;
     if (selectedData !== null) {
       inspector = (
@@ -540,8 +611,37 @@ class App extends React.Component {
               </button>
             </form>
             <h3 className="font-light text-2xl">Node Information</h3>
-            <p>test</p>
-            {/* <p className="py-4"> {inspector}</p> */}
+            {modalNodeData && (
+              <div>
+                <p>
+                  <strong>Event Name:</strong> {modalNodeData.eventName}
+                </p>
+                <p>
+                  <strong>Frequency:</strong> {modalNodeData.frequency}
+                </p>
+                <p>
+                  <strong>Time:</strong> {modalNodeData.time}
+                </p>
+                <form onSubmit={this.handleBenchmarkTimeSubmit}>
+                  <label>
+                    <strong>Benchmark Time:</strong>
+                    <input
+                      value={benchmarkTimeInput}
+                      onChange={this.handleBenchmarkTimeChange}
+                      type="text"
+                      className="input input-bordered w-full mt-1"
+                    />
+                  </label>
+                  <button
+                    type="submit"
+                    className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full mt-2"
+                  >
+                    Submit
+                  </button>
+                </form>
+                {/* Display other data as needed */}
+              </div>
+            )}
           </div>
         </dialog>
       </div>

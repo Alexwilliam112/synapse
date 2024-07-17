@@ -30,7 +30,7 @@ class DiagramWrapper extends React.Component {
         if (part instanceof go.Node) {
           const shape = part.findObject("SHAPE");
           if (shape && shape.figure === "RoundedRectangle") {
-            document.getElementById("my_modal_3").showModal();
+            this.props.onShapeClick(part.data);
           }
         }
       });
