@@ -1,6 +1,7 @@
 "use client";
 
 import makeClient from "@/config/ApolloClient";
+import Link from "next/link";
 import {
   CreateAPI,
   DeleteApi,
@@ -239,13 +240,13 @@ const ApiManager = () => {
 
   if (mutationLoadingDelete) {
     return (
-      <div className="flex items-center justify-center h-screen w-screen">
-        {" "}
-        <div className="flex gap-2 items-center">
-          {" "}
-          <span className="loading loading-ball loading-lg"></span>{" "}
-          <p className="font-mono">Deleting APIs..</p>
-        </div>{" "}
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="flex flex-col items-center bg-white p-6 rounded-md shadow-lg">
+          <span className="loading loading-ball loading-lg"></span>
+          <p className="font-mono mt-4">
+            Processing data, don't close this tab
+          </p>
+        </div>
       </div>
     );
   }
@@ -259,6 +260,19 @@ const ApiManager = () => {
           <span className="loading loading-ball loading-lg"></span>{" "}
           <p className="font-mono">Fetching APIs..</p>
         </div>{" "}
+      </div>
+    );
+  }
+
+  if (mutationLoadingStart) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="flex flex-col items-center bg-white p-6 rounded-md shadow-lg">
+          <span className="loading loading-ball loading-lg"></span>
+          <p className="font-mono mt-4">
+            Processing data, don't close this tab
+          </p>
+        </div>
       </div>
     );
   }
@@ -283,19 +297,49 @@ const ApiManager = () => {
     );
   }
 
+  // if (mutationErrorStart) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen w-screen">
+  //       <div>
+  //         <img
+  //           src="/catconfuse.gif"
+  //           alt="errorcatnyan"
+  //           className="h-24 object-cover"
+  //         />
+  //         <p className="font-mono">
+  //           Something went wrong, please check your date parameter and data
+  //           structure
+  //         </p>
+  //         <Link href={"/apimanager"}>
+  //           {" "}
+  //           <button className="btn btn-black">Close</button>
+  //         </Link>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   if (mutationErrorStart) {
     return (
+      // <div className="modal">
       <div className="flex items-center justify-center h-screen w-screen">
-        <div>
+        <div className="w-2/5 border-2 border-gray-400 p-8 rounded-lg shadow-lg">
           <img
             src="/catconfuse.gif"
             alt="errorcatnyan"
             className="h-24 object-cover"
           />
-          <p className="font-mono">
+          <p className="py-4 font-mono">
             Something went wrong, please check your date parameter and data
-            structure
+            structure!
           </p>
+          <div className="modal-action">
+            <form>
+              <Link href={"/apimanager"}>
+                <button className="btn">Back to Manager</button>
+              </Link>
+            </form>
+          </div>
         </div>
       </div>
     );
@@ -310,8 +354,7 @@ const ApiManager = () => {
         </h1>
         <button
           onClick={() => document.getElementById("my_modal_2").showModal()}
-          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white"
-        >
+          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white">
           <SquarePlus /> Add API
         </button>
       </div>
@@ -363,15 +406,13 @@ const ApiManager = () => {
               <div className="modal-action">
                 <button
                   type="submit"
-                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                >
+                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                   Save API
                 </button>
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => document.getElementById("my_modal_2").close()}
-                >
+                  onClick={() => document.getElementById("my_modal_2").close()}>
                   Cancel
                 </button>
               </div>
@@ -400,8 +441,7 @@ const ApiManager = () => {
                     </pre>
                     <CopyToClipboard
                       text={data.endpointUrl}
-                      onCopy={() => handleCopy(data.id)}
-                    >
+                      onCopy={() => handleCopy(data.id)}>
                       <button className="absolute top-0 right-0 m-2 btn btn-sm">
                         {copiedUrls[data.id] ? (
                           <Check className="w-4 h-4 object-cover" />
@@ -420,8 +460,7 @@ const ApiManager = () => {
                     </p>
                     <button
                       onClick={() => toggleReveal(data.id)}
-                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]"
-                    >
+                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]">
                       {revealedApiKeys[data.id] ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
@@ -496,8 +535,7 @@ const ApiManager = () => {
                           <div className="modal-action">
                             <button
                               type="submit"
-                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                            >
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                               {loadingStartProcess ? (
                                 <span className="loading loading-spinner loading-sm"></span>
                               ) : (
@@ -522,8 +560,7 @@ const ApiManager = () => {
                     </dialog>
                     <button
                       className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2"
-                      onClick={() => handleEditClick(data)}
-                    >
+                      onClick={() => handleEditClick(data)}>
                       <Pencil className="w-4 h-4 object-cover" />
                       Edit
                     </button>
@@ -590,8 +627,7 @@ const ApiManager = () => {
                           <div className="modal-action">
                             <button
                               type="submit"
-                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
-                            >
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
                               Save API
                             </button>
                             <button
@@ -599,8 +635,7 @@ const ApiManager = () => {
                               className="btn"
                               onClick={() =>
                                 document.getElementById("my_modal_1").close()
-                              }
-                            >
+                              }>
                               Cancel
                             </button>
                           </div>
@@ -612,8 +647,7 @@ const ApiManager = () => {
                     <button
                       type="button"
                       onClick={() => handleDeleteClick(data)}
-                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2"
-                    >
+                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2">
                       <Trash2 className="w-4 h-4 object-cover" />
                       Delete
                     </button>
