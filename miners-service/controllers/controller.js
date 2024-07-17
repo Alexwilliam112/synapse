@@ -52,7 +52,7 @@ class Controller {
       const { apiKey, startDate, endDate } = req.body.serverPayload;
       let jsonData
       try {
-        const res = await axios.get(`${process.env.MOCK_SERVER_URL}/eventlog` || "http://localhost:4000/eventlog", {
+        const res = await axios.get(`${process.env.MOCK_SERVER_URL}/eventlog`, {
           headers: {
             authorization: apiKey,
           },
@@ -77,13 +77,8 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
-<<<<<<< HEAD
-      console.log(eventlogs);
-      const tasks = await requestTemporalAnalysis(jsonData, req.loginInfo.CompanyId);
-=======
 
       const tasks = await requestTemporalAnalysis(jsonData);
->>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({
@@ -95,7 +90,7 @@ class Controller {
 
       try {
         await axios.post(
-          `${process.env.ANALYTICS_SERVICE_URL}/upsert` || "http://localhost:3003/upsert",
+          `${process.env.ANALYTICS_SERVICE_URL}/upsert`,
           { tasks },
           {
             headers: {
@@ -110,7 +105,7 @@ class Controller {
 
       try {
         await axios.post(
-          `${process.env.MODEL_ENGINE_SERVICE_URL}/post` || "http://localhost:3004/post",
+          `${process.env.MODEL_ENGINE_SERVICE_URL}/post`,
           { models },
           {
             headers: {

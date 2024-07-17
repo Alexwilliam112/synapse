@@ -53,7 +53,7 @@ module.exports = {
           password,
         });
 
-        const response = await axios.post(`${process.env.USERS_SERVICE_URL}/login` || "http://localhost:3001/login",
+        const response = await axios.post(`http://${process.env.USERS_SERVICE_URL}/login` || "http://localhost:3001/login",
           { userPayload },
           {
             headers: {
