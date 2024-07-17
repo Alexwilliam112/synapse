@@ -112,14 +112,12 @@ module.exports = {
         let { id } = args.input;
         const token = await context.auth()
 
-        console.log(token, id);
         const data = await axios.get(`http://localhost:3004/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         });
 
-        console.log(data.data.data);
         errorHandler(data)
 
         return {
@@ -137,7 +135,6 @@ module.exports = {
           }
         });
 
-        console.log(data.data.data);
         errorHandler(data)
 
         return {
@@ -152,7 +149,6 @@ module.exports = {
         const token = await context.auth()
         const { input } = args;
 
-        // console.log(input, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         const data = await axios.put(`http://localhost:3004/`, { input }, {
           headers: {
             "Content-Type": "application/json",
@@ -160,7 +156,14 @@ module.exports = {
           }
         });
 
-        console.log(`okkkkkkkkkkkkkkkkkkkk mamankk`);
+        console.log('Deleting Analytics Cache==========');
+        await axios.post('http://localhost:3003/clearCache', {}, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        console.log('Deleted Cache at Analytics Service');
         errorHandler(data)
 
         return {

@@ -19,11 +19,11 @@ async function requestProcessMining(eventlogData) {
   });
 }
 
-async function requestTemporalAnalysis(eventlogData) {
+async function requestTemporalAnalysis(eventlogData, CompanyId) {
   return new Promise((resolve, reject) => {
     const requestPayload = {
       eventlogs: eventlogData,
-      CompanyId: 1,
+      CompanyId,
     };
 
     temporalAnalysisClient.GetTaskHistory(requestPayload, (error, response) => {
@@ -79,7 +79,7 @@ class Controller {
         return new Eventlog(el.eventlog, el.processes);
       });
       console.log(eventlogs);
-      const tasks = await requestTemporalAnalysis(jsonData);
+      const tasks = await requestTemporalAnalysis(jsonData, req.loginInfo.CompanyId);
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({

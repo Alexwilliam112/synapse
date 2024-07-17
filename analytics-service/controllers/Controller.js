@@ -11,12 +11,27 @@ const {
   AverageConformanceByTask_RadarChart,
 } = require("../queries/index");
 const redis = require("../config/redis");
-const cache = require('../lib/cache')
+const cache = require("../lib/cache");
 
 class Controller {
+  static async clearCache(req, res, next) {
+    try {
+      await redis.del(cache.chartData(req.loginInfo.CompanyId));
+      await redis.del(cache.filters(req.loginInfo.CompanyId));
+      console.log('Cache Deleted on Event Update');
+
+      res.status(200).json({
+        statusCode: 200
+      })
+    } catch (error) {
+      next({name: 505, source: 'Redis ClearCache'})
+    }
+  }
+
   static async getFilters(req, res, next) {
     try {
-      const cache_filter = await redis.get(cache.filters);
+      const cacheKey = cache.filters(req.loginInfo.CompanyId);
+      const cache_filter = await redis.get(cacheKey);
       if (cache_filter) {
         res.status(200).json(JSON.parse(cache_filter));
         return;
@@ -58,7 +73,7 @@ class Controller {
         processes: processes.map((p) => p.processName),
       };
 
-      await redis.set(cache.filters, JSON.stringify(resData));
+      await redis.set(cacheKey, JSON.stringify(resData));
 
       res.status(200).json(resData);
     } catch (error) {
@@ -79,13 +94,12 @@ class Controller {
       const upsertPromises = tasks.map((task) =>
         limit(async () => {
           console.log("POSTING TASK:  ", task);
-          console.log(req.loginInfo);
           const identifier = task.caseId;
           const formattedTask = {
             ...task,
             timestamp: new Date(task.timestamp).toISOString(),
             time: parseFloat(task.time),
-            CompanyId: parseFloat(req.loginInfo.CompanyId),
+            CompanyId: parseFloat(task.CompanyId),
             identifier,
           };
 
@@ -101,8 +115,8 @@ class Controller {
 
       await Promise.all(upsertPromises);
 
-      await redis.del(cache.chartData);
-      await redis.del(cache.filters);
+      await redis.del(cache.chartData(req.loginInfo.CompanyId));
+      await redis.del(cache.filters(req.loginInfo.CompanyId));
 
       res.status(201).json({
         statusCode: 201,
@@ -114,11 +128,12 @@ class Controller {
 
   static async getChartData(req, res, next) {
     try {
-      const cache_charts = await redis.get(cache.chartData);
-      // if (cache_charts) {
-      //   res.status(200).json(JSON.parse(cache_charts));
-      //   return;
-      // }
+      const cacheKey = cache.chartData(req.loginInfo.CompanyId);
+      const cache_charts = await redis.get(cacheKey);
+      if (cache_charts) {
+        res.status(200).json(JSON.parse(cache_charts));
+        return;
+      }
 
       const {
         query: dashboardTableQuery,
@@ -246,9 +261,9 @@ class Controller {
         dashboardTable: tableData,
         caseByProcess: caseByProcess_BarChart,
         conformanceByTask: conformanceByTask_RadarChart,
-      }
+      };
 
-      await redis.set(cache.chartData, JSON.stringify(resData));
+      await redis.set(cacheKey, JSON.stringify(resData));
 
       res.status(200).json(resData);
     } catch (error) {

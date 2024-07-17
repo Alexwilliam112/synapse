@@ -7,6 +7,7 @@ router.use(authentication)
 router.get('/filters', Controller.getFilters)
 router.get('/getChartData', Controller.getChartData)
 router.post('/upsert', Controller.postAnalytics)
+router.post('/clearCache', Controller.clearCache)
 router.use(errorHandler)
 
 module.exports = router
