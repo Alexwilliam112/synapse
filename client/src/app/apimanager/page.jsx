@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorModal from "@/components/ErrorModal";
 import makeClient from "@/config/ApolloClient";
 import Link from "next/link";
 import {
@@ -42,6 +43,8 @@ const ApiManager = () => {
   const [copiedUrls, setCopiedUrls] = useState({});
   const [revealedApiKeys, setRevealedApiKeys] = useState({});
   const [loadingStartProcess, setLoadingStartProcess] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const toggleReveal = (id) => {
     setRevealedApiKeys((prev) => ({
@@ -104,7 +107,8 @@ const ApiManager = () => {
         console.error("Error creating endpoint");
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
+      setErrorMessage("Something went wrong");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -152,7 +156,9 @@ const ApiManager = () => {
         console.error("Error updating endpoint");
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
+      console.log(error);
+      setErrorMessage("Something went wrong");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -182,7 +188,8 @@ const ApiManager = () => {
         console.error("Error deleting endpoint");
       }
     } catch (error) {
-      console.log(JSON.stringify(error));
+      setErrorMessage("Something went wrong");
+      setIsErrorModalOpen(true);
     }
   };
 
@@ -233,12 +240,17 @@ const ApiManager = () => {
       router.push("/apimanager");
     } catch (error) {
       console.log(error);
+      document.getElementById("my_modal_4").close();
+      setErrorMessage(
+        "Something went wrong, please check your date parameter and data structure"
+      );
+      setIsErrorModalOpen(true);
     } finally {
       setLoadingStartProcess(false);
     }
   };
 
-  if (mutationLoadingDelete) {
+  if (mutationLoadingStart) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div className="flex flex-col items-center bg-white p-6 rounded-md shadow-lg">
@@ -264,89 +276,13 @@ const ApiManager = () => {
     );
   }
 
-  if (mutationLoadingStart) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="flex flex-col items-center bg-white p-6 rounded-md shadow-lg">
-          <span className="loading loading-ball loading-lg"></span>
-          <p className="font-mono mt-4">
-            Processing data, don't close this tab
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (
-    queryError ||
-    mutationError ||
-    mutationErrorUpdate ||
-    mutationErrorDelete
-  ) {
-    return (
-      <div className="flex items-center justify-center h-screen w-screen">
-        <div>
-          <img
-            src="/catconfuse.gif"
-            alt="errorcatnyan"
-            className="h-24 object-cover"
-          />
-          <p className="font-mono">Something went wrong</p>
-        </div>
-      </div>
-    );
-  }
-
-  // if (mutationErrorStart) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen w-screen">
-  //       <div>
-  //         <img
-  //           src="/catconfuse.gif"
-  //           alt="errorcatnyan"
-  //           className="h-24 object-cover"
-  //         />
-  //         <p className="font-mono">
-  //           Something went wrong, please check your date parameter and data
-  //           structure
-  //         </p>
-  //         <Link href={"/apimanager"}>
-  //           {" "}
-  //           <button className="btn btn-black">Close</button>
-  //         </Link>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  if (mutationErrorStart) {
-    return (
-      // <div className="modal">
-      <div className="flex items-center justify-center h-screen w-screen">
-        <div className="w-2/5 border-2 border-gray-400 p-8 rounded-lg shadow-lg">
-          <img
-            src="/catconfuse.gif"
-            alt="errorcatnyan"
-            className="h-24 object-cover"
-          />
-          <p className="py-4 font-mono">
-            Something went wrong, please check your date parameter and data
-            structure!
-          </p>
-          <div className="modal-action">
-            <form>
-              <Link href={"/apimanager"}>
-                <button className="btn">Back to Manager</button>
-              </Link>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        message={errorMessage}
+      />
       <div className="w-full flex justify-between px-12 mb-4 py-4">
         <h1 className="text-4xl flex gap-2">
           <FolderKey className="w-10 h-10 object-cover font-light" /> API
@@ -354,7 +290,8 @@ const ApiManager = () => {
         </h1>
         <button
           onClick={() => document.getElementById("my_modal_2").showModal()}
-          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white">
+          className="btn bg-white border-2 border-[#47594A] text-[#47594A] px-10 hover:bg-[#47594A] hover:text-white"
+        >
           <SquarePlus /> Add API
         </button>
       </div>
@@ -406,13 +343,15 @@ const ApiManager = () => {
               <div className="modal-action">
                 <button
                   type="submit"
-                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
+                  className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                >
                   Save API
                 </button>
                 <button
                   type="button"
                   className="btn"
-                  onClick={() => document.getElementById("my_modal_2").close()}>
+                  onClick={() => document.getElementById("my_modal_2").close()}
+                >
                   Cancel
                 </button>
               </div>
@@ -441,7 +380,8 @@ const ApiManager = () => {
                     </pre>
                     <CopyToClipboard
                       text={data.endpointUrl}
-                      onCopy={() => handleCopy(data.id)}>
+                      onCopy={() => handleCopy(data.id)}
+                    >
                       <button className="absolute top-0 right-0 m-2 btn btn-sm">
                         {copiedUrls[data.id] ? (
                           <Check className="w-4 h-4 object-cover" />
@@ -460,7 +400,8 @@ const ApiManager = () => {
                     </p>
                     <button
                       onClick={() => toggleReveal(data.id)}
-                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]">
+                      className="top-0 right-0 m-2 btn bg-slate-50 text-[#6E8672]"
+                    >
                       {revealedApiKeys[data.id] ? <EyeOff /> : <Eye />}
                     </button>
                   </div>
@@ -470,12 +411,12 @@ const ApiManager = () => {
                   <div className="pt-4 flex space-x-2">
                     <button
                       onClick={() =>
-                      // setSelectedEndpoint(data);
-                      {
-                        document.getElementById("my_modal_4").showModal();
-                        setEndpointUrl(data.endpointUrl);
-                        setApiKey(data.apiKey);
-                      }
+                        // setSelectedEndpoint(data);
+                        {
+                          document.getElementById("my_modal_4").showModal();
+                          setEndpointUrl(data.endpointUrl);
+                          setApiKey(data.apiKey);
+                        }
                       }
                       className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
                       disabled={loadingStartProcess} // Disable button when loading
@@ -535,7 +476,8 @@ const ApiManager = () => {
                           <div className="modal-action">
                             <button
                               type="submit"
-                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                            >
                               {loadingStartProcess ? (
                                 <span className="loading loading-spinner loading-sm"></span>
                               ) : (
@@ -544,12 +486,13 @@ const ApiManager = () => {
                             </button>
                             <button
                               type="button"
-                              className={`btn ${loadingStartProcess ? "disabled:opacity-75" : ""
-                                }`}
+                              className={`btn ${
+                                loadingStartProcess ? "disabled:opacity-75" : ""
+                              }`}
                               onClick={() =>
                                 document.getElementById("my_modal_4").close()
                               }
-                            // {loadingStartProcess ? disabled : ''}
+                              // {loadingStartProcess ? disabled : ''}
                             >
                               Cancel
                             </button>
@@ -559,7 +502,8 @@ const ApiManager = () => {
                     </dialog>
                     <button
                       className="flex items-center text-sm gap-2 border-2 border-[#FFA82A] text-[#FFA82A] hover:bg-[#FFA82A] hover:text-white rounded-lg px-4 py-2"
-                      onClick={() => handleEditClick(data)}>
+                      onClick={() => handleEditClick(data)}
+                    >
                       <Pencil className="w-4 h-4 object-cover" />
                       Edit
                     </button>
@@ -626,7 +570,8 @@ const ApiManager = () => {
                           <div className="modal-action">
                             <button
                               type="submit"
-                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]">
+                              className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
+                            >
                               Save API
                             </button>
                             <button
@@ -634,7 +579,8 @@ const ApiManager = () => {
                               className="btn"
                               onClick={() =>
                                 document.getElementById("my_modal_1").close()
-                              }>
+                              }
+                            >
                               Cancel
                             </button>
                           </div>
@@ -646,7 +592,8 @@ const ApiManager = () => {
                     <button
                       type="button"
                       onClick={() => handleDeleteClick(data)}
-                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2">
+                      className="flex items-center text-sm gap-2 border-2 border-[#FF6764] text-[#FF6764] hover:bg-[#FF6764] hover:text-white rounded-lg px-4 py-2"
+                    >
                       <Trash2 className="w-4 h-4 object-cover" />
                       Delete
                     </button>
