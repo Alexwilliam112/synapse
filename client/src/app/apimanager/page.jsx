@@ -240,7 +240,6 @@ const ApiManager = () => {
       router.push("/apimanager");
     } catch (error) {
       console.log(error);
-      document.getElementById("my_modal_4").close();
       setErrorMessage(
         "Something went wrong, please check your date parameter and data structure"
       );
