@@ -426,16 +426,16 @@ const ApiManager = () => {
                   </div>
                 </td>
                 <td>{data.status}</td>
-                <td className="flex items-center">
-                  <div className="pt-4 flex space-x-2">
+                <td>
+                  <div className="flex items-center space-x-2">
                     <button
                       onClick={() =>
-                        // setSelectedEndpoint(data);
-                        {
-                          document.getElementById("my_modal_4").showModal();
-                          setEndpointUrl(data.endpointUrl);
-                          setApiKey(data.apiKey);
-                        }
+                      // setSelectedEndpoint(data);
+                      {
+                        document.getElementById("my_modal_4").showModal();
+                        setEndpointUrl(data.endpointUrl);
+                        setApiKey(data.apiKey);
+                      }
                       }
                       className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
                       disabled={loadingStartProcess} // Disable button when loading
@@ -505,13 +505,12 @@ const ApiManager = () => {
                             </button>
                             <button
                               type="button"
-                              className={`btn ${
-                                loadingStartProcess ? "disabled:opacity-75" : ""
-                              }`}
+                              className={`btn ${loadingStartProcess ? "disabled:opacity-75" : ""
+                                }`}
                               onClick={() =>
                                 document.getElementById("my_modal_4").close()
                               }
-                              // {loadingStartProcess ? disabled : ''}
+                            // {loadingStartProcess ? disabled : ''}
                             >
                               Cancel
                             </button>
