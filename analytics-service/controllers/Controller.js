@@ -10,10 +10,18 @@ const {
   TotalCaseCountPerProcess_BarChart,
   AverageConformanceByTask_RadarChart,
 } = require("../queries/index");
+const redis = require("../config/redis");
+const cache = require('../lib/cache')
 
 class Controller {
   static async getFilters(req, res, next) {
     try {
+      const cache_filter = await redis.get(cache.filters);
+      if (cache_filter) {
+        res.status(200).json(JSON.parse(cache_filter));
+        return;
+      }
+
       const departments = await prisma.task.findMany({
         where: {
           CompanyId: Number(req.loginInfo.CompanyId),
@@ -44,11 +52,15 @@ class Controller {
         distinct: ["processName"],
       });
 
-      res.status(200).json({
+      const resData = {
         departments: departments.map((d) => d.department),
         persons: persons.map((p) => p.name),
         processes: processes.map((p) => p.processName),
-      });
+      };
+
+      await redis.set(cache.filters, JSON.stringify(resData));
+
+      res.status(200).json(resData);
     } catch (error) {
       next(error);
     }
@@ -61,31 +73,36 @@ class Controller {
         throw { name: "Invalid" };
       }
 
-      const pLimit = (await import('p-limit')).default;
+      const pLimit = (await import("p-limit")).default;
       const limit = pLimit(15);
-  
-      const upsertPromises = tasks.map(task => limit(async () => {
-        console.log('POSTING TASK:  ', task);
-        const identifier = task.caseId;
-        const formattedTask = {
-          ...task,
-          timestamp: new Date(task.timestamp).toISOString(),
-          time: parseFloat(task.time),
-          CompanyId: parseFloat(task.CompanyId),
-          identifier
-        };
-  
-        return prisma.task.upsert({
-          where: {
+
+      const upsertPromises = tasks.map((task) =>
+        limit(async () => {
+          console.log("POSTING TASK:  ", task);
+          const identifier = task.caseId;
+          const formattedTask = {
+            ...task,
+            timestamp: new Date(task.timestamp).toISOString(),
+            time: parseFloat(task.time),
+            CompanyId: parseFloat(task.CompanyId),
             identifier,
-          },
-          update: formattedTask,
-          create: formattedTask,
-        });
-      }));
-  
+          };
+
+          return prisma.task.upsert({
+            where: {
+              identifier,
+            },
+            update: formattedTask,
+            create: formattedTask,
+          });
+        })
+      );
+
       await Promise.all(upsertPromises);
-  
+
+      await redis.del(cache.chartData);
+      await redis.del(cache.filters);
+
       res.status(201).json({
         statusCode: 201,
       });
@@ -96,6 +113,12 @@ class Controller {
 
   static async getChartData(req, res, next) {
     try {
+      const cache_charts = await redis.get(cache.chartData);
+      if (cache_charts) {
+        res.status(200).json(JSON.parse(cache_charts));
+        return;
+      }
+
       const {
         query: dashboardTableQuery,
         parameters: dashboardTableParameters,
@@ -214,7 +237,7 @@ class Controller {
         avgConformanceByProcess_raw
       );
 
-      res.status(200).json({
+      const resData = {
         averageConformance_areaChart,
         overallConformance_pieChart,
         averageConformanceByProcess_lineChart,
@@ -222,7 +245,11 @@ class Controller {
         dashboardTable: tableData,
         caseByProcess: caseByProcess_BarChart,
         conformanceByTask: conformanceByTask_RadarChart,
-      });
+      }
+
+      await redis.set(cache.chartData, JSON.stringify(resData));
+
+      res.status(200).json(resData);
     } catch (error) {
       next(error);
     }
