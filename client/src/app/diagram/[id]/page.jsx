@@ -135,7 +135,6 @@ class App extends React.Component {
     });
 
     this.setState({ ...mappedData, loading: false }); // Set loading to false once data is fetched
-    console.log(mappedData);
   }
 
   refreshNodeIndex(nodeArr) {
@@ -299,18 +298,10 @@ class App extends React.Component {
   handleShapeClick(nodeData) {
     const { fetchedData } = this.state;
 
-    console.log("Clicked node data:", nodeData);
-    console.log(
-      "Fetched data events:",
-      fetchedData?.events?.map((event) => event.eventName)
-    );
-
     // Find the full data for the clicked node
     const selectedNodeData = fetchedData?.events?.find(
       (event) => event.eventName === nodeData.id
     );
-
-    console.log("Selected node data:", selectedNodeData);
 
     if (selectedNodeData && selectedNodeData.shape === "Rounded rectangle") {
       this.setState({
@@ -593,12 +584,11 @@ class App extends React.Component {
             </button> */}
           </div>
           <div className="flex flex-row mt-2 mb-4 justify-between">
-            <button
+            {/* <button
               onClick={this.handleExport}
-              className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full"
-            >
+              className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full">
               Export Diagram
-            </button>
+            </button> */}
             {/* <label className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm cursor-pointer">
               Choose File
               <input
@@ -611,8 +601,7 @@ class App extends React.Component {
           </div>
           <button
             onClick={this.handleReshape}
-            className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full"
-          >
+            className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full">
             Reshape Diagram
           </button>
           {/* {inspector} */}
@@ -661,8 +650,7 @@ class App extends React.Component {
                   </label>
                   <button
                     type="submit"
-                    className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full mt-2"
-                  >
+                    className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full mt-2">
                     Submit
                   </button>
                 </form>

@@ -66,7 +66,7 @@ class Controller {
         jsonData = res.data.data
       } catch (error) {
         console.log("ok");
-        next({ name: 503, source: 'su' });
+        throw ({ name: 503, source: 'su' });
       }
       // const jsonData = require("../data/json/CustomerComplaint.json");
       const goResponse = await requestCaseTracing(jsonData);
