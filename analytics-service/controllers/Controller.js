@@ -79,12 +79,13 @@ class Controller {
       const upsertPromises = tasks.map((task) =>
         limit(async () => {
           console.log("POSTING TASK:  ", task);
+          console.log(req.loginInfo);
           const identifier = task.caseId;
           const formattedTask = {
             ...task,
             timestamp: new Date(task.timestamp).toISOString(),
             time: parseFloat(task.time),
-            CompanyId: parseFloat(task.CompanyId),
+            CompanyId: parseFloat(req.loginInfo.CompanyId),
             identifier,
           };
 
@@ -114,10 +115,10 @@ class Controller {
   static async getChartData(req, res, next) {
     try {
       const cache_charts = await redis.get(cache.chartData);
-      if (cache_charts) {
-        res.status(200).json(JSON.parse(cache_charts));
-        return;
-      }
+      // if (cache_charts) {
+      //   res.status(200).json(JSON.parse(cache_charts));
+      //   return;
+      // }
 
       const {
         query: dashboardTableQuery,

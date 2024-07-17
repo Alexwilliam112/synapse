@@ -50,7 +50,6 @@ class Controller {
   static async startMining(req, res, next) {
     try {
       const { apiKey, startDate, endDate } = req.body.serverPayload;
-      const data = req.loginInfo;
       let jsonData
       try {
         const res = await axios.get("http://localhost:4000/eventlog", {
@@ -82,7 +81,7 @@ class Controller {
 
       const serverToken = signTokenServer({
         origin: process.env.USER_ORIGIN,
-        CompanyId: data.CompanyId,
+        CompanyId: req.loginInfo.CompanyId,
       });
 
       const responses = { tasks, models };
