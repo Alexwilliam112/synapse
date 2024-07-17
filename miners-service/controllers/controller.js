@@ -49,9 +49,6 @@ async function requestCaseTracing(data) {
 class Controller {
   static async startMining(req, res, next) {
     try {
-      const { authorization } = req.headers;
-      const token = authorization.split(" ")[1];
-      const data = verifyTokenServer(token);
       const { apiKey, startDate, endDate } = req.body.serverPayload;
 
       let jsonData
