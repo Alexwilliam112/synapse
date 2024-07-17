@@ -8,6 +8,7 @@ import { ApolloWrapper } from "../lib/apollo-wrapper";
 // import { useScrollToTop } from "@/components/hooks/useScrollToTop";
 
 const inter = Montserrat({ subsets: ["latin"] });
+import { Suspense } from "react";
 
 // export const metadata = {
 //   title: `Synapse`,
@@ -27,7 +28,11 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/logo.png" />
       </head>
       <body className={inter.className}>
-        <ApolloWrapper>{children}</ApolloWrapper>
+        <Suspense fallback={<span className="loading loading-ball loading-lg"></span>}>
+          <ApolloWrapper>
+            {children}
+          </ApolloWrapper>
+        </Suspense>
       </body>
     </html>
   );
