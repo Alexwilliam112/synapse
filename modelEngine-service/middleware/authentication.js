@@ -8,15 +8,16 @@ const Authentication = async (req, res, next) => {
     const access_token = authorization.split(" ")[1];
     const payload = verifyToken(access_token);
 
-    if (payload.origin !== process.env.USER_ORIGIN) {
-      throw { name: "Unauthorized" };
-    }
+    // console.log(payload);
+    // if (payload.origin !== process.env.USER_ORIGIN) {
+    //   throw { name: "Unauthorized" };
+    // }
 
     req.loginInfo = payload;
 
     next();
   } catch (error) {
-    console.log(error);
+    console.log(error, `di authentication`);
     next({
       statusCode: 400,
     });
