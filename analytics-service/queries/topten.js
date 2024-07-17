@@ -39,6 +39,7 @@ module.exports = function TopTenNonConformTable(queryOptions, CompanyId) {
           LEFT JOIN "Event" e ON t."eventName" = e."eventName"
         WHERE
          ${whereConditions}
+         AND t."time" > e."benchmarkTime"
         GROUP BY
           t."name"
       ),

@@ -12,6 +12,7 @@ const authentication = async (req, res, next) => {
 
         req.userSessionId = `CLIENT-SESSION-ID-${payload.id}`
         req.loginInfo = payload
+        console.log(req.loginInfo);
         next()
     } catch (error) {
         next(error)

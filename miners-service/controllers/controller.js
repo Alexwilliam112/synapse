@@ -19,11 +19,11 @@ async function requestProcessMining(eventlogData) {
   });
 }
 
-async function requestTemporalAnalysis(eventlogData) {
+async function requestTemporalAnalysis(eventlogData, CompanyId) {
   return new Promise((resolve, reject) => {
     const requestPayload = {
       eventlogs: eventlogData,
-      CompanyId: 1,
+      CompanyId,
     };
 
     temporalAnalysisClient.GetTaskHistory(requestPayload, (error, response) => {
@@ -50,7 +50,6 @@ class Controller {
   static async startMining(req, res, next) {
     try {
       const { apiKey, startDate, endDate } = req.body.serverPayload;
-      const data = req.loginInfo;
       let jsonData
       try {
         const res = await axios.get(`${process.env.MOCK_SERVER_URL}/eventlog` || "http://localhost:4000/eventlog", {
@@ -78,13 +77,18 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
+<<<<<<< HEAD
+      console.log(eventlogs);
+      const tasks = await requestTemporalAnalysis(jsonData, req.loginInfo.CompanyId);
+=======
 
       const tasks = await requestTemporalAnalysis(jsonData);
+>>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({
         origin: process.env.USER_ORIGIN,
-        CompanyId: data.CompanyId,
+        CompanyId: req.loginInfo.CompanyId,
       });
 
       const responses = { tasks, models };

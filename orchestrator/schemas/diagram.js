@@ -112,7 +112,11 @@ module.exports = {
         let { id } = args.input;
         const token = await context.auth()
 
+<<<<<<< HEAD
+        const data = await axios.get(`http://localhost:3004/${id}`, {
+=======
         const data = await axios.get(`${process.env.MODEL_ENGINE_SERVICE_URL}/${id}` || `http://localhost:3004/${id}`, {
+>>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
           headers: {
             Authorization: `Bearer ${token}`,
           }
@@ -149,13 +153,28 @@ module.exports = {
         const token = await context.auth()
         const { input } = args;
 
+<<<<<<< HEAD
+        const data = await axios.put(`http://localhost:3004/`, { input }, {
+=======
         const data = await axios.put(`${process.env.MODEL_ENGINE_SERVICE_URL}/` || "http://localhost:3004/", { input }, {
+>>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           }
         });
 
+<<<<<<< HEAD
+        console.log('Deleting Analytics Cache==========');
+        await axios.post('http://localhost:3003/clearCache', {}, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        })
+        console.log('Deleted Cache at Analytics Service');
+=======
+>>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
         errorHandler(data)
 
         return {
