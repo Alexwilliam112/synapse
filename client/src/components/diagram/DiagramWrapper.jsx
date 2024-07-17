@@ -57,7 +57,13 @@ class DiagramWrapper extends React.Component {
       "draggingTool.verticalGuidelineColor": "blue",
       "draggingTool.centerGuidelineColor": "green",
       "draggingTool.guidelineWidth": 1,
-      layout: $(go.ForceDirectedLayout),
+      layout: $(go.ForceDirectedLayout, {
+        defaultSpringLength: 200, // The natural length of the springs (increased for more spacing)
+        defaultElectricalCharge: 100, // The electrical charge of each node (increased for more repulsion)
+        maxIterations: 1000, // Maximum number of iterations (to allow for better convergence)
+        infinityDistance: 2000, // Distance beyond which forces are not considered (helps prevent infinite repulsion)
+        // arrangement: go.ForceDirectedLayout.ArrangementNone, // No predefined arrangement
+      }),
       model: $(go.GraphLinksModel, {
         nodeKeyProperty: "id",
         linkKeyProperty: "id",
@@ -75,6 +81,12 @@ class DiagramWrapper extends React.Component {
         },
       }),
     });
+
+    const textBlockFontConverter = (shape) => {
+      return shape === "RoundedRectangle"
+        ? ".875rem Roboto, sans-serif"
+        : "bold .875rem Roboto, sans-serif";
+    };
 
     diagram.nodeTemplate = $(
       go.Node,
@@ -99,9 +111,10 @@ class DiagramWrapper extends React.Component {
       ),
       $(
         go.TextBlock,
-        { margin: 8, font: "400 .875rem Roboto, sans-serif" },
+        { margin: 8 },
         new go.Binding("text", "eventName").makeTwoWay(),
-        new go.Binding("editable", "isTextEditable")
+        new go.Binding("editable", "isTextEditable"),
+        new go.Binding("font", "shape", textBlockFontConverter)
       )
     );
 

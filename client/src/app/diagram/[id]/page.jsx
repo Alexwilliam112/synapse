@@ -98,7 +98,7 @@ class App extends React.Component {
       mappedData.nodeDataArray.push({
         id: state.eventName,
         eventName: state.eventName,
-        color: state.color,
+        color: "#50B8E7",
         shape: state.shape === "Ellipse" ? "Ellipse" : "RoundedRectangle",
         isTextEditable: state.isTextEditable,
       });
