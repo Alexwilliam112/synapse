@@ -36,7 +36,7 @@ const ApiManager = () => {
   const processes = data?.GetAllProcess?.data || [];
   console.log(processes);
   return (
-    <div className="w-full">
+    <div className="w-full h-screen">
       <div className="w-full px-10 py-4">
         <h1 className="text-4xl flex gap-2">
           <PackageSearch className="w-10 h-10 object-cover" /> Process List
@@ -45,7 +45,7 @@ const ApiManager = () => {
           View your processes as a diagram
         </p>
       </div>
-      <div className="overflow-x-auto px-8 border-t">
+      <div className="overflow-x-auto h-96 px-8 border-t">
         <table className="table">
           <thead>
             <tr>
