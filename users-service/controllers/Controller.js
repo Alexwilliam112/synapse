@@ -48,6 +48,7 @@ class Controller {
       res.status(200).json({
         statusCode: 200,
         data: {
+          id: user.id,
           email: user.email,
           CompanyId: user.CompanyId,
           companyName: user.company.companyName,
