@@ -52,10 +52,6 @@ class DiagramWrapper extends React.Component {
     const $ = go.GraphObject.make;
     const diagram = $(go.Diagram, {
       "undoManager.isEnabled": true,
-      "clickCreatingTool.archetypeNodeData": {
-        eventName: "new event",
-        color: "lightblue",
-      },
       draggingTool: new GuidedDraggingTool(),
       "draggingTool.horizontalGuidelineColor": "blue",
       "draggingTool.verticalGuidelineColor": "blue",

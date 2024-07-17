@@ -83,12 +83,13 @@ class App extends React.Component {
         },
       },
     });
+    const fetchedData = data?.GetById?.data;
 
     this.setState({ fetchedData: data?.GetById?.data, loading: false });
     const mappedData = {
       nodeDataArray: [],
       linkDataArray: [],
-      modelData: { canRelink: true },
+      modelData: { canRelink: false },
     };
 
     // Mapping events and states to nodeDataArray
@@ -104,15 +105,22 @@ class App extends React.Component {
     });
 
     data?.GetById?.data?.events?.forEach((event) => {
-      mappedData.nodeDataArray.push({
+      const shapeData = {
         id: event.eventName,
         eventName: event.eventName,
-        color: event.color === "#FF0099" ? "orange" : "yellow",
+        color: "#FFBB59",
         shape:
           event.shape === "Rounded rectangle" ? "RoundedRectangle" : "Ellipse",
         isTextEditable: event.isTextEditable,
-        // ...event,
-      });
+        frequency: event.frequency,
+        time: event.time,
+      };
+
+      if (event.shape === "Rounded rectangle") {
+        shapeData.eventName = `<Transition>\nFrequency: ${event.frequency}\nTime: ${event.time}`;
+      }
+
+      mappedData.nodeDataArray.push(shapeData);
     });
 
     // Mapping dataLinks to linkDataArray
@@ -291,17 +299,34 @@ class App extends React.Component {
   handleShapeClick(nodeData) {
     const { fetchedData } = this.state;
 
+    console.log("Clicked node data:", nodeData);
+    console.log(
+      "Fetched data events:",
+      fetchedData?.events?.map((event) => event.eventName)
+    );
+
     // Find the full data for the clicked node
     const selectedNodeData = fetchedData?.events?.find(
-      (event) => event.eventName === nodeData.eventName
+      (event) => event.eventName === nodeData.id
     );
+
+    console.log("Selected node data:", selectedNodeData);
 
     if (selectedNodeData && selectedNodeData.shape === "Rounded rectangle") {
       this.setState({
         modalNodeData: selectedNodeData,
         benchmarkTimeInput: selectedNodeData.benchmarkTime || "",
       });
-      document.getElementById("my_modal_3").showModal();
+      const modal = document.getElementById("my_modal_3");
+      if (modal) {
+        modal.showModal();
+      } else {
+        console.error("Modal element not found");
+      }
+    } else {
+      console.warn(
+        "No matching node data found or the shape is not Rounded rectangle"
+      );
     }
   }
 
@@ -493,9 +518,18 @@ class App extends React.Component {
     }
   }
 
+  handleReshape() {
+    window.location.reload();
+  }
+
   render() {
-    const { loading, selectedData, modalNodeData, benchmarkTimeInput } =
-      this.state;
+    const {
+      loading,
+      selectedData,
+      modalNodeData,
+      benchmarkTimeInput,
+      fetchedData,
+    } = this.state;
     let inspector;
     if (selectedData !== null) {
       inspector = (
@@ -518,33 +552,26 @@ class App extends React.Component {
       <div className="h-screen w-screen flex">
         <div className="w-1/4 bg-gray-100 p-6 shadow-lg">
           <div>
-            <h3 className="text-xl font-semibold mb-4">Add Node</h3>
+            <h3 className="text-xl font-semibold mb-4">Process Information</h3>
             <label className="block mb-3">
-              Event Name:
+              Process Name:
               <input
                 type="text"
-                value={this.state.newNodeText}
-                onChange={(e) => this.setState({ newNodeText: e.target.value })}
+                value={fetchedData.processName}
+                readOnly
                 className="input input-bordered w-full mt-1"
               />
             </label>
             <label className="block mb-3">
-              Color:
-              <select
-                value={this.state.newNodeColor}
-                onChange={(e) =>
-                  this.setState({ newNodeColor: e.target.value })
-                }
-                className="select select-bordered w-full mt-1"
-              >
-                {Object.keys(colorMapping).map((color) => (
-                  <option key={color} value={color}>
-                    {color.charAt(0).toUpperCase() + color.slice(1)}
-                  </option>
-                ))}
-              </select>
+              Last Update:
+              <input
+                type="text"
+                value={new Date(fetchedData.lastUpdate).toLocaleString()}
+                readOnly
+                className="input input-bordered w-full mt-1"
+              />
             </label>
-            <label className="block mb-3">
+            {/* <label className="block mb-3">
               Shape:
               <select
                 value={this.state.newNodeShape}
@@ -557,22 +584,22 @@ class App extends React.Component {
                 <option value="Ellipse">Ellipse</option>
                 <option value="Triangle">Triangle</option>
               </select>
-            </label>
-            <button
+            </label> */}
+            {/* <button
               onClick={this.handleAddNode}
               className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full"
             >
               Add Node
-            </button>
+            </button> */}
           </div>
           <div className="flex flex-row mt-2 mb-4 justify-between">
             <button
               onClick={this.handleExport}
-              className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm"
+              className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm w-full"
             >
               Export Diagram
             </button>
-            <label className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm cursor-pointer">
+            {/* <label className="bg-white text-[#6E8672] border border-[#6E8672] py-2 px-4 rounded-md transition-all duration-300 hover:bg-[#6E8672] hover:text-white font-bold text-sm cursor-pointer">
               Choose File
               <input
                 type="file"
@@ -580,7 +607,7 @@ class App extends React.Component {
                 onChange={this.handleFileChange}
                 className="hidden"
               />
-            </label>
+            </label> */}
           </div>
           <button
             onClick={this.handleReshape}
@@ -588,7 +615,7 @@ class App extends React.Component {
           >
             Reshape Diagram
           </button>
-          {inspector}
+          {/* {inspector} */}
         </div>
         <div className="flex-1 p-4">
           <div className="diagram-component ">
