@@ -52,14 +52,13 @@ class Controller {
       const { authorization } = req.headers;
       const token = authorization.split(" ")[1];
       const data = verifyTokenServer(token);
-      const { apikey, startDate, endDate } = req.body;
+      const { apiKey, startDate, endDate } = req.body.serverPayload;
 
       let jsonData
-      console.log(apikey, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
       try {
         const res = await axios.get("http://localhost:4000/eventlog", {
           headers: {
-            authorization: apikey,
+            authorization: apiKey,
           },
           params: {
             startDate,
@@ -69,6 +68,7 @@ class Controller {
 
         jsonData = res.data.data
       } catch (error) {
+        console.log("ok");
         next({ name: 503, source: 'su' });
       }
 
