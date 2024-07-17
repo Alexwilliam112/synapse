@@ -233,7 +233,7 @@ export class GuidedDraggingTool extends go.DraggingTool {
     // compares with parts within narrow vertical area
     const area = objBounds.copy();
     area.inflate(distance, marginOfError + 1);
-    const otherObjs = this.diagram.findObjectsIn(
+    const otherObjs = this.diagram?.findObjectsIn(
       area,
       (obj) => obj.part,
       (p) =>

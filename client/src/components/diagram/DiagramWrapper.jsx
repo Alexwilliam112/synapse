@@ -52,11 +52,11 @@ class DiagramWrapper extends React.Component {
     const $ = go.GraphObject.make;
     const diagram = $(go.Diagram, {
       "undoManager.isEnabled": true,
-      draggingTool: new GuidedDraggingTool(),
-      "draggingTool.horizontalGuidelineColor": "blue",
-      "draggingTool.verticalGuidelineColor": "blue",
-      "draggingTool.centerGuidelineColor": "green",
-      "draggingTool.guidelineWidth": 1,
+      // draggingTool: new GuidedDraggingTool(),
+      // "draggingTool.horizontalGuidelineColor": "blue",
+      // "draggingTool.verticalGuidelineColor": "blue",
+      // "draggingTool.centerGuidelineColor": "green",
+      // "draggingTool.guidelineWidth": 1,
       layout: $(go.ForceDirectedLayout, {
         defaultSpringLength: 200, // The natural length of the springs (increased for more spacing)
         defaultElectricalCharge: 100, // The electrical charge of each node (increased for more repulsion)
