@@ -1,9 +1,9 @@
 "use client";
 import { getAllProcess, getModelById } from "@/queries";
-import { useQuery } from "@apollo/client";
+// import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useQuery } from "@apollo/client";
-import { getAllProcess } from "@/queries/index";
+// import { getAllProcess } from "@/queries/index";
 import { PackageSearch } from 'lucide-react'
 
 const ApiManager = () => {

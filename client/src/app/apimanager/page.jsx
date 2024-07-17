@@ -30,6 +30,7 @@ const ApiManager = () => {
   // this is state for table interaction (copy, reveal)
   const [copiedUrls, setCopiedUrls] = useState({});
   const [revealedApiKeys, setRevealedApiKeys] = useState({});
+  const [loadingStartProcess, setLoadingStartProcess] = useState(false);
 
   const toggleReveal = (id) => {
     setRevealedApiKeys((prev) => ({
@@ -55,7 +56,7 @@ const ApiManager = () => {
 
   // console.log(editId);
 
-  //FETCH DENDPOINT
+  //FETCH ENDPOINT
   const {
     loading: queryLoading,
     error: queryError,
@@ -104,6 +105,7 @@ const ApiManager = () => {
       console.log(JSON.stringify(error));
     }
   };
+
   // Handle edit button click
   const handleEditClick = (endpoint) => {
     setEditEndpoint(endpoint.endpointUrl);
@@ -200,6 +202,7 @@ const ApiManager = () => {
 
   const handleStart = async (e) => {
     e.preventDefault();
+    setLoadingStartProcess(true);
     try {
       const { data } = await startMining({
         variables: {
@@ -224,6 +227,8 @@ const ApiManager = () => {
       // }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoadingStartProcess(false);
     }
   };
 
@@ -360,13 +365,18 @@ const ApiManager = () => {
                 <td className="flex items-center">
                   <div className="pt-4 flex space-x-2">
                     <button
-                      onClick={() =>
-                        document.getElementById("my_modal_4").showModal()
-                      }
+                      onClick={() => document.getElementById("my_modal_4").showModal()}
                       className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
+                      disabled={loadingStartProcess} // Disable button when loading
                     >
-                      <Rocket className="w-4 h-4 object-cover" />
-                      Start
+                      {loadingStartProcess ? (
+                        <span className="loading loading-spinner loading-sm"></span>
+                      ) : (
+                        <>
+                          <Rocket className="w-4 h-4 object-cover" />
+                          Start
+                        </>
+                      )}
                     </button>
 
                     {/* modal start */}
@@ -398,25 +408,32 @@ const ApiManager = () => {
                               value={endDate}
                               required
                             />
-                          </label><div className="modal-action">
+                          </label>
+                          <div className="modal-action">
                             <button
                               type="submit"
                               className="btn bg-[#6E8672] px-10 text-white hover:bg-[#47594A]"
                             >
-                              Confirm
+                              {loadingStartProcess ? (
+                                <span className="loading loading-spinner loading-sm"></span>
+                              ) : (
+                                <>
+                                  Confirm
+                                </>
+                              )}
                             </button>
                             <button
                               type="button"
-                              className="btn"
+                              className={`btn ${loadingStartProcess ? 'disabled:opacity-75' : ''}`}
                               onClick={() =>
                                 document.getElementById("my_modal_4").close()
                               }
+                            // {loadingStartProcess ? disabled : ''}
                             >
                               Cancel
                             </button>
                           </div>
                         </form>
-
                       </div>
                     </dialog>
                     <button
