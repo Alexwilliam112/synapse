@@ -51,7 +51,6 @@ async function main() {
       data: usersData,
     });
 
-    console.log('Seeding finished.');
   } catch (error) {
     console.error('Error seeding database:', error);
     process.exit(1);

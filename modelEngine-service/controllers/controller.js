@@ -45,7 +45,6 @@ class Controller {
 
   static async create(req, res, next) {
     const { models } = req.body;
-    console.log('INSERTING MODEL DATA');
     try {
       for (const modelSet of models) {
         modelSet.processName = modelSet.processName.split(" ").sort().join(" ");
@@ -127,8 +126,6 @@ class Controller {
               transaction: t
             })
           }
-
-          console.log('End of Transaction - loop');
         });
       }
       res.status(200).json({

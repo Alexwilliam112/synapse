@@ -112,14 +112,12 @@ module.exports = {
         let { id } = args.input;
         const token = await context.auth()
 
-        console.log(token, id);
-        const data = await axios.get(`http://localhost:3004/${id}`, {
+        const data = await axios.get(`${process.env.MODEL_ENGINE_SERVICE_URL}/${id}` || `http://localhost:3004/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         });
 
-        console.log(data.data.data);
         errorHandler(data)
 
         return {
@@ -131,13 +129,12 @@ module.exports = {
       GetAllProcess: async (_, __, context) => {
         const token = await context.auth()
 
-        const data = await axios.get(`http://localhost:3004/`, {
+        const data = await axios.get(`${process.env.MODEL_ENGINE_SERVICE_URL}/` || "http://localhost:3004/", {
           headers: {
             Authorization: `Bearer ${token}`,
           }
         });
 
-        console.log(data.data.data);
         errorHandler(data)
 
         return {
@@ -152,15 +149,13 @@ module.exports = {
         const token = await context.auth()
         const { input } = args;
 
-        // console.log(input, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        const data = await axios.put(`http://localhost:3004/`, { input }, {
+        const data = await axios.put(`${process.env.MODEL_ENGINE_SERVICE_URL}/` || "http://localhost:3004/", { input }, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           }
         });
 
-        console.log(`okkkkkkkkkkkkkkkkkkkk mamankk`);
         errorHandler(data)
 
         return {
