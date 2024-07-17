@@ -3,7 +3,6 @@ import { Radar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 
 export default function RadarChart({ data }) {
-  console.log(data);
   return (
     <div className="">
       <Radar
