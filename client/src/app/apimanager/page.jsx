@@ -419,9 +419,9 @@ const ApiManager = () => {
                     </button>
                   </div>
                 </td>
-                {/* <td>{data.status}</td> */}
-                <td className="flex items-center">
-                  <div className="pt-4 flex space-x-2">
+                <td>{data.status}</td>
+                <td>
+                  <div className="flex items-center space-x-2">
                     <button
                       onClick={() =>
                         // setSelectedEndpoint(data);

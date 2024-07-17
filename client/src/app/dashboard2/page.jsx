@@ -166,7 +166,7 @@ const Dashboard = () => {
               <form onSubmit={handleSubmit}>
                 <div className="items-center gap-5">
                   <div>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full">
                       <div className="label">
                         <span className="label-text">Person</span>
                       </div>
@@ -188,7 +188,7 @@ const Dashboard = () => {
                   </div>
 
                   <div>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full ">
                       <div className="label">
                         <span className="label-text">Process</span>
                       </div>
@@ -210,7 +210,7 @@ const Dashboard = () => {
                   </div>
 
                   <div>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full ">
                       <div className="label">
                         <span className="label-text">Department</span>
                       </div>
@@ -232,14 +232,14 @@ const Dashboard = () => {
                   </div>
 
                   <div>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full ">
                       <div className="label">
                         <span className="label-text">Start Date</span>
                       </div>
                       <input
                         type="date"
                         name="startDate"
-                        className="input input-bordered w-full max-w-xs"
+                        className="input input-bordered w-full "
                         value={formState.startDate}
                         onChange={handleChange}
                       />
@@ -247,7 +247,7 @@ const Dashboard = () => {
                   </div>
 
                   <div>
-                    <label className="form-control w-full max-w-xs">
+                    <label className="form-control w-full ">
                       <div className="label">
                         <span className="label-text">End Date</span>
                       </div>
@@ -255,7 +255,7 @@ const Dashboard = () => {
                         type="date"
                         id="date"
                         name="endDate"
-                        className="input input-bordered w-full max-w-xs"
+                        className="input input-bordered w-full "
                         value={formState.endDate}
                         onChange={handleChange}
                       />
@@ -263,12 +263,12 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="w-full flex justify-end pt-4">
-                  <button type="submit" className="btn bg-[#6E8672] text-white hover:bg-[#47594A] px-20">
+                  <button type="submit" className="btn w-full bg-[#6E8672] text-white hover:bg-[#47594A] px-20">
                     Apply
                   </button>
                 </div>
-                <div className="flex w-full mt-4">
-                  <p className="text-xs font-light text-gray-500">
+                <div className="flex w-full justify-center text-center mt-4">
+                  <p className="text-xs font-light  text-gray-500">
                     Filter on what you desire
                   </p>
                 </div>
