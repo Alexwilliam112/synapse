@@ -214,7 +214,14 @@ const ApiManager = () => {
     e.preventDefault();
     setLoadingStartProcess(true);
     try {
-      console.log(selectedEndpoint);
+      console.log(
+        startDate,
+        endDate,
+        typeof endpointUrl,
+        endpointUrl.length,
+        typeof apiKey,
+        apiKey.length
+      );
       const { data } = await startMining({
         variables: {
           input: {
@@ -393,7 +400,11 @@ const ApiManager = () => {
                     <button
                       onClick={() =>
                         // setSelectedEndpoint(data);
-                        document.getElementById("my_modal_4").showModal()
+                        {
+                          document.getElementById("my_modal_4").showModal();
+                          setEndpointUrl(data.endpointUrl);
+                          setApiKey(data.apiKey);
+                        }
                       }
                       className="flex items-center text-sm gap-2 border-2 border-[#2D80FF] text-[#2D80FF] hover:bg-[#2d80ff] hover:text-white rounded-lg px-4 py-2"
                       disabled={loadingStartProcess} // Disable button when loading
@@ -422,15 +433,23 @@ const ApiManager = () => {
                               type="date"
                               name="startDate"
                               className="grow"
-                              onChange={(e) => {
-                                setEndpointUrl(data.endpointUrl);
-                                setApiKey(data.apiKey);
-                                setStartDate(e.target.value);
-                              }}
+                              onChange={(e) => setStartDate(e.target.value)}
                               value={startDate}
                               required
                             />
                           </label>
+                          <input
+                            onSubmit={(e) => setEndpointUrl(data.endpointUrl)}
+                            className=" hidden"
+                            type="text"
+                            value={data.editEndpoint}
+                          />
+                          <input
+                            onSubmit={(e) => setApiKey(data.apiKey)}
+                            className=" hidden"
+                            type="text"
+                            value={data.apiKey}
+                          />
                           <label className="input input-bordered flex items-center gap-2 my-1">
                             End Date:
                             <input
