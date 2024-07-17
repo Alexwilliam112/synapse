@@ -100,15 +100,16 @@ const ApiManager = () => {
 
       if (data.CreateEndpoint.statusCode === 200) {
         refetch();
-        document.getElementById("my_modal_2").close();
+        // document.getElementById("my_modal_2").close();
 
         router.push("/apimanager");
       } else {
         console.error("Error creating endpoint");
       }
     } catch (error) {
-      setErrorMessage("Something went wrong");
-      setIsErrorModalOpen(true);
+      console.log(error);
+      // setErrorMessage("Something went wrong");
+      // setIsErrorModalOpen(true);
     }
   };
 
@@ -150,15 +151,14 @@ const ApiManager = () => {
 
       if (data.UpdateEndpoint.statusCode === 200) {
         refetch();
-        document.getElementById("my_modal_1").close();
         router.push("/apimanager");
       } else {
         console.error("Error updating endpoint");
       }
     } catch (error) {
       console.log(error);
-      setErrorMessage("Something went wrong");
-      setIsErrorModalOpen(true);
+      // setErrorMessage("Something went wrong");
+      // setIsErrorModalOpen(true);
     }
   };
 
@@ -172,12 +172,12 @@ const ApiManager = () => {
     },
   ] = useMutation(DeleteApi);
 
-  const handleDelete = async (e) => {
+  const handleDelete = async (endpoint) => {
     try {
       const { data } = await deleteEndpoint({
         variables: {
           input: {
-            id: Number(selectedEndpoint.id),
+            id: Number(endpoint.id),
           },
         },
       });
@@ -188,15 +188,17 @@ const ApiManager = () => {
         console.error("Error deleting endpoint");
       }
     } catch (error) {
-      setErrorMessage("Something went wrong");
-      setIsErrorModalOpen(true);
+      console.log(error);
+      // setErrorMessage("Something went wrong");
+      // setIsErrorModalOpen(true);
     }
   };
 
   const handleDeleteClick = (endpoint) => {
     setSelectedEndpoint(endpoint);
-    setDeleteId(endpoint.id);
-    handleDelete(deleteId);
+    console.log(selectedEndpoint);
+    // setDeleteId(endpoint.id);
+    handleDelete(endpoint);
   };
 
   //HANDLE START
@@ -235,7 +237,7 @@ const ApiManager = () => {
 
       refetch();
 
-      document.getElementById("my_modal_4").close();
+      // document.getElementById("my_modal_4").close();
 
       router.push("/apimanager");
     } catch (error) {
@@ -274,7 +276,25 @@ const ApiManager = () => {
       </div>
     );
   }
-
+  if (
+    queryError ||
+    mutationError ||
+    mutationErrorUpdate ||
+    mutationErrorDelete
+  ) {
+    return (
+      <div className="flex items-center justify-center h-screen w-screen">
+        <div>
+          <img
+            src="/catconfuse.gif"
+            alt="errorcatnyan"
+            className="h-24 object-cover"
+          />
+          <p className="font-mono">Something went wrong</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       <ErrorModal
@@ -449,7 +469,7 @@ const ApiManager = () => {
                               required
                             />
                           </label>
-                          <input
+                          {/* <input
                             onSubmit={(e) => setEndpointUrl(data.endpointUrl)}
                             className=" hidden"
                             type="text"
@@ -460,7 +480,7 @@ const ApiManager = () => {
                             className=" hidden"
                             type="text"
                             value={data.apiKey}
-                          />
+                          /> */}
                           <label className="input input-bordered flex items-center gap-2 my-1">
                             End Date:
                             <input
