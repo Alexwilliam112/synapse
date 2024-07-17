@@ -39,7 +39,7 @@ module.exports = {
 
     const userEmail = signTokenUser(clientPayload.email)
 
-    const response = await axios.post(`${process.env.USERS_SERVICE_URL}/findUser` || "http://localhost:3001/findUser", {
+    const response = await axios.post(`http://${process.env.USERS_SERVICE_URL}/findUser` || "http://localhost:3001/findUser", {
       userPayload: userEmail
     }, {
       headers: {

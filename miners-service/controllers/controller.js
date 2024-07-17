@@ -77,13 +77,8 @@ class Controller {
       const eventlogs = resData.map((el) => {
         return new Eventlog(el.eventlog, el.processes);
       });
-<<<<<<< HEAD
-      console.log(eventlogs);
-      const tasks = await requestTemporalAnalysis(jsonData, req.loginInfo.CompanyId);
-=======
 
       const tasks = await requestTemporalAnalysis(jsonData);
->>>>>>> 106f64632556e60ddeb2a1dac2e856fdb43a87b2
       const models = await requestProcessMining(eventlogs);
 
       const serverToken = signTokenServer({
