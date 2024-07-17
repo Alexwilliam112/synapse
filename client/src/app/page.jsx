@@ -2,8 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Head from 'next/head';
-import MetaData from "@/components/MetaData";
-import { Metadata } from 'next';
+// import MetaData from "@/components/MetaData";
+// import { Metadata } from 'next';
 
 
 import { ScrollText, LogIn, Unplug, Power, LightbulbOff, LayoutList } from "lucide-react";
