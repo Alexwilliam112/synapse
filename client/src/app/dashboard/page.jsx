@@ -17,6 +17,7 @@ import {
   setDepartment,
   setPerson,
 } from "@/Redux/filterSlice";
+import Link from "next/link";
 
 const formatNumberToTwoDecimals = (num) => {
   return Number.isInteger(num) ? num.toString() : num.toFixed(2);
@@ -134,14 +135,14 @@ const Dashboard = () => {
       <div className="flex flex-col sm:gap-4 sm:py-4">
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
           <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full">
+            <div className="bg-white p-8 rounded-lg shadow-md w-auto">
               <h2 className="text-2xl font-light mb-6">Filter</h2>
               <form className="gap-5 items-center" onSubmit={handleSubmit}>
                 <div className="flex gap-5 items-center">
                   <div>
                     <label
                       htmlFor="department"
-                      className="form-control w-auto max-w-xs md:w-48 lg:w-48"
+                      className="form-control w-auto max-w-xs md:w-auto lg:w-40"
                     >
                       <div className="label">
                         <span className="label-text">Department</span>
@@ -153,8 +154,8 @@ const Dashboard = () => {
                         onChange={handleChange}
                         className="select select-bordered"
                       >
-                        <option value="" disabled>
-                          Select option
+                        <option value="" >
+                          Select All
                         </option>
                         {resultDepartments.map((el, idx) => (
                           <option key={idx} value={el}>
@@ -168,7 +169,7 @@ const Dashboard = () => {
                   <div>
                     <label
                       htmlFor="person"
-                      className="form-control w-auto max-w-xs lg:w-48"
+                      className="form-control w-auto max-w-xs lg:w-40"
                     >
                       <div className="label">
                         <span className="label-text">Person</span>
@@ -180,8 +181,8 @@ const Dashboard = () => {
                         onChange={handleChange}
                         className="select select-bordered"
                       >
-                        <option value="" disabled>
-                          Select option
+                        <option value="">
+                          Select All
                         </option>
                         {resultPerson.map((el, idx) => (
                           <option key={idx} value={el}>
@@ -207,8 +208,8 @@ const Dashboard = () => {
                         onChange={handleChange}
                         className="select select-bordered"
                       >
-                        <option value="" disabled>
-                          Select option
+                        <option value="">
+                          Select All
                         </option>
                         {resultProcesses.map((el, idx) => (
                           <option key={idx} value={el}>
@@ -222,7 +223,7 @@ const Dashboard = () => {
                   <div>
                     <label
                       htmlFor="startDate"
-                      className="form-control w-full max-w-xs lg:w-48"
+                      className="form-control w-full max-w-xs lg:w-40"
                     >
                       <div className="label">
                         <span className="label-text">Start Date</span>
@@ -241,7 +242,7 @@ const Dashboard = () => {
                   <div>
                     <label
                       htmlFor="endDate"
-                      className="form-control w-full max-w-xs lg:w-48"
+                      className="form-control w-full max-w-xs lg:w-40"
                     >
                       <div className="label">
                         <span className="label-text">End Date</span>
@@ -301,9 +302,11 @@ const Dashboard = () => {
                   <p className="text-sm font-light">Lets take a look at your company performance!</p>
                 </div>
                 <div>
-                  <button className="btn bg-[#6E8672] text-white hover:bg-[#47594A]">
-                    Diagram
-                  </button>
+                  <Link href={"/diagram"}>
+                    <button className="btn bg-[#6E8672] text-white hover:bg-[#47594A]">
+                      Diagram
+                    </button>
+                  </Link>
                 </div>
               </div>
               <div className="w-auto flex items-center h-auto space-x-8">
