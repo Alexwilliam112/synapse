@@ -216,25 +216,25 @@ const ApiManager = () => {
 
     setTimeout(async () => {
       try {
-        console.log(
-          startDate,
-          endDate,
-          typeof endpointUrl,
-          endpointUrl.length,
-          typeof apiKey,
-          apiKey.length
-        );
-        const { data } = await startMining({
-          variables: {
-            input: {
-              startDate,
-              endpointUrl,
-              endDate,
-              apiKey,
-            },
-          },
-        });
-        console.log(data);
+        // console.log(
+        //   startDate,
+        //   endDate,
+        //   typeof endpointUrl,
+        //   endpointUrl.length,
+        //   typeof apiKey,
+        //   apiKey.length
+        // );
+        // const { data } = await startMining({
+        //   variables: {
+        //     input: {
+        //       startDate,
+        //       endpointUrl,
+        //       endDate,
+        //       apiKey,
+        //     },
+        //   },
+        // });
+        // console.log(data);
 
         refetch();
         router.push("/apimanager");
