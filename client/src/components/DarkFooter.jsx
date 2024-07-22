@@ -12,7 +12,7 @@ const Footer = () => {
               <div className="px-6">
                 <div className="flex items-center space-x-2">
                   <img className="w-auto h-7 lg:h-12" src="/logobw.png" alt="" />
-                  <p className="font-extralight text-4xl text-white">Synapse</p>
+                  <p className="font-extralight text-4xl text-white">Fouriex</p>
                 </div>
 
                 <p className="max-w-sm mt-2 text-gray-400">
@@ -140,7 +140,7 @@ const Footer = () => {
 
           <div>
             <p className="text-center text-gray-400">
-              © Synapse 2024 - All rights reserved
+              © Fouriex 2024 - All rights reserved
             </p>
           </div>
         </div>

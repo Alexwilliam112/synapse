@@ -68,7 +68,7 @@ const Login = () => {
     <div className="bg-white dark:bg-gray-900">
       <div className="flex justify-center h-screen">
         <div className="bg-[#323232]">
-          {/* <p className="font-mono text-lg text-white">Synapse</p> */}
+          {/* <p className="font-mono text-lg text-white">Fouriex</p> */}
         </div>
         <div
           className="hidden lg:p-8 lg:flex lg:h-auto lg:space-x-12 lg:justify-center lg:items-center lg:w-2/3 bg-[#323232] "
@@ -76,7 +76,7 @@ const Login = () => {
         //   backgroundImage: 'url("/image.png")',
         // }}
         >
-          {/* <p>Synapse</p> */}
+          {/* <p>Fouriex</p> */}
           <div className="w-2/3 h-auto ">
             <video
               className="video"
@@ -95,7 +95,7 @@ const Login = () => {
           {/* <div className="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
             
             <div>
-              <h2 className="text-2xl font-bold text-white sm:text-3xl">Synapse</h2>
+              <h2 className="text-2xl font-bold text-white sm:text-3xl">Fouriex</h2>
               <p className="max-w-xl mt-3 text-gray-300">
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. In autem ipsa, nulla laboriosam dolores,
                 repellendus perferendis libero suscipit nam temporibus molestiae
@@ -111,7 +111,7 @@ const Login = () => {
                 <img className="w-2/12" src="/logo.png" alt="Logo" />
               </div>
               <h2 className="text-2xl mt-4 font-light text-gray-500 dark:text-gray-300 sm:text-3xl">
-                Synapse
+                Fouriex
               </h2>
             </div>
             <br />

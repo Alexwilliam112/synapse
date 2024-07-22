@@ -12,7 +12,7 @@ const About = () => {
         <div className="flex-1">
           <Link href={"/"} className="btn btn-ghost text-xl">
             <Image src="/logo.png" alt="" className="w-6 h-6 object-cover" width={50} height={50} />
-            <p className="font-light text-2xl ">Synapse</p>
+            <p className="font-light text-2xl ">Fouriex</p>
           </Link>
         </div>
         <div className="flex-none">
@@ -73,7 +73,7 @@ const About = () => {
         <div className="container bg-[#F3F3F7] md:flex xl:grid xl:grid-cols-2 w-auto xl:w-4/5 lg:w-96 rounded-3xl shadow-2xl">
           <div className="w-full p-14 lg:p-20 flex text-center">
             <div className="space-y-3">
-              <h1 className="text-4xl font-light ">About Synapse</h1>
+              <h1 className="text-4xl font-light ">About Fouriex</h1>
               <div className="p-1 rounded-full bg-[#6E8672] w-32 h-2">
               </div>
             </div>
