@@ -12,7 +12,7 @@ const Footer = () => {
               <div className="px-6">
                 <div className="flex items-center space-x-2">
                   <img className="w-auto h-7 lg:h-12" src="/logo.png" alt="" />
-                  <p className="font-extralight text-4xl">Synapse</p>
+                  <p className="font-extralight text-4xl">Fouriex</p>
                 </div>
 
                 <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">
@@ -57,7 +57,7 @@ const Footer = () => {
                     href="#"
                     className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline"
                   >
-                    Synapse Flow
+                    Fouriex Flow
                   </a>
                   <a
                     href="#"
@@ -129,7 +129,7 @@ const Footer = () => {
                     +62 8226 0355 819
                   </span>
                   <span className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">
-                    contact@synapse.com
+                    contact@fouriex.com
                   </span>
                 </div>
               </div>
@@ -140,7 +140,7 @@ const Footer = () => {
 
           <div>
             <p className="text-center text-gray-500 dark:text-gray-400">
-              © Synapse 2024 - All rights reserved
+              © Fouriex 2024 - All rights reserved
             </p>
           </div>
         </div>

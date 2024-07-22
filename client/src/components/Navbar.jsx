@@ -58,7 +58,7 @@ const Navbar = () => {
         </div>
         <div className="flex items-center space-x-2">
           <img src="/logo.png" alt="" className="w-10 h-auto object-cover" />
-          <p className="text-2xl font-light">Synapse</p>
+          <p className="text-2xl font-light">Fouriex</p>
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">

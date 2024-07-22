@@ -20,8 +20,8 @@ import { Suspense } from "react";
 
 const Landing = () => {
   const [token, setToken] = useState(null);
-  // const [pageTitle, setPageTitle] = useState('Welcome to Synapse');
-  // const [pageDescription, setPageDescription] = useState('Monitor your company differently with Synapse');
+  // const [pageTitle, setPageTitle] = useState('Welcome to Fouriex');
+  // const [pageDescription, setPageDescription] = useState('Monitor your company differently with Fouriex');
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -36,7 +36,7 @@ const Landing = () => {
           <div className="flex-1">
             <a className="btn btn-ghost text-xl">
               <Image src="/logo.png" alt="" className="w-8 h-auto object-cover" width={50} height={50} />
-              <p className="font-light text-2xl">Synapse</p>
+              <p className="font-light text-2xl">Fouriex</p>
             </a>
           </div>
           <div className="flex-none">
@@ -73,7 +73,7 @@ const Landing = () => {
                     <span className="text-[#6E8672]">Differently</span>
                   </h1>
                   <p className="mt-6 text-md lg:text-xl text-gray-400">
-                    No strings are left loose. Synapse guarantees comprehensive
+                    No strings are left loose. Fouriex guarantees comprehensive
                     monitoring of every process within your company, ensuring
                     seamless operations and optimal performance
                   </p>
